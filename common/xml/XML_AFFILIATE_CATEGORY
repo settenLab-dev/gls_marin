@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataList>
+  <data>
+    <name>食べ物</name>
+    <value>1</value>
+    <url>tabemono</url>
+    <status>1</status>
+  </data>
+</dataList>

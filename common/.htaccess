@@ -1,0 +1,8 @@
+Satisfy any
+order allow,deny
+allow from all
+
+<Files ~ "(config.php|log4php.properties|includes)$">
+order deny,allow
+deny from all
+</Files>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<dataList>
+  <data>
+    <name>美ら海水族館近く</name>
+    <value>8</value>
+    <url>churaumi</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>コンベンション近く</name>
+    <value>7</value>
+    <url>convention</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>あしびなー近く</name>
+    <value>6</value>
+    <url>ashibina</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>お留守番卒業！ペットとお泊り</name>
+    <value>5</value>
+    <url>petto</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>パパママ赤ちゃんも安心！たたみのお部屋</name>
+    <value>4</value>
+    <url>tatami</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>みんな一緒にワイワイ大部屋で泊ろう</name>
+    <value>3</value>
+    <url>waiwai</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>おいしいディナー付き１人１万円以下</name>
+    <value>2</value>
+    <url>dinner</url>
+    <status>1</status>
+  </data>
+</dataList>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataList>
+  <data>
+    <name>スタッフおすすめ</name>
+    <value>9</value>
+    <url>reccomend</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>人気のお店</name>
+    <value>10</value>
+    <url>pop</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>新着</name>
+    <value>11</value>
+    <url>new</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>還元率が高い</name>
+    <value>12</value>
+    <url>highpoint</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>食べ物</name>
+    <value>1</value>
+    <url>tabemono</url>
+    <status>1</status>
+  </data>
+</dataList>

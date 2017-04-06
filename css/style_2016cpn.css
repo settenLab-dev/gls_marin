@@ -1,0 +1,1051 @@
+@charset "UTF-8";
+/*===== common
+=====================================================*/
+
+  /*　201508目玉クーポン　*/
+
+  #content_medama{
+    width: 1260px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right:auto;
+    background: url(../images/cpn201508_coupon/bg_coupon.jpg) no-repeat top left #fff;
+    float: none;
+  }
+   #content_medama:after{
+       content:" ";
+  display:block;
+  clear:both;
+  }
+
+  #info_couponcpn{
+    position: relative;
+    top: 50px;
+    width:926px;
+    height:371px;
+    left:170px;
+    background: url(../images/cpn201508_coupon/img_top.png) no-repeat top left;
+  }
+    #info_couponcpn p{
+	padding-top:230px;
+	padding-left:30px;
+    font-size: 0.95em;
+	line-height: 18px;
+      color: #000;
+    }
+  #info_couponcpn p strong{
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #ff0000;
+ }
+
+ #cpn_main{
+  width: 970px;
+  margin:70px auto 0 auto;
+ }
+
+
+ .btn_cocopon{
+  margin:70px auto 0 auto;
+ }
+
+.sub2_left_c{
+  width: 480px;
+  float: left;
+  border: 1px solid #e5004f;
+  border-radius: 5px;        /* CSS3草案 */
+  -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 5px;   /* Firefox用 */
+  background:#fff;
+  overflow: visible;
+  height: auto;
+   -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+       -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            margin-right: 3px;
+}
+
+.sub2_right_c{
+  width: 480px;
+  float: left;
+  border: 1px solid #e5004f;
+  border-radius: 5px;        /* CSS3草案 */
+  -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 5px;   /* Firefox用 */
+  background:#fff;
+  overflow: visible;
+  height: auto;
+   -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+       -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            margin-left: 3px;
+}
+
+.sub2_header_c{
+  border-bottom: 1px solid #e5004f;
+  margin:10px 10px 0 10px;
+  padding-bottom: 5px;
+  line-height: 16px;
+  height: 25px;
+}
+
+.sub2_header_c h2{
+  display: block;
+  float: left;
+  width: 60px;
+  background:#e5004f;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  padding:3px;
+  border-radius: 3px;        /* CSS3草案 */
+  -webkit-border-radius: 3px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 3px;   /* Firefox用 */
+}
+
+ .sub2_header_c h3{
+  display: block;
+  float: left;
+  font-weight: bold;
+  font-size: 16px;
+  padding-left: 10px;
+  line-height: 22px;
+}
+
+p.recom_txt_c{
+  font-size: 11px;
+  padding: 5px;
+  background:#fff4f9;
+  margin:5px 0 0 0;
+  }
+
+
+
+  /*　2016お年玉セール宿泊プラン　*/
+
+  #content_cpn2016{
+    width: 1260px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right:auto;
+    background: url(./images/newyear/2016/bg_2016cpn.jpg) no-repeat top left #fff;
+    float: none;
+  }
+   #content_cpn2016:after{
+       content:" ";
+  display:block;
+  clear:both;
+  }
+  .row_box{
+    width:970px;
+    margin-bottom: 15px;
+    overflow: visible;
+  }
+  .row_box:after{
+       content:" ";
+  display:block;
+  clear:both;
+  }
+
+  #info_cpn2016_hotel{
+    position: relative;
+    width:490px;
+    top: 160px;
+    left:370px;
+    overflow: auto;
+  }
+    #info_cpn2016_hotel p{
+      color: #000;
+    }
+  #info_cpn2016_hotel p strong{
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #ff0000;
+ }
+ #cpn_mainbox{
+  width: 970px;
+  margin: 210px auto 0 auto;
+ }
+.sub2_left{
+  width: 480px;
+  float: left;
+  border: 1px solid #ff5400;
+  border-radius: 5px;        /* CSS3草案 */
+  -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 5px;   /* Firefox用 */
+  background:#fffde7;
+  overflow: visible;
+  height: auto;
+   -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+       -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            margin-right: 3px;
+}
+
+.sub2_right{
+  width: 480px;
+  float: left;
+  border: 1px solid #ff5400;
+  border-radius: 5px;        /* CSS3草案 */
+  -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 5px;   /* Firefox用 */
+  background:#fffde7;
+  overflow: visible;
+  height: auto;
+   -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+       -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            margin-left: 3px;
+}
+
+.sub2_header{
+  border-bottom: 1px solid #ff5400;
+  margin:10px 10px 0 10px;
+  padding-bottom: 5px;
+  line-height: 16px;
+  height: 25px;
+}
+
+.sub2_header h2{
+  display: block;
+  float: left;
+  width: 60px;
+  background:#ff5400;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  padding:3px;
+  border-radius: 3px;        /* CSS3草案 */
+  -webkit-border-radius: 3px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 3px;   /* Firefox用 */
+}
+ .sub2_header h3{
+  display: block;
+  float: left;
+  font-weight: bold;
+  font-size: 16px;
+  padding-left: 10px;
+  line-height: 22px;
+}
+
+.sub2_photo{
+  width: 251px;
+  float: left;
+  margin-left:10px;
+  margin-bottom: 10px;
+}
+.sub2_photo img{
+  display: block;
+  float: left;
+  margin-top: 5px;
+}
+
+.simg_end{
+  margin-left: 9px;
+}
+
+.sub2_main{
+  display: block;
+  float: left;
+  width: 202px;
+  margin-left: 7px;
+  margin-right: 10px;
+  padding-top:5px;
+}
+.sub2_main p{
+    font-size: 12px;
+    margin:5px 0 0 0;
+}
+
+p.recom_txt{
+  font-size: 11px;
+  padding: 5px;
+  background:#fff;
+  margin:5px 0 0 0;
+  }
+
+.cmicon{
+  margin-top: -30px;
+  float: right;
+}
+
+.plan_btn{
+  display: block;
+  margin:10px auto;
+}
+
+.sub2_left:after{
+   content:" ";
+  display:block;
+  clear:both;
+  }
+
+  .sub2_right:after{
+   content:" ";
+  display:block;
+  clear:both;
+  }
+
+  .sub3_left{
+  width: 318px;
+  float: left;
+  border: 1px solid #ff5400;
+  border-radius: 5px;        /* CSS3草案 */
+  -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 5px;   /* Firefox用 */
+  background:#fffde7;
+  overflow: visible;
+  height: auto;
+   -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+       -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            margin-right: 5px;
+}
+
+ .sub3_left p{
+  font-size: 12px;
+ }
+.sub3_left:after{
+   content:" ";
+  display:block;
+  clear:both;
+  }
+
+    .sub3_center{
+  width: 318px;
+  float: left;
+  border: 1px solid #ff5400;
+  border-radius: 5px;        /* CSS3草案 */
+  -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 5px;   /* Firefox用 */
+  background:#fffde7;
+  overflow: visible;
+  height: auto;
+   -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+       -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+}
+
+ .sub3_center p{
+  font-size: 12px;
+ }
+.sub3_center:after{
+   content:" ";
+  display:block;
+  clear:both;
+  }
+
+
+    .sub3_right{
+  width: 318px;
+  float: left;
+  border: 1px solid #ff5400;
+  border-radius: 5px;        /* CSS3草案 */
+  -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 5px;   /* Firefox用 */
+  background:#fffde7;
+  overflow: visible;
+  height: auto;
+   -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+       -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            margin-left: 5px;
+}
+
+ .sub3_right p{
+  font-size: 12px;
+ }
+.sub3_right:after{
+   content:" ";
+  display:block;
+  clear:both;
+  }
+
+  .sub3_header{
+  border-bottom: 1px solid #ff5400;
+  margin:10px 10px 0 10px;
+  padding-bottom: 5px;
+  line-height: 16px;
+  height: 25px;
+}
+
+.sub3_header h2{
+  display: block;
+  float: left;
+  width: 60px;
+  background:#ff5400;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  padding:3px;
+  border-radius: 3px;        /* CSS3草案 */
+  -webkit-border-radius: 3px;    /* Safari,Google Chrome用 */
+  -moz-border-radius: 3px;   /* Firefox用 */
+}
+ .sub3_header h3{
+  display: block;
+  float: left;
+  font-weight: bold;
+  font-size: 14px;
+  padding-left: 10px;
+  line-height: 22px;
+}
+
+.sub3_photo{
+  width: 159px;
+  float: left;
+  margin-left:10px;
+  margin-bottom: 10px;
+}
+.sub3_photo img{
+  display: block;
+  float: left;
+  margin-top: 5px;
+}
+
+.sub3_main{
+  display: block;
+  float: left;
+  width: 130px;
+  margin-left: 7px;
+  margin-right: 10px;
+  padding-top:5px;
+  margin-bottom: 10px;
+}
+.sub3_main p{
+    font-size: 12px;
+    margin:5px 0 0 0;
+}
+
+.sub3_main p.recom_txt{
+  font-size: 11px;
+  padding: 5px;
+  background:#fff;
+  margin:5px 0 0 0;
+  }
+
+  /* ブルーシールアイスプレゼント */
+  main#cpn_icebox{
+       width: 1260px;
+       float: none;
+           margin-left: auto;
+    margin-right:auto;
+    height: 2000px;
+  }
+  #cpn_ice{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right:auto;
+    background: url(../images/cpn201508_ice/bg.jpg) no-repeat top left #fff;
+    float: none;
+  }
+
+    #cpn_ice:after{
+         content:" ";
+  display:block;
+  clear:both;
+    }
+
+  #icecpn_date{
+    position: relative;
+    background-color: rgba(255,255,255,0.68);
+    width: 980px;
+    height:35px;
+    top:280px;
+    margin:0 auto 5px auto;
+    text-align: center;
+line-height: 36px;
+}
+#icecpn_date strong{
+  font-size:25px;
+  font-weight: bold;
+  color: #ed0080;
+}
+
+#icecpn_intro{
+      position: relative;
+    background-color: rgba(255,255,255,0.68);
+    width: 980px;
+    top:280px;
+    margin:0 auto 5px auto;
+}
+
+#icecpn_intro p{
+  margin:0;
+  padding: 15px 60px;
+  font-size: 14px;
+  color: #000;
+}
+
+#icecpn_intro p em{
+  font-size: 12px;
+  color: #000;
+  }
+
+#icecpn_main{
+  position: relative;
+  width: 980px;
+    background-color: rgba(255,255,255,0.68);
+    background-image: url(../images/cpn201508_ice/cheergirl.png) ;
+    background-repeat: no-repeat;
+    background-position: 0px 30px;
+    margin:0 auto 35px auto;
+    top:320px;
+}
+#icecpn_main:after{
+   content:" ";
+  display:block;
+  clear:both;
+}
+.ice_header{
+  margin-top: -30px;
+  margin-left: 20px;
+}
+
+.smile_photo{
+  float: right;
+  margin-right: -60px;
+}
+
+#icecpn_main p{
+  width: 612px;
+  margin-left: 165px;
+}
+
+
+.img_center{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#icecpn_footer{
+    position: relative;
+  width: 780px;
+      top:300px;
+      margin:0 auto 0;
+}
+#icecpn_footer p {
+  margin-bottom: 30px;
+}
+#icecpn_footer p em{
+  font-weight: bold;
+  color: #ff0000;
+}
+#ice_sns{
+  width: 780px;
+  background:#ffffe3;
+}
+#ice_snsbtn{
+  text-align: center;
+  margin:0 auto;
+  overflow: auto;
+}
+#ice_sns img{
+  display: inline-block;
+  margin-right: 5px;
+  }
+#ice_sns p{
+  padding: 10px;
+  font-size: 11px;
+  margin: 0;
+}
+#ice_sns p em{
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+
+  /* 201508キャンペーンTOP */
+  main#cpn_topbox{
+       width: 1260px;
+       float: none;
+    margin-left: auto;
+    margin-right:auto;
+    /*height: 1700px;*/
+  }
+  #cpn_top{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right:auto;
+    background: #fff;
+    float: none;
+  }
+
+    #cpn_top:after{
+         content:" ";
+  display:block;
+  clear:both;
+    }
+
+
+  #cpn_top .btn_coupon{
+    position: absolute;
+    margin-top: 910px;
+    margin-left: 910px;
+    margin-right:auto;
+    background: #fff;
+    float: none;
+  }
+
+  #cpn_top .btn_sns{
+    position: absolute;
+    margin-top: 1195px;
+    margin-left: 490px;
+    margin-right:auto;
+    background: #fff;
+    float: none;
+  }
+
+
+#topcpn_main{
+  position: relative;
+  width: 980px;
+    background-color: rgba(255,255,255,0.68);
+    background-repeat: no-repeat;
+    background-position: 0px 30px;
+    margin:0 auto 35px auto;
+  /*  top:320px;*/
+}
+#topcpn_main:after{
+   content:" ";
+  display:block;
+  clear:both;
+}
+
+.cpn_contents{
+	float:left;
+	margin-right: 10px;
+	margin-bottom: 35px;
+}
+
+
+/*  宿泊予約TOP修正 20150825   */
+
+
+#content-r .hotel_name{
+	width: 100%;
+	height: 950px;
+	background: #f3fbff;
+	border: 1px solid  #e5e5e5;
+}
+#content-r .hotel_name h2{
+	width: 237px;
+	height: 20px;
+	background: #e5e5e5;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	text-align: center;
+}
+#content-r .hotel_name ul{
+	width: 255px;
+	height: 100%;
+	margin-left: 10px;
+	margin-bottom: 3px;
+	float: left;
+}
+#content-r .hotel_name ul li{
+	font-size: 0.8em;
+	/*margin-bottom: 5px;*/
+}
+#content-r .hotel_name ul li a{
+	text-decoration: none;
+}
+#content-r .hotel_name ul li a:hover{
+	color: #ff9101;
+}
+#content-r .search_icon {
+	width: 100%;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 2px solid #ff9101;
+}
+
+#content-r .pic_icon {
+	width: 100%;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 2px solid #ff005a;
+}
+#content-r .pickup {
+	width: 100%;
+	height: 200px;
+}
+#content-r .pickup .box1 {
+	width: 325px;
+	height: 200px;
+	margin-left: 10px;
+	float: left;
+}
+#content-r .pickup .box2 {
+	width: 325px;
+	height: 200px;
+	margin-left: 15px;
+	float: left;
+}
+
+
+
+/* レジャー特集ページサイズ修正 */
+
+/*pickup
+-----------------------------*/
+
+#leisure {
+	width: 950px;
+	height:100%;
+}
+
+#leisure_cn {
+	border: 1px solid #ec6941;
+	padding: 10px 10px;
+/*	background: #ffe58b;*/
+}
+#leisure_cn > section#topimage {
+	width: 950px;
+	height: 250px;
+	text-indent: -9999px;
+}
+#leisure_cn > div#title1 {
+	width: 950px;
+	height: 50px;
+	text-indent: -9999px;
+	background: url(../images/pickup/title1.png) no-repeat 0 0;
+}
+#leisure_cn > div#title2 {
+	width: 950px;
+	height: 229px;
+	text-indent: -9999px;
+	background: url(../images/pickup/title2.png) no-repeat 0 0;
+}
+#leisure_cn > div#box {
+     background-color:#FFFFFF;
+     filter:alpha(opacity=85);
+     -moz-opacity:0.85;
+     -khtml-opacity: 0.85;
+     opacity:0.85;
+}
+#leisure_cn #plan1 > p#plan1txt {
+	height: 22px;
+	margin: -2px 0 8px;
+	background: url(../images/opnesale/txt_plan01.png) no-repeat 0 0;
+}
+#leisure_cn #plan2 > p#plan2txt {
+	height: 26px;
+	margin: 0 0 5px;
+	background: url(../images/opnesale/txt_plan02.png) no-repeat 0 0;
+}
+#leisure_cn #plan3 > p#plan3txt {
+	height: 22px;
+	margin: -2px 0 8px;
+	background: url(../images/opnesale/txt_plan03.png) no-repeat 0 0;
+}
+#leisure_cn #plan4 > p#plan4txt {
+	height: 29px;
+	margin: -2px 0 4px;
+	background: url(../images/opnesale/txt_plan04.png) no-repeat 0 0;
+}
+#leisure_cn #plan1 > p#plan1txt,
+#leisure_cn #plan2 > p#plan2txt,
+#leisure_cn #plan3 > p#plan3txt,
+#leisure_cn #plan4 > p#plan4txt {
+	width: 667px;
+	text-indent: -9999px;
+}
+#leisure_cn > #planning ul {
+	width: 930px;
+	margin-left: -5px;
+	margin-bottom: 15px;
+}
+#leisure_cn > #planning ul li {
+	width: 141px;
+	float: left;
+}
+#leisure_cn .waku_s {
+	width: 915px;
+	margin: 0 auto 30px;
+	padding: 0 10px 14px;
+	background: url(../images/common/bg_st.png) repeat 0 0;
+	/*border: 2px solid #2fcff4;*/
+}
+#leisure_cn ul.wakuList > li {
+	width: 275px;
+	height: 420px;
+	padding: 8px 8px;
+	float: left;
+	margin-right: 6px;
+	margin-bottom: 8px;
+	border: 1px solid #ec6941;
+	background: #fff;
+}
+#leisure_cn ul.wakuList > li >div.plan_h {
+	margin-bottom: 10px;
+}
+#leisure_cn ul.wakuList > li >div.plan_h > h3 {
+	width: 225px;
+	height: 42px;
+	overflow: hidden;
+	float: left;
+	letter-spacing: -1px;
+	color: #000000;
+	font-size: 13.2px;
+	font-weight: bold;
+}
+#leisure_cn ul.wakuList > li >div.plan_h > p {
+	width: 42px;
+	float: right;
+	color: #fff;
+	margin: -2px 0 0 0;
+	padding: 2px 0 0 0;
+	letter-spacing: 1px;
+	text-align: center;
+	font-size: 11px;
+	font-weight: normal;
+	background: #ff4500;
+}
+#leisure_cn ul.wakuList > li.r-sp {
+	margin-right: 0;
+}
+#leisure_cn div.plan_introduction {
+	width: 98px;
+	float: right;
+}
+#leisure_cn div.plan_introduction > h4 {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+}
+#leisure_cn div.plan_introduction > p {
+	line-height: 120%;
+	font-size: 10px;
+	margin-top: 5px;
+}
+#leisure_cn ul.wakuList > li .price {
+	width: 250px;
+	padding: 10px;
+	background: #ffffe0;
+}
+#leisure_cn ul.wakuList > li .price span {
+	font-weight:bold;
+	color:#ff0000;
+}
+#leisure_cn ul.wakuList > li >.bt_cn {
+	width: 206px;
+	text-align: center;
+	clear: both;
+	padding-top: 8px;
+	border-top: 1px dotted #bababa;
+}
+#leisure_cn ul.wakuList > li a {
+	display: block;
+	width: 200px;
+	height: 40px;
+	margin: 0 auto;
+	text-indent: -9999px;
+	background: url(../images/leisure/btn_detail.png) no-repeat 0 0;
+}
+#leisure_cn #plan2 ul.wakuList > li {
+	padding: 0;
+	width: 214px;
+}
+#leisure_cn #plan2 .wakuList > li >div.plan_h {
+	background: #ffe400;
+}
+#leisure_cn #plan2 .wakuList > li >ul.hotel_List {
+	width: 200px;
+	margin: 0 auto 8px;
+}
+#leisure_cn #plan2 .wakuList > li >ul.hotel_List > li {
+	width: 98px;
+	float: left;
+	font-size: 10px;
+	padding-right: 2px;
+}
+#leisure_cn #plan2 .wakuList > li > div.bt_cn{
+	width: 206px;
+	padding: 8px 0;
+	margin: 0 auto;
+}
+#leisure_cn #terms {
+	width: 683px;
+	margin: 0 auto 28px;
+	padding-top: 17px;
+	background: url(../images/opnesale/bg-or_t.png) no-repeat 0 0;
+}
+#leisure_cn #terms >div {
+	padding-bottom: 17px;
+	background: url(../images/opnesale/bg-or_b.png) no-repeat 0 100%;
+}
+#leisure_cn #terms >div >div {
+	width: 643px;
+	padding: 0 20px;
+	font-size: 14px;
+	background: url(../images/opnesale/bg-or_y.png) repeat-y 0 0;
+}
+#leisure_cn #terms >div >div > ul {
+	color:#3e3e3e;
+	font-weight: bold;
+}
+
+
+
+
+  /* 鬼さん久茂地プレゼント */
+  main#cpn_onibox{
+    width: 1260px;
+    float: none;
+    margin-left: auto;
+    margin-right:auto;
+    height: 2700px;
+    background-color: #ffb38d;
+  }
+  #cpn_oni{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right:auto;
+    background: url(../images/cpn201508_ice/bg0915.jpg) no-repeat #ffb38d;
+    float: none;
+  }
+
+    #cpn_oni:after{
+         content:" ";
+  display:block;
+  clear:both;
+    }
+
+  #onicpn_date{
+    position: relative;
+    background-color: rgba(255,255,255,0.68);
+    width: 980px;
+    height:35px;
+    top:350px;
+    margin:0 auto 5px auto;
+    text-align: center;
+line-height: 36px;
+}
+#onicpn_date strong{
+  font-size:25px;
+  font-weight: bold;
+  color: #ed0080;
+}
+
+#onicpn_intro{
+      position: relative;
+    background-color: rgba(255,255,255,0.68);
+    background-image: url(../images/cpn201508_ice/bg_intro.png) ;
+    background-repeat: no-repeat;
+    background-position: 30px 70px;
+    width: 980px;
+    height: 700px;
+    top:450px;
+    margin:0 auto 5px auto;
+}
+
+#onicpn_intro p{
+  margin:0;
+  padding: 15px 60px;
+  font-size: 14px;
+  color: #000;
+}
+
+#onicpn_intro p em{
+  font-size: 12px;
+  color: #000;
+  }
+
+#onicpn_intro div.menu{
+      position: relative;
+    background-image: url(../images/cpn201508_ice/bg_intro.png) ;
+    background-repeat: no-repeat;
+    background-position: 30px 10px;
+    width: 998px;
+    height: 600px;
+/*    top:450px;*/
+    margin:0 auto 5px auto;
+}
+
+#onicpn_intro div.btn_coupon{
+      position: absolute;
+      margin-left: 280px;
+      top: 585px;
+}
+
+
+
+
+#onicpn_main{
+  position: relative;
+  width: 980px;
+    background-color: rgba(255,255,255,0.68);
+    background-image: url(../images/cpn201508_ice/main_left.png) ;
+    background-repeat: no-repeat;
+    background-position: 0px 30px;
+    margin:0 auto 35px auto;
+    top:490px;
+}
+#onicpn_main:after{
+   content:" ";
+  display:block;
+  clear:both;
+}
+.oni_header{
+  margin-top: -30px;
+  margin-left: 20px;
+}
+
+.oni_photo{
+  float: right;
+  margin-right: -60px;
+}
+
+#onicpn_main p{
+  width: 612px;
+  margin-left: 165px;
+}
+
+
+.img_center{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#onicpn_footer{
+    position: relative;
+  width: 980px;
+    /*  top:470px;*/
+      margin:0 auto 0;
+}
+#onicpn_footer p {
+  margin-bottom: 30px;
+}
+#onicpn_footer p em{
+  font-weight: bold;
+  color: #ff0000;
+}
+#oni_sns{
+  margin:0 auto 0;
+  width: 650px;
+  background:#ffffe3;
+}
+#oni_snsbtn{
+  text-align: center;
+  margin:0 auto;
+  overflow: auto;
+}
+#oni_sns img{
+  display: inline-block;
+  margin-right: 5px;
+  }
+#oni_sns p{
+  padding: 10px;
+  font-size: 11px;
+  margin: 0;
+}
+#oni_sns p em{
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}

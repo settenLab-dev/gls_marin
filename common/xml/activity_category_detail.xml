@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataList>
+  <data>
+    <name>水圧で空を飛ぶ</name>
+    <value>1</value>
+    <category>4</category>
+    <url>fly</url>
+    <status>1</status>
+  </data>
+</dataList>

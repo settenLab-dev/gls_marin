@@ -1,0 +1,12 @@
+<Files ~ !"(track.kokomo.php)$">
+order deny,allow
+deny from all
+</Files>
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule track.kokomo.cgi track.kokomo.php
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataList>
+  <data>
+    <name>幼児OK</name>
+    <value>2</value>
+    <url>childact</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>1名参加OK</name>
+    <value>3</value>
+    <url>singleact</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>少人数制</name>
+    <value>4</value>
+    <url>smallact</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>ペット可</name>
+    <value>1</value>
+    <url>petact</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>送迎あり</name>
+    <value>5</value>
+    <url>sougeiact</url>
+    <status>1</status>
+  </data>
+</dataList>

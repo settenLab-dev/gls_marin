@@ -1,0 +1,30 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^gourmet-detail([0-9]+).html$ gourmet-detail.php?id=$1
+RewriteRule ^gourmet-coupon([0-9]+).html$ gourmet-coupon.php?id=$1
+RewriteRule ^gourmet-detail_n([0-9]+).html$ gourmet-detail_n.php?id=$1
+RewriteRule ^gourmet-coupon_n([0-9]+).html$ gourmet-coupon_n.php?id=$1
+RewriteRule ^gourmet-menu([0-9]+).html$ gourmet-menu.php?id=$1
+RewriteRule ^gourmet-gallery([0-9]+).html$ gourmet-gallery.php?id=$1
+RewriteRule ^leisure-detail([0-9]+).html$ leisure-detail.php?id=$1
+RewriteRule ^leisure-coupon([0-9]+).html$ leisure-coupon.php?id=$1
+RewriteRule ^leisure-detail_n([0-9]+).html$ leisure-detail_n.php?id=$1
+RewriteRule ^leisure-coupon_n([0-9]+).html$ leisure-coupon_n.php?id=$1
+RewriteRule ^leisure-menu([0-9]+).html$ leisure-menu.php?id=$1
+RewriteRule ^affiliate-link([0-9]+).html$ affiliate-link.php?id=$1
+RewriteRule ^affiliate-list([0-9]+).html$ affiliate-list.php?id=$1
+
+RewriteRule ^gourmet/(.+)/(.+)/$ gourmet-recommend.php?key=$1&id=$2
+RewriteRule ^leisure/(.+)/(.+)/$ leisure-recommend.php?key=$1&id=$2
+RewriteRule ^hotel/(.+)/(.+)/$ hotel-recommend.php?key=$1&id=$2
+
+RewriteRule track.kokomo.cgi track.kokomo.php
+
+RewriteRule (.*).html$ $1.php
+
+AddType application/x-httpd-php .html .cgi
+
+

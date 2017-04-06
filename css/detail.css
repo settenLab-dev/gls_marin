@@ -1,0 +1,1269 @@
+@charset "UTF-8";
+/*===== detail
+=====================================================*/
+/* メインコンテンツ内 */
+.search #left{
+	width: 178px;
+	float: left;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #c1e6ff;
+	margin-right: 10px;
+	/* [disabled]margin-right:10px; */
+}
+.search #left h4{
+	border-bottom: 2px solid #0099ff;
+	background: #FFFFFF;
+	padding: 5px;
+	color: #0099ff;
+	font-size: 13px;
+}
+.search #left h4 a{
+	color: #0099ff;
+}
+.search #left .inner ul.nest{
+	border-bottom:2px solid #c1e6ff;
+	}
+.search #left .inner ul.nest li{
+	padding: 3px 5px;
+	font-size: 12px;
+}
+.search #left .inner ul.nest li a{
+	display: block;
+}
+.search #left .inner ul.nest li:hover{
+	background:#FFD2C8;
+}
+.search #left .inner ul.nest li.btn{
+	background: #FFFFFF;
+}
+.search #left .inner ul.nest li.title{
+	background: #c1e6ff;
+	font-weight: bold;
+	padding: 5px;
+}
+.search #left .inner ul.nest li.subtitle{
+	background: #c1e6ff;
+	padding: 5px;
+	}
+.search #left .inner ul.nest li p.link{
+	margin: 5px;
+}
+.search #left .inner ul.nest li a{
+	//text-decoration:none;
+	color:#111111;
+}
+.search #left .inner ul.nest li select{
+	padding: 5px 5px;
+	margin:5px;	
+}
+.search #left .inner ul.nest li input[type=number]{
+	padding: 5px 5px;
+	margin:5px;	
+}
+
+#right.shop {
+	width:780px;
+	margin: 0 auto!important;
+	padding: 0;
+	float:none!important;
+	overflow: hidden;
+	margin-bottom: 5em;
+}
+
+.search #right{
+	width:780px;
+	margin: 0;
+	padding: 0;
+	float:right;
+	overflow: hidden;
+	margin-bottom: 5em;
+}
+
+
+.search #right ul.search-cate .right{
+	float: right;
+}
+.search #right ul.search-cate .right .sub_img{
+	margin: 0px 0px 15px 15px;
+}
+.search #right ul.search-cate .right .sub_img img{
+	width:250px;
+	height: 170px;
+}
+.search #right .category-result {
+	margin: 0;
+	padding:0;
+	margin-top: -30px;
+}
+
+.search #right ul.search-cate {
+	overflow: hidden;
+}
+.search #right ul.search-cate .left {
+	padding: 0 10px;
+	width:470px;
+	height: 150px;
+}
+.search #right ul.search-cate .left p.sub_text{
+	
+}
+.search-result .title_search a {
+	font-size:15px;
+	font-weight: bold;
+	padding: 10px 0;
+	overflow: hidden;
+	color:#0084dc ;
+	display: block;
+	clear: both;
+}
+.search-result .title_search a {
+	font-size:15px;
+	font-weight: bold;
+	padding: 10px 0;
+	overflow: hidden;
+	color:#0084dc ;
+	display: block;
+	clear: both;
+}
+.search-result ul.category {
+	overflow: hidden;
+}
+.search-result ul.category li{
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	font-size: 11px;
+}
+
+.sort_list{
+	border-bottom: 2px solid #0099ff;
+}
+
+.box_detail{
+	margin-top: 3px;
+	background: #eeeeee;
+	padding: 3px;
+	overflow: hidden;
+}
+.box_detail ul li{
+
+}
+.box_detail ul li{
+	float: left;
+}
+.box_detail ul li p{
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+}
+
+ul.box_submit{
+	overflow:hidden;
+	margin-top: 15px;
+}
+ul.box_submit li.plan-price{
+	float: left;
+}
+ul.box_submit li.plan-btn{
+	float: right;
+}
+ul.box_submit li.plan-btn a{
+	padding-right: 25px;
+	padding-left: 25px;
+	border-radius: 5px;
+	background: #eb6100;
+	text-decoration: none;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+.search-change-box{
+	width: 100%;
+	overflow: hidden;
+}
+.search-change-box ul.search-menu{
+	border:none;
+}
+.search-change-box ul.search-menu li{
+	border:none;
+}
+.search-change-box ul.search-menu li a{
+	padding: 0;
+}
+.search-change-box ul.search-menu li.box{
+	width:110px;
+	height: 30px;
+	line-height: 20px;
+	background: #eeeeee;
+	border: 1px solid #4A4A4A;
+	border-radius: 5px;
+	padding: 5px;
+	overflow: hidden;
+}
+.search-change-box ul.search-menu li.box input{
+	border: none;
+	overflow: hidden;
+	background:none;
+	margin: -3px;
+    line-height: 20px;
+}
+.search-change-box ul.search-menu li.box p{
+	margin: 0;
+	padding: 0;
+	line-height: 30px;
+}
+.search-change-box ul.search-menu li.int_cross{
+	padding: 0 5px;
+	width: 25px;
+	line-height: 30px;
+	font-weight: bold;
+	font-size: 1.5em;
+	height: 30px;
+}
+.search-change-btn {
+    //margin: 0 0 0 10px;
+    padding: 8px;
+    background: #eb6100;
+    border: 0;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #FFF;
+	float: right;
+}
+
+
+#detail_plan {
+ width: 100%;
+ overflow: hidden;
+}
+
+/* left */
+#left {
+	width: 600px;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-bottom: 5px;
+	float: left;
+}
+
+/* プラン名 */
+#detail_plan #plan_name {
+ width: 100%;
+ background: #e4f6ff;
+ margin: 15px 0;
+}
+#detail_plan #plan_name h1 {
+	font-size: 17px;
+	font-weight: bold;
+	padding-top: 10px;
+	padding-right: 0px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	display: block;
+	border-left: 5px solid  #0099ff;
+	background: #FFFFFF;
+}
+
+
+/* ショップ名 */
+#detail_plan #shop_name {
+ width: 100%;
+ margin: 10px 0;
+}
+#detail_plan #shop_name h2 {
+ padding: 5px;
+ display: block;
+ color: #9e9e9e;
+}
+
+
+/* エリア、カテゴリ、タグ */
+#detail_plan #area_tag,
+#detail_plan #left #plan_tag{
+	clear: both;
+	margin-bottom: 10px;
+}
+#detail_plan #area_tag h2,
+#detail_plan #left #plan_tag h2{
+	float: left;
+	margin: 0 5px;
+	/* [disabled]border: 1px solid #efefef; */
+	/* [disabled]background: #efefef; */
+	font-size: 12px;
+}
+#detail_plan #area_tag ul,
+#detail_plan #left #plan_tag ul{
+	margin-top: -2px;
+	margin-right: 0;
+	margin-left: 0;
+	margin-bottom: 10px;
+}
+#detail_plan #area_tag ul li,
+#detail_plan #left #plan_tag ul li{
+	float: left;
+	margin-right: 5px;
+	font-size: 11px;
+}
+
+#detail_plan #area_tag ul.tag,
+#plan_tag ul.tag{
+	width: 100%;
+	height: 30px;
+	margin-top: 10px;
+	margin-right: 2px;
+	margin-bottom: 10px;
+	float: left;
+	padding: 0;		
+}
+#plan_tag ul.tag li{
+	border: 1px solid #C4C4C4;
+	border-radius: 3px;
+	padding: 0px 2px;
+	font-size: 10px;
+}
+
+ul.tag li{
+	display: block;
+	float: left;
+	border: solid 1px #d2d2d2;
+	/* [disabled]padding-top: 1px; */
+	padding-right: 3px;
+	padding-left: 3px;
+	/* [disabled]padding-bottom: 1px; */
+	font-size: 10px;
+	border-radius: 2px;
+	margin: 0 2px 5px;
+	color: #666;
+}
+
+/* ショップメニュー */
+
+#detail_menu {
+ width: 100%;
+ height: 50px;
+}
+
+#detail_menu a {
+ text-decoration: none;
+ color: #000000;
+}
+
+
+#detail_menu ul {
+ margin: 0;
+ padding: 0;
+ border-bottom: 2px solid #0099ff;
+ height: 42px;
+ width: 980px;
+}
+
+#detail_menu ul li {
+ //height: 40px;
+	padding: 0;
+	margin: 0;
+	width: 120px;
+border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-width: 2px;
+	border-color: #d2d2d2;
+	border-style: solid;
+	background-color: #0099ff;
+	border-bottom: none;
+	float: left;
+	display: block;
+	position: relative;
+	height: 40px;
+	margin-left: 5px;
+}
+
+#detail_menu ul li.current {
+	border-color: #0099ff;
+	background-color: #0099ff;
+}
+
+#detail_menu ul li a {
+	position: relative;
+	padding: 10px;
+	display: block;
+	text-align: center;
+	font-size: 12px;
+	line-height: 14px;
+	// height: 43px;
+//  background: #0099ff;
+	background: #FFFFFF;
+	width: 100px;
+	height: 20px;
+}
+
+#detail_menu ul li.current a {
+	color: #FFFFFF!important;
+	background: #0099ff;
+ }
+
+#detail_menu ul li a:hover {
+	background: #0099ff;
+	color: #FFF;
+	border-color: #0099ff;
+}
+#detail_menu ul li a:visited {
+//  background: #0099ff;
+//  color: #FFF;
+}
+
+.lefttop {
+	float: left;
+}
+
+
+/* プラン画像 */
+#detail_plan #left #pic{
+ width:600px;
+ //padding: 10px;
+}
+#detail_plan #left #pic .main img{
+ width:600px;
+ height:400px;
+ margin-bottom: 7.3px;
+}
+#detail_plan #left #pic ul.sub {
+	width: 600px;
+	height: 90px;
+	padding: 0;
+	clear: both;
+}
+
+#detail_plan #left #pic ul.sub li {
+ float:left;
+ margin-left:7.3px;
+}
+#detail_plan #left #pic ul.sub li:first-child {
+ margin-left:0;
+}
+#detail_plan #left #pic ul.sub li img{
+ width:100px;
+ //height:98px;
+}
+/* キャッチ＆テキスト */
+#detail_plan #left #description{
+	width: 600px;
+	margin-top: 25px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+#detail_plan #left #description h2{
+ position:relative;
+// width:100%;
+ font-size: 15px;
+ font-weight: bold;
+ margin-bottom:15px;
+}
+#detail_plan #left #description h3{
+ margin-bottom:15px;
+}
+
+
+/* プランの魅力 */
+#detail_plan #left #pr{
+}
+
+
+#detail_plan #left #pr h2 {
+ //font-size: 15px;
+ //width: 680px;
+	font-weight: bold;
+	padding-top: 8px;
+	padding-right: 0px;
+	padding-left: 15px;
+	padding-bottom: 8px;
+	display: block;
+	margin: 35px 0 15px 0;
+	border-left: 5px solid #0099ff;
+	font-size: 15px;
+}
+
+#detail_plan #left #pr ul{
+	display: block;
+	clear: both;
+	margin: 0;
+	padding: 5px;
+	overflow: auto;
+	margin-bottom: 20px;
+}
+#detail_plan #left #pr ul li{
+	width: 187px;
+	float: left;
+	margin-left: 8px;
+	margin-bottom: 8px;
+	border: 1px solid #efefef;
+	display: block;
+}
+#detail_plan #left #pr ul li:nth-child(3n+1){
+ margin-left:0;
+}
+#detail_plan #left #pr ul li img{
+	width: 187px;
+	height: auto;
+}
+#detail_plan #left #pr ul li h3{
+ padding: 8px;
+ font-size: 12px;
+}
+
+
+#detail_plan #right {
+	width: 330px;
+	float: right;
+	margin-bottom: 3em;
+}
+
+/* ボタン */
+
+#right #btn a{
+	text-decoration: none;
+}
+#right #btn a p.btn_cal{
+	width: 200px;
+	height: 15px;
+	border-radius: 3px;
+	background-color: #eb6100;
+	color: #ffffff;
+	font-size: 15px;
+	font-weight: bold;
+	margin-top: 0;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 10px;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+}
+#right #btn a:hover p.btn_cal{
+	background-color: #FC8B34;
+	}
+
+/* プラン情報 */
+#detail_plan #right #base{
+	width: 298px;
+// border: 1px solid #efefef;
+	border: 1px solid #bfbfbf;
+	padding: 15px;
+}
+#detail_plan #right #base table tr{
+ padding:10px;
+ margin-bottom: 15px;
+}
+#detail_plan #right #base table th{
+ font-size: 12px;
+ font-weight:bold;
+ padding: 0 10px 10px 0;
+}
+#detail_plan #right #base table td{
+ font-size: 12px;
+ padding: 0 10px 10px 10px;
+}
+#detail_plan #right #base table th.price{
+ font-weight:bold;
+ color:#ff6900;
+}
+#detail_plan #right #base table td.price span{
+ font-size: 25px;
+ font-weight:bold;
+ color:#ff6900;
+}
+
+
+/* レポート */
+#detail_plan #right #report{
+	clear: both;
+	overflow: auto;
+	margin-top: 20px;
+}
+#detail_plan #right #report h2{
+	clear: both;
+	font-weight: bold;
+	padding-top: 8px;
+	padding-right: 0px;
+	padding-left: 15px;
+	padding-bottom: 8px;
+	display: block;
+	margin-right: 0;
+	margin-left: 0;
+	margin-bottom: 15px;
+	border-left: 5px solid #0099ff;
+	font-size: 15px;
+}
+#detail_plan #right #report ul{
+ overflow:auto;
+}
+#detail_plan #right #report li.img{
+	width: 100px;
+	-moz-float-edge: left;
+	float: left;
+	margin-right: 10px;
+}
+#detail_plan #right #report li.img img{
+ width: 100px;
+}
+#detail_plan #right #report li.text{
+	float: right;
+	width: 180px;
+	height: 63px;
+	overflow: hidden;
+}
+#detail_plan #right #report li.text p {
+ margin: 0 0 25px 0;
+ font-size: 12px;
+}
+
+/* 360°ビュー */
+#detail_plan #right #panorama{
+ clear:both;
+ margin-top: 25px;
+ overflow:auto;
+}
+#detail_plan #right #panorama h2{
+	clear: both;
+	font-weight: bold;
+	padding-top: 8px;
+	padding-right: 0px;
+	padding-left: 15px;
+	padding-bottom: 8px;
+	display: block;
+	margin-right: 0;
+	margin-left: 0;
+	margin-bottom: 15px;
+	border-left: 5px solid #0099ff;
+	font-size: 15px;
+}
+#detail_plan #right #panorama ul{
+ overflow:auto;
+}
+#detail_plan #right #panorama li.img{
+ float:left;
+ width:100px;
+}
+#detail_plan #right #panorama li.img img{
+ width: 100px;
+}
+#detail_plan #right #panorama li.text{
+	float: right;
+	width: 180px;
+	height: 63px;
+	overflow: hidden;
+}
+#detail_plan #right #panorama li.text p {
+ margin: 0 0 25px 0;
+ font-size: 12px;
+}
+
+
+/* 100%box */
+
+
+#detail_box{
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -ms-box-sizing:border-box;
+  -o-box-sizing:border-box;
+ clear:both;
+　width:100%;
+ display: block;
+ overflow: hidden;
+ margin-bottom: 3em;
+}
+
+/* ショップ情報 */
+
+#detail_box .inner{
+ clear:both;
+　width:100%;
+ margin: 5px;
+ position: relative;
+}
+#detail_box .inner p.link{
+ float: right;
+ margin-top: -40px;
+margin-right: 20px;
+}
+
+#detail_box .inner ul{
+	display: block;
+	overflow: hidden;
+	padding-top: -1em;
+	position: relative;
+	font-size: 12px;
+}
+#detail_box .inner ul .contena{
+ height: 160px;
+}
+#detail_box .inner ul li a{
+ text-decoration: none;
+ color: #383838;
+}
+#detail_box .inner ul.shopreport li,
+#detail_box .inner ul.planpick li,
+#detail_box .inner ul.gallery li{
+  box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -ms-box-sizing:border-box;
+  -o-box-sizing:border-box;
+  margin-left: 8px;
+	float: left;
+	width:185px;
+	position: relative;
+}
+#detail_box .inner ul.shopreport li,
+#detail_box .inner ul.planpick li{
+
+}
+#detail_box .inner ul li:nth-child(5n){
+  //float: right;
+	margin-top:-21px;
+}
+#detail_box .inner ul li:first-child,
+#detail_box .inner ul li:nth-child(6n){
+  margin-left: 0px;
+}
+#detail_box .inner ul li p{
+ 	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+#detail_box .inner ul li img{
+ 	width:185px;
+	height:130px;
+	clear: both;
+	margin-top: -1em;
+}
+#detail_box .inner ul.gallery li p.cap{
+	float: left;
+ 	font-size: 12px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	position:absolute;
+	background: #FFF;
+	margin-top: -20px;
+	width: 100%;
+	color: #000;
+		filter:alpha(opacity=50);
+		opacity:0.5;
+}
+
+
+
+
+
+
+/* コンテンツ内メニュー */
+#detail_plan #detail_box #info_menu{
+ width:100%;
+}
+#detail_plan #detail_box #info_menu ul.tabs{
+	width: 980px;
+	height: 41.5px;
+
+// border-bottom: 1px solid #9e9e9e;
+}
+#detail_plan #detail_box #info_menu ul.tabs li {
+	border: 1px solid #bfbfbf;
+	margin-left: 8px;
+	background: #e0f5ff;
+	/* [disabled]width: 200px; */
+	float: left;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	text-align: center;
+}
+#detail_plan #detail_box #info_menu ul.tabs li a {
+	padding: 10px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #000000;
+	display: block;
+	border-radius: 3px;
+	/* [disabled]line-height: 20px; */
+	min-width: 180px;
+}
+#detail_plan #detail_box #info_menu ul.tabs li a:hover {
+// color: #bfbfbf;
+ background: #ffcfad;
+}
+
+
+
+
+
+
+
+/* 基本情報 */
+
+#detail_plan #detail_box table {
+ width:100%;
+}
+#detail_plan #detail_box table th {
+	width: 20%;
+	background: #efefef;
+	padding: 10px;
+	text-align: center;
+	margin: 5px;
+	font-weight: bold;
+}
+#detail_plan #detail_box table td {
+ padding: 10px;
+}
+#detail_plan #detail_box table tr {
+ border-bottom: 1px solid #bfbfbf;
+}
+#detail_plan #detail_box h3.info_label{
+	border-left: 5px solid #0099ff;
+	padding: 8px 0px 8px 10px;
+	font-weight: bold;
+	font-size: 15px;
+	background: none;
+	margin-bottom: 10px;
+}
+
+
+#detail_plan #detail_box #info_main,
+#detail_plan #detail_box #info_plan,
+#detail_plan #detail_box #info_access,
+#detail_plan #detail_box #info_etc {
+	padding: 10px;
+	border: 1px solid #bfbfbf;
+	width: 958px;
+}
+#detail_plan #detail_box #info_access.shop{
+	border: none;
+	width: 100%;
+}
+#detail_plan #detail_box #info_access.shop table{
+		//border-top:1px solid #bfbfbf;	
+}
+#detail_plan #detail_box #info_access.shop div.btn{
+	
+}
+#detail_plan #detail_box #info_access.shop div.btn a{
+	color: #383838;
+}
+#detail_plan #detail_box #info_access.shop div.btn .print{
+	width: 180px;
+	height: 30px;
+	border: 1px solid #808080;
+	border-radius: 5px;
+	background:#FFF;
+}
+
+#detail_plan #detail_box #info_access.shop div.map{
+	width: 100%;
+	height: 450px;
+}
+#detail_plan #detail_box #info_access.shop div.map iframe{
+	width: 100%;
+	height: 450px;
+}
+#detail_plan #detail_box #info_access.shop p.add_info{
+  margin-top:-5px;
+	margin-bottom: 5px;
+}
+
+
+
+/* 詳細 */
+#detail_plan #detail_box #info_plan{
+
+}
+
+/* アクセス */
+#detail_plan #detail_box #info_access{
+	
+}
+
+/* その他備考 */
+#detail_plan #detail_box #info_etc{
+
+}
+
+#detail_plan .calender #calender h2{
+	clear: both;
+	font-weight: bold;
+	padding-top: 8px;
+	padding-right: 0px;
+	padding-left: 15px;
+	padding-bottom: 8px;
+	display: block;
+	margin-right: 0;
+	margin-left: 0;
+	margin-bottom: 15px;
+	border-left: 5px solid #0099ff;
+	font-size: 15px;
+ }
+#detail_plan .calendermain{
+	padding: 15px;
+	margin-top: 15px;
+	border: 1px solid #b2b2b2;
+	width: auto;
+	overflow: hidden;
+ }
+#detail_plan .calendermain .calender_tbl{
+	display: block;
+	clear: both;
+	overflow: auto;
+	width: auto;
+ }
+     #detail_plan .calendermain .calender_tbl >table {
+	float: left;
+}
+    #detail_plan .calendermain .calender_tbl >table {
+	margin-right: 2%;
+	float: left;
+	width: 48%;
+}
+    #detail_plan .calendermain .calender_tbl >table.2month {
+	width: 48%;
+}
+#detail_plan .calendermain .calender_tbl >table .tabletitle {
+      	width: 100%;
+      	font-size: 18px;
+      	border: 1px solid #ccc;
+      	padding: 10px 0 6px;
+      	color: #151515;
+      	font-weight: bold;
+	    background: #d8f2ff;
+}
+
+      #detail_plan .calendermain .calender_tbl >table td,
+      #detail_plan .calendermain .calender_tbl >table th {
+	text-align: center;
+	border: 1px solid #ccc;
+}
+      #detail_plan .calendermain .calender_tbl >table td {
+	min-height: 100px;
+  	padding:0;
+	background: #e8e8e8;
+      }
+      #detail_plan .calendermain .calender_tbl >table td.outday {
+	background: #e8e8e8!important;
+	height: 100px;
+      }
+      #detail_plan .calendermain .calender_tbl >table td.bg1 {
+      	background: #FFFFED;
+      }
+      #detail_plan .calendermain .calender_tbl >table td a{
+		display: block;
+		padding-bottom: 6px;
+		height: 100%;
+      	text-decoration: none;
+      	color: #585858;
+      }
+      #detail_plan .calendermain .calender_tbl >table td a:hover{
+      	background: #F4CE9D;
+      	color: #000;
+      }
+      #detail_plan .calendermain .calender_tbl >table td a {
+      text-decoration: none;}
+      #detail_plan .calendermain .calender_tbl > table td a >dl,
+      #detail_plan .calendermain .calender_tbl > table td >dl{
+		text-align:center;
+		margin:0;
+		padding:0;
+}
+      #detail_plan .calendermain .calender_tbl > table td >p,
+      #detail_plan .calendermain .calender_tbl > table td a  >p{
+	/* [disabled]width: 90%; */
+	border-top: 1px dotted #ccc;
+	padding-top: 10px;
+	margin: 0 auto;
+	text-align: center;
+	color: #FD5F00;
+      }
+      #detail_plan .calendermain .calender_tbl > table td a >p.date,
+      #detail_plan .calendermain .calender_tbl > table td >p.date{
+      border:0;
+      color:#333;
+      }
+      #detail_plan .calendermain .calender_tbl > table td a >ul,
+      #detail_plan .calendermain .calender_tbl > table td >ul {
+      	margin:0 auto;
+      	text-align:center;
+      	padding:0 4px;
+      }
+      #detail_plan .calendermain .calender_tbl >table td a>ul li,
+      #detail_plan .calendermain .calender_tbl >table td >ul li {
+		margin-left:0;
+		margin-top: 3px;
+		padding:0;
+  }
+      #detail_plan .calendermain .calender_tbl >table td >ul li b ,
+      #detail_plan .calendermain .calender_tbl >table td a >ul li b {
+      font-size: 11px;
+      }
+      #detail_plan .calendermain .calender_tbl >table td  >ul li.stxt,
+      #detail_plan .calendermain .calender_tbl >table td a >ul li.stxt {
+      font-size: small;
+      margin-bottom: 4px;
+      letter-spacing: -1.5px;
+      }
+      #detail_plan .calendermain .calender_tbl >table td >ul >li.point
+      #detail_plan .calendermain .calender_tbl >table td a >ul >li.point{
+      	font-size: 10px;
+      	margin:0 auto;
+      	width: 80%;
+      	color: #fff;
+      	background: #FD5F00;
+}
+
+
+      #detail_plan .calendermain .calender_tbl >table td:nth-child(1),
+      #detail_plan .calendermain .calender_tbl >table .bg2{
+      	background: #FFE6F3;
+      }
+      #detail_plan .calendermain .calender_tbl >table td:nth-child(7n),
+      #detail_plan .calendermain .calender_tbl >table .bg2 {
+      	background:#E3EFFC;
+      }
+      #detail_plan .calendermain .section {
+      	padding: 10px; }
+      #detail_plan .calendermain .section dl {
+      	border: 0;margin:0 0 14px;
+      }
+      #detail_plan .calendermain .section table.l-sp {
+      	margin-right: 14px;
+      }
+      #detail_plan .calendermain .section table {
+      	width: 49%;
+      	float: left;
+      	min-height: 180px;
+      	margin:0 0 16px;
+      	padding:0;
+      	border: 1px solid #9b9b9b;
+      }
+      #detail_plan .calendermain .section table th {
+      	padding: 4px;
+      	font-weight: bold;
+	      vertical-align:top;
+      }
+      #detail_plan .calendermain .section table td{
+      	padding: 0;
+      vertical-align:top;
+      }
+
+      #detail_plan .calendermain .aboutprice {
+	width: 100%;
+	display: block;
+	overflow: inherit;
+      }
+      #detail_plan .calendermain .aboutprice > div {
+	/* [disabled]width: 45.4%; */
+	float: left;
+	/* [disabled]min-height: 174px; */
+	margin-top: 15px;
+	margin-right: 0;
+	margin-left: 0;
+	margin-bottom: 10px;
+	/* [disabled]padding: 10px; */
+	display: block;
+      }
+      #detail_plan .calendermain .aboutprice > div.maxsell {
+      min-height:10px;
+      	width: 96.4%;
+      }
+      #detail_plan .calendermain .aboutprice > div:first-child {
+}
+      #detail_plan .calendermain .aboutprice ul.flList{
+      	width: 50%;
+      	float: left;
+      	font-size:11px;
+      }
+      #detail_plan .calendermain .aboutprice ul.flList:first-child {
+      	width: 40%;
+      	border-right:1px solid #9b9b9b;
+      	padding-right: 10px;
+      	margin-right: 14px;
+      }
+      #detail_plan .calendermain .aboutprice ul.flList2{
+      	width: 40%;
+      	float: left;
+      	font-size:13px;
+      }
+      #detail_plan .calendermain .aboutprice ul.flList2:first-child {
+      	width: 160px;
+      	border-right:1px solid #9b9b9b;
+      	padding-right: 10px;
+      	margin-right: 14px;
+      }
+      #detail_plan .calendermain .section table td .r-txt{
+      	text-align: right;
+      	padding-right: 10px;
+      }
+      #detail_plan .calendermain .section .list dd{
+        -webkit-margin-start: 0px;font-weight: normal;padding-left: 12px;}
+      #detail_plan .calendermain .section3 {
+        background: #ffebc4; }
+      #detail_plan .calendermain table th.red{
+      	color:#ff0000;
+     }
+      #detail_plan .calendermain table th.blue{
+	color: #0200FF;
+     }
+#detail_plan .calender {
+ margin-top: 25px;
+ margin-bottom: 5em;
+}
+
+#detail_plan .calender h2 {
+	font-size: 15px;
+	font-weight: bold;
+	border-left: 5px solid #0099ff;
+	padding: 8px 0 8px 15px;
+	overflow: visible;
+}
+
+#detail_plan .calender ul li.view p {
+	margin: 10px;	
+	padding:5px;
+	border: 1px solid #d8f2ff;
+	
+}
+#detail_plan .calender .calendermain ul.calenderMonth-Ln li {
+	float: left;	
+}
+#corse_box {
+	width:730px;
+	margin:0 auto 20px;
+	border: 1px solid #bfbfbf;
+	padding:25px;
+}
+
+#corse_box p {
+	padding:0;
+	margin: 0;
+	margin-bottom:15px;
+	font-weight: bold;
+}
+#corse_box .inner {
+	margin-top: 15px;
+	padding: px
+}
+
+#corse_box h2.plan_info {
+	border-left: 5px solid #0099ff;
+	margin-bottom: 5px;
+	padding: 3px 0px 3px 10px;
+	font-size: 13px;
+}
+
+#corse_box .inner table.corse_select {
+    width: 100%;
+}
+#corse_box .inner table.corse_select tr {
+	min-height: 30px;
+	
+}
+#corse_box .inner table.corse_select td {
+		border: 1px solid #bfbfbf;
+	    padding: 10px;
+}
+#corse_box .inner table.corse_select th {
+	background: #d8f2ff;
+	padding: 10px;
+	text-align: center;
+	font-weight:bold;
+	border: 1px solid #bfbfbf;	
+}
+#corse_box .inner table.corse_select th.plan {
+	width: 60%;
+	
+}
+#corse_box .inner table.corse_select th.price {
+	width:20%;
+}
+#corse_box .inner table.corse_select th.btn {
+	width:20%;
+}
+#corse_box .inner table.corse_select .btn_reserve {
+	border-radius:3px;
+	background:#eb6100;
+	padding: 10px;
+	text-align: center;
+	height: 20px;
+	line-height: 20px;
+	color: #FFFFFF;
+	text-decoration: none;
+	
+}
+#corse_box .inner table.corse_select .btn_request {
+	border-radius:3px;
+	background:#0099ff;
+	padding: 10px;
+	text-align: center;
+	height: 20px;
+	line-height: 20px;
+	color: #FFFFFF;
+	text-decoration: none;
+	}
+#corse_box .inner table.corse_select a:hover .btn_request,
+#corse_box .inner table.corse_select a:hover .btn_reserve {
+		filter:alpha(opacity=70);
+		opacity:0.7;
+	}
+
+#corse_box .inner table.corse_select a {
+		text-decoration: none;
+	}
+#corse_box .inner table.corse_select p {
+		font-weight:normal;
+	}
+#corse_box .inner table.corse_select p.price_name {
+		font-size: 12px;
+		/color:#FF0004;
+	text-align: center;
+	    margin:0;
+}
+#corse_box .inner table.corse_select p.price {
+		font-size: 13px;
+	font-weight:bold;
+	text-align: center;
+		color:#FF0004;
+	    margin:0;
+}
+#corse_box .inner table.corse_select p.price_link {
+		font-size: 11px;
+		text-align: right;
+	    margin:0;
+	    padding:1px;
+	    border: 1px solid #FF3700;
+	    border-radius: 3px;
+	    width:55px;
+}
+#corse_box .inner p.back_btn {
+		width: 200px;
+	height: 20px;
+	padding: 10px;
+	border-radius: 3px;
+	text-align: center;
+	background-color: #b2b2b2;
+	margin: 20px auto;
+	
+	}
+#corse_box .inner a {
+		text-decoration: none;
+	    color:#424242;
+	}
+#corse_box .inner p.coment{
+	color: #FF0004;
+	font-size:12px;
+	font-weight: normal;
+	margin-top: 10px;
+	}
+.listtop {
+	float: left;
+	margin-right: 5px;
+	margin-top: 5px;
+	color: #eb6100;
+}

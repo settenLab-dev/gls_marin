@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataList>
+  <data>
+    <name>チーズバーガー</name>
+    <value>2</value>
+    <category>2</category>
+    <url>cheez</url>
+    <status>1</status>
+  </data>
+  <data>
+    <name>ペペロンチーノ</name>
+    <value>1</value>
+    <category>1</category>
+    <url>peperon</url>
+    <status>1</status>
+  </data>
+</dataList>

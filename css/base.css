@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+#loginBoxMin {
+	text-align: left;
+	padding: 5px;
+	width: 160px;
+}
+
+.tblInput {
+}
+.tblInput h4 {
+	font-size: 1.5em;
+}
+.tblInput th, .tblInput td {
+	padding: 10px;
+	font-size: 1em !important;
+	border-bottom: 1px solid #dcdcdc;
+}
+.tblInput th {
+	background: #0099ff;
+}
+
+.tblInput .inner th, .tblInput .inner td {
+	border: none;
+}
+
+.pagenavi {
+	margin: 20px auto 20px auto;
+	text-align: center;
+	width: 630px;
+}
+.pagenavi .pagelist {
+	float: left;
+}
+.pagenavi .pagelist p {
+	line-height: 50px;
+	padding: 0 20px 0 20px;
+	color: #9F9F9F;
+}
+.pagenavi .pagelist a {
+	color:#000000;
+	text-decoration: underline;
+}
+.pagenavi .btn {
+}
+.pagenavi .btn a {
+	background: #dcdcdc;
+	margin: 0 10px 0 10px;
+	padding: 5px 10px 5px 10px;
+	line-height: 50px;
+	color: #000000;
+	text-decoration: none;
+}
+
+
+
+
+.pagenavi2 {
+	margin: 0px auto 0px auto;
+	text-align: left;
+	width: 500px;
+	float: left;
+}
+.pagenavi .pagelist {
+	float: left;
+}
+.pagenavi2 .pagelist p {
+	line-height: 10px;
+	padding: 0 20px 0 20px;
+	color: #9F9F9F;
+}
+.pagenavi2 .pagelist a {
+	color:#000000;
+	text-decoration: underline;
+}
+.pagenavi2 .btn {
+}
+.pagenavi2 .btn a {
+	background: #dcdcdc;
+	margin: 0 10px 0 10px;
+	padding: 5px 10px 5px 10px;
+	line-height: 50px;
+	color: #000000;
+	text-decoration: none;
+}
+
+
+
+
+.ttlAffiliate {
+	width: 90px !important;
+	font-size: 1.3em;
+	font-weight: bold;
+}
+/*
+.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; }
+*/

@@ -1,0 +1,256 @@
+/**********************************
+ * ime
+ *********************************/
+.imeActive {
+	ime-mode:active;
+}
+.imeDisabled {
+	ime-mode:disabled;
+}
+
+/**********************************
+ * confirm
+ *********************************/
+.confirmData {
+	border:none;
+	background-color:#FFFFFF;
+}
+
+/**********************************
+ * title
+.title {
+	margin:0px;
+	padding:0px;
+	font-weight:normal;
+	font-size: 25px;
+	line-height:35px;
+	height:35px;
+}
+ *********************************/
+
+/**********************************
+ * align
+ *********************************/
+.alignLeft {
+	text-align:left !important;
+}
+.alignRight {
+	text-align:right;
+}
+.alignCenter {
+	text-align:center;
+}
+
+/**********************************
+ * checkbox area
+ *********************************/
+.checkboxarea input[type=checkbox] {
+	display: block;
+	float: left;
+	clear: left;
+	height: 12px;
+	padding: 0;
+	margin: 0;
+}
+.checkboxarea label {
+    display: block;
+    clear: none;
+    font-family: sans-serif;
+    margin-left: 20px;
+}
+
+/**********************************
+ * color
+ *********************************/
+.colorRed {
+	color:#ff0000;
+}
+.colorWhite {
+	color:#ffffff;
+}
+.colorBlue {
+	color:#B0C4DE;
+}
+.colorGrey {
+	color:#838383;
+}
+.colorBrown {
+	color:#A52A2A;
+}
+.colorEnji {
+	color:#B22222;
+}
+.colorOrange {
+	color:#ffa500 !important;
+}
+
+/**********************************
+ * weight
+ *********************************/
+.toBold {
+	font-weight:bold;
+}
+
+/**********************************
+ * color
+ *********************************/
+.bgBlack {
+	background-color:#000000 !important;
+}
+.bgBlue {
+	background-color:#B0C4DE;
+}
+.bgIvory {
+	background-color:#FFFFF0 !important;
+}
+.bgAzure {
+	background-color:#F0FFFF !important;
+}
+.bgGrey {
+	background-color:#838383;
+}
+.bgLightGrey {
+	background-color:#dcdcdc !important;
+}
+.bgWhite {
+	background-color:#FFFFFF;
+}
+.bgOrange {
+	background-color:#ffa500 !important;
+}
+
+/**********************************
+ * font
+ *********************************/
+.smoll {
+	font-size: 75%;
+}
+/**********************************
+ * cursor
+ *********************************/
+.cursorPointer {
+	cursor:pointer;
+}
+
+/**********************************
+ * data
+ *********************************/
+.message {
+	margin:0px;
+	padding:10px;
+	background-color:#dcdcdc;
+}
+.innerData {
+	margin:0px;
+	padding:10px;
+	height:100%;
+	background-color:#a9a9a9;
+}
+
+/**********************************
+ * error
+ *********************************/
+.errorCaption {
+	margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 19px;
+	text-align:left;
+	height:25px;
+	background:transparent url("../assets/error/error.gif") no-repeat left;
+}
+.errorCaption p {
+	font-size: 1em;
+	color:#DC143C;
+}
+
+.errorFirst ul {
+	margin:0px;
+	padding:0px 0px 0px 20px;
+	text-align:left;
+}
+.errorFirst li {
+	margin:0px;
+	padding:0px 0px 0px 0px;
+	color:#DC143C;
+}
+.errorFirst p {
+	color:#DC143C;
+}
+
+.error {
+	margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 19px;
+	text-align:left;
+	background:transparent url("../assets/error/error.gif") no-repeat left;
+}
+.error p {
+	color:#DC143C;
+}
+
+.sortUp {
+	width:21px;
+	height:4px;
+	background:transparent url(../assets/sortTable/desc.gif) no-repeat left top;
+	text-indent:-5000px;
+	border:0;
+	cursor: pointer;
+	display:block;
+	margin:0 auto;
+}
+.sortDown {
+	width:21px;
+	height:4px;
+	background:transparent url(../assets/sortTable/asc.gif) no-repeat left top;
+	text-indent:-5000px;
+	border:0;
+	cursor: pointer;
+	display:block;
+	margin:0 auto;
+}
+
+/**********************************
+ * width
+ *********************************/
+ .wDate {
+	width: 90px !important;
+}
+ .wDateJp {
+	width: 110px !important;
+}
+ .wTime {
+	width: 50px !important;
+}
+ .wZip {
+	width: 80px !important;
+}
+.wNum {
+	width: 100px !important;
+}
+.wChar {
+	width: 20px !important;
+}
+
+.dspNon {
+	display: none !important;
+}
+.dspBlock {
+	display: block !important;
+}
+
+
+.playerMiddle {
+	padding: 5px 10px 15px 8px;
+	display:block;
+	width:250px;
+	height: 180px;
+}
+
+
+.liststylenon {
+	list-style: none;
+}
+.labelNoWrap li {
+	display: inline;
+	white-space: nowrap;
+	list-style: none;
+}
+
