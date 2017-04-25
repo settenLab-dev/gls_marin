@@ -1,4 +1,6 @@
 <?php
+	// include_path setting add settenLab 20170406
+	set_include_path(get_include_path() . PATH_SEPARATOR . 'D://xampp/htdocs/playbooking/common/includes/lib/');
 
 	//	INI SET
 	ini_set('session.auto_start','0');
@@ -78,7 +80,7 @@
 	define('SITE_CHILD_NUM', 999);
 
 	//	Path Slaker
-	define('PATH_SLAKER', '/var/www/vhosts/playbooking.jp/httpdocs/');
+	define('PATH_SLAKER', 'D:/xampp/htdocs/playbooking/');
 	define('PATH_SLAKER_COMMON', PATH_SLAKER.'common/');
 	define('PATH_SLAKER_ADMIN', PATH_SLAKER.'admin/');
 	define('PATH_SLAKER_SHOP', PATH_SLAKER.'shop/');
@@ -131,20 +133,24 @@
 
 
 	//	メールアドレス
-	define('MAIL_SLAKER_INFO','info@playbooking.jp');
-	define('MAIL_SLAKER_NOREPLY','no-reply@playbooking.jp');
-	define('MAIL_SLAKER_HOTEL','yoyaku@playbooking.jp');
-	
+// 	define('MAIL_SLAKER_INFO','info@playbooking.jp');
+// 	define('MAIL_SLAKER_NOREPLY','no-reply@playbooking.jp');
+// 	define('MAIL_SLAKER_HOTEL','yoyaku@playbooking.jp');
+
+	define('MAIL_SLAKER_INFO','yoshimura@settenlab.jp');
+	define('MAIL_SLAKER_NOREPLY','yoshimura@settenlab.jp');
+	define('MAIL_SLAKER_HOTEL','yoshimura@settenlab.jp');
+
 //Pleskパネル上で設定のためコメントアウト
 //	ini_set('include_path', PATH_SLAKER_COMMON.'includes/lib:.:/usr/share/pear:/usr/share/php');
 //print_r(	ini_set('include_path', PATH_SLAKER_COMMON.'includes/lib:.:/usr/share/pear:/usr/share/php'));
 
 	//	URL Slaker
-	define('SLAKER_DOMAIN','playbooking.jp/');
-	define('URL_SLAKER_COMMON', 'http://common.'.SLAKER_DOMAIN."");
-	define('URL_SLAKER_ADMIN', 'http://admin.'.SLAKER_DOMAIN."");
-	define('URL_SLAKER_SHOP', 'http://shop.'.SLAKER_DOMAIN."");
-	define('URL_SLAKER_BATCH', 'http://batch.'.SLAKER_DOMAIN."");
+	define('SLAKER_DOMAIN','localhost.playbooking/');
+	define('URL_SLAKER_COMMON', "http://localhost.playbooking.common/");
+	define('URL_SLAKER_ADMIN', "http://localhost.playbooking.admin/");
+	define('URL_SLAKER_SHOP', "http://localhost.playbooking.shop/");
+	define('URL_SLAKER_BATCH', "http://localhost.playbooking.batch/");
 	define('URL_PUBLIC', 'http://'.SLAKER_DOMAIN);
 	define('URL_PUBLIC_SSL', 'https://'.SLAKER_DOMAIN);
 	define('URL_PUBLIC_TEST', 'http://'.SLAKER_DOMAIN);

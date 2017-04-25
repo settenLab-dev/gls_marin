@@ -3,7 +3,7 @@ function gotoNEW(){
 	var month = $("#NEW_MONTH").find("option:selected").text();
 	var year = $("#NEW_YEAR").find("option:selected").text();
 	var newdate =year.toString()+'-'+month.toString();
-	window.location.href="http://shop.playbooking.jp/hotelProvideEditMonthly.html?id=&key=<?php echo $_GET['key']?>&date="+newdate;
+	window.location.href="http://localhost.playbooking.shop/hotelProvideEditMonthly.html?id=&key=<?php echo $_GET['key']?>&date="+newdate;
 }
 </script>
 <table border="0" cellpadding="0" cellspacing="15" class="" summary="マスタデータ" widtd="100%">

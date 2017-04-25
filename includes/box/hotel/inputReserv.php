@@ -23,7 +23,7 @@
 					for($i=1;$i<=$roomPerDay["count_pay"];$i++){?>
 						<tr><td>
 						<?php print $roomPerDay["SHOP_PRICETYPE_MONEY".$i];?>
-						  /  
+						  /
 						<?php print number_format($roomPerDay["HOTELPAY_MONEY".$i])." 円";?>
 						</td>
 						<td>
@@ -38,7 +38,7 @@
 				      }elseif($roomPerDay["SHOP_PRICETYPE_KIND"]==2){?>
 						<tr><td>
 						<?php print $roomPerDay["SHOP_PRICETYPE_MONEYKIND7"];?>
-						  /  
+						  /
 						<?php print number_format($roomPerDay["HOTELPAY_MONEY7"])." 円";?>
 						</td>
 						<td>
@@ -52,7 +52,7 @@
 					<?php if($roomPerDay["SHOP_PRICETYPE_ADDFLG"]==1){?>
 						<tr><td>
 						<?php print $roomPerDay["SHOP_PRICETYPE_MONEY8"];?>
-						  /  
+						  /
 						<?php print number_format($roomPerDay["HOTELPAY_MONEY8"])." 円";?>
 						</td>
 						<td>
@@ -137,19 +137,19 @@
                         	<div>
 							<?php if ($shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_PAYMENT1")==1){
 					                        	print "・現地で現金決済";
-									
+
 								}
 								if ($shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_PAYMENT2")==1){
-					                        	print "・現地でカード決済";								
+					                        	print "・現地でカード決済";
 								}
 								if ($shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_PAYMENT3")==1){
-					                        	print "・事前に現金決済(振込等)";								
+					                        	print "・事前に現金決済(振込等)";
 								}
 								if ($shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_PAYMENT4")==1){
-					                        	print "・事前にカード決済";								
+					                        	print "・事前にカード決済";
 								}
 								if ($shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_PAYMENT5") != ""){
-					                        	print "<br><br>". $shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_PAYMENT5");								
+					                        	print "<br><br>". $shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_PAYMENT5");
 								}?>
                         	</div>
 			</td>

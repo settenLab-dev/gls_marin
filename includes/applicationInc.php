@@ -1,7 +1,7 @@
 <?php
 
 	//	master
-	require_once('/var/www/vhosts/playbooking.jp/httpdocs/common/config.php');
+	require_once('D://xampp/htdocs/playbooking/common/config.php');
 
 	//	ini
 	ini_set('session.name','mottookinawapublic');
