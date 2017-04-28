@@ -3,6 +3,10 @@ require_once('includes/applicationInc.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shop.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/kuchikomi.php');
 
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/mArea.php');
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/mActivityCategory.php');
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/mActivityCategoryDetail.php');
+
 
 $dbMaster = new dbMaster();
 
@@ -33,7 +37,144 @@ if ($kuchikomi->getCount() > 0) {
 	}
 }
 
-$inputs = new inputs(); ?>
+$inputs = new inputs();
+
+// プラン取得(今日を含む後３日分)
+$shop       = new shop($dbMaster);
+$collection = new collection($db);
+$arrPlan = array();
+$after_days = 2;
+for($i = 0; $i <= $after_days; $i++){
+	$search_date = ($i==0)?date('Y-m-d'):date('Y-m-d', strtotime('+' .$i. ' day'));
+	
+	// 日付と人数をセット
+	$collection->setByKey($collection->getKeyValue(), "area", '');
+	$collection->setByKey($collection->getKeyValue(), "category", '');
+	$collection->setByKey($collection->getKeyValue(), "limit", 5);
+	$collection->setByKey($collection->getKeyValue(), "limitptn", "plan");
+	$collection->setByKey($collection->getKeyValue(), "search_date", $search_date);
+	$collection->setByKey($collection->getKeyValue(), "priceper_num", 1);
+	cmSetHotelSearchDef($collection);
+	
+	$shop->selectListPublicPlan($collection);
+	$arrPlanData = $shop->getCollection();
+	
+	foreach($arrPlanData as $key => $data) {
+		$count_spi = "";
+		for ($i=1; $i<=12; $i++){
+			if($data["SHOPPLAN_MEET_TIMEHOUR".$i] > "0"){
+				$count_spi = $i;
+			}
+		}
+		
+		// 各プランの料金書き出す
+		for ($i=1; $i<=$count_spi; $i++){
+			$search_collection = new collection($db);
+			$search_collection->setByKey($search_collection->getKeyValue(), "SHOPPLAN_ID", $data["SHOPPLAN_ID"]);
+			$search_collection->setByKey($search_collection->getKeyValue(), "SHOP_PRICETYPE_ID", $data["SHOP_PRICETYPE_ID".$i]);
+			$search_collection->setByKey($search_collection->getKeyValue(), "SEARCH_DATE", $collection->getByKey($collection->getKeyValue(), "search_date"));
+			//日付指定なし
+			$search_collection->setByKey($search_collection->getKeyValue(), "undecide_sch", 1);
+			$search_collection->setByKey($search_collection->getKeyValue(), "priceper_num", $collection->getByKey($collection->getKeyValue(), "priceper_num"));
+		
+			if ($collection->getByKey($collection->getKeyValue(), "undecide_sch") == 1) {
+				//	指定なし
+		
+				$room_sch = $shop->selectMoneyEveryRoomUndecideSch($search_collection);
+		
+				// 設定されている料金帯の数をカウント
+				if($room_sch != ""){
+					$room[$i] = $room_sch;
+				}
+			}
+			else {
+				$room_sch = $shop->selectMoneyEveryRoom($search_collection);
+				if($room_sch != ""){
+					$room[$i] = $room_sch;
+				}
+			}
+		}
+		
+		$money_total = "";
+		$money_total_perroom = 0;
+		for ($i=1; $i<=12; $i++){
+			if($room[$i]["money_ALL"] !=""){
+				$money_total[$i] = $room[$i]["money_ALL"];
+			}
+		}
+		
+		asort($money_total);
+		
+		$keys = array_keys($money_total);
+		$money_total_cid = $keys[0];
+		
+		if ($arrPlanData[$key]["money_all"] == "" || $arrPlanData[$key]["money_all"] > $data["money_all"]) {
+			$arrPlanData[$key]["money_all"] = $money_total[$money_total_cid];
+		}
+	}
+	$arrPlan[] = $arrPlanData;
+}
+
+//エリア指定
+$mAreaTop = new mArea($dbMaster);
+$mAreaTop->selectTop();
+$mAreaTop->setPost();
+
+$mAreaParent = new mArea($dbMaster);
+$mAreaParent->selectParent();
+$mAreaParent->setPost();
+
+$mAreaChild = new mArea($dbMaster);
+$mAreaChild->selectChild();
+$mAreaChild->setPost();
+
+//カテゴリ指定
+$mActivityCategoryParent = new mActivityCategory($dbMaster);
+$mActivityCategoryParent->selectParent();
+$mActivityCategoryParent->setPost();
+
+// エリア配列の作成
+// トップ
+$arrAreaTopData = $mAreaTop->getCollection();
+$arrAreaTop = array();
+foreach($arrAreaTopData as $top_data){
+	$arrAreaTop[$top_data['M_AREA_ID']] = $top_data['M_AREA_NAME'];
+}
+
+// 親
+$arrAreaParentData = $mAreaParent->getCollection();
+$arrAreaParent = array();
+foreach($arrAreaParentData as $parent_data){
+	$arrAreaParent[$parent_data['M_AREA_ID']] = $parent_data['M_AREA_NAME'];
+}
+
+// 子
+$arrAreaChildData = $mAreaChild->getCollection();
+$arrAreaChild = array();
+foreach($arrAreaChildData as $child_data){
+	$arrAreaChild[$child_data['M_AREA_ID']] = $child_data['M_AREA_NAME'];
+}
+
+// プルダウン用配列作成
+// 沖縄限定子エリアの作成
+$arrPullAreaChild = array();
+foreach($arrAreaChildData as $area_child){
+	if($area_child['M_AREA_PARENT'] == 14){
+		$arrPullAreaChild[] = $area_child;
+	}
+}
+
+// カテゴリの作成
+$arrCategoryParentData = $mActivityCategoryParent->getCollection();
+$arrPullCategoryParent = array();
+foreach($arrCategoryParentData as $categ_parent){
+	// フライボートに限定
+	if($categ_parent['M_ACT_CATEGORY_ID'] == 3){
+		$arrPullCategoryParent[] = $categ_parent;
+	}
+}
+
+?>
 
 
 <?php require("includes/box/common/doctype.php"); ?>
@@ -173,139 +314,107 @@ $(document).ready(function() {
 			<li><a href=""><img src="images/common/bnr_02.png"></a></li>
 			<li><a href=""><img src="images/common/bnr_03.png"></a></li>
 		</ul>
-				<!--検索-->
-	        	<section>	   
-
-				<section id="result_box">
-		        	<form method="post" action="plan-search.html" name="search_form" id="search_form">
-   					<input type="hidden" name="priceper_num" id="priceper_num" value="1">
+		
+		<!--検索-->
+		<section>
+			<section id="result_box">
+				<form method="post" action="plan-search.html" name="search_form" id="search_form">
+					<input type="hidden" name="priceper_num" id="priceper_num" value="1">
 					<ul class="search_selecter">
 						<li class="search_icon"> </li>
 						<li class="search_area">
 							<select name="area" id="area">
 								<option value="" selected="selected">エリアを選択</option>
-								<option value="19">北部</option>
-								<option value="18" >中部</option>
-								<option value="2" >那覇</option>
-								<option value="3" >南部</option>
-								<option value="16" >石垣島・八重山</option>
-								<option value="12" >宮古島</option>
-								<option value="22" >その他離島</option>
+								<?php if (count($arrPullAreaChild) > 0) {?>
+									<?php
+									foreach ($arrPullAreaChild as $data) {
+									?>
+									<option value="<?php print $data["M_AREA_ID"]?>"><?php print $data["M_AREA_NAME"]?></option>
+									<?php }?>
+								<?php }?>
 							</select>
 							<span>×</span>
 						</li>
 						<li class="search_category">
 							<select name="category" id="category">
 								<option value="" selected="selected">カテゴリを選択</option>
-								<option value="19">北部</option>
-								<option value="18" >中部</option>
-								<option value="2" >那覇</option>
-								<option value="3" >南部</option>
-								<option value="16" >石垣島・八重山</option>
-								<option value="12" >宮古島</option>
-								<option value="22" >その他離島</option>
+								<?php if (count($arrPullCategoryParent) > 0) {?>
+								<?php
+								foreach ($arrPullCategoryParent as $data) {
+								?>
+								<option value="<?php print $data["M_ACT_CATEGORY_ID"]?>"><?php print $data["M_ACT_CATEGORY_NAME"]?></option>
+								<?php }?>
+							<?php }?>
 							</select>
 							<span>×</span>
 						</li>
 						<li class="search_date">
-							<input type="text" id="search_date" name="search_date" value="<?php print date("Y年m月d日") ?>" class="imeDisabled wDateJp" />
-							       	<script type="text/javascript">
-							                       $.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
-							                        $("#search_date").datepicker(
-							                        		{
-							                       			showOn: 'button',
-							                       			buttonImage: 'images/index2016/index-search-icon.png',
-							                       			buttonImageOnly: true,
-							                       			dateFormat: 'yy年mm月dd日',
-							                       			changeMonth: true,
-							                       			changeYear: true,
-							                       			yearRange: '2016:2017',
-							                       			showMonthAfterYear: true,
-							                       			monthNamesShort: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-							                                   dayNamesMin: ['日','月','火','水','木','金','土']
-							                       		});
-							        </script>
+							<input type="text" id="search_date" name="search_date" value="<?php print date("Y年m月d日") ?>" class="imeDisabled wDateJp" readonly='readonly' />
+							<script type="text/javascript">
+								$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
+								$("#search_date").datepicker({
+									showOn: 'button',
+									buttonImage: 'images/index2016/index-search-icon.png',
+									buttonImageOnly: true,
+									dateFormat: 'yy年mm月dd日',
+									changeMonth: true,
+									changeYear: true,
+									yearRange: '2016:2017',
+									showMonthAfterYear: true,
+									monthNamesShort: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+									dayNamesMin: ['日','月','火','水','木','金','土']
+								});
+								$('#search_date').on('click',function(){$(this).datepicker('show');});
+							</script>
 						</li>
 					</ul>
 					<ul class="tabs" id="result_menu">
-						<li class="active"><a href="#tab1">今日(11/30)</a></li>
-						<li class=""><a href="#tab1">明日(12/1)</a></li>
-						<li class=""><a href="#tab1">明後日(12/2)</a></li>
+						<li class="active"><a href="#tab1">今日(<?php echo date('n/j'); ?>)</a></li>
+						<li class=""><a href="#tab2">明日(<?php echo date('n/j', strtotime('+1 day')); ?>)</a></li>
+						<li class=""><a href="#tab3">明後日(<?php echo date('n/j', strtotime('+2 day')); ?>)</a></li>
 					</ul>
 				</form>
 
-
-					<div id="tab1" class="content outer">
-						<ul class="plan_box">
-							<li class="inner"><a href="">
-							<img src="images/common/img_demo1.png">
-							<p class="title">水圧で空を飛ぶ！未体験の空中浮遊を楽しもう♪初心者歓迎プランはインストラクターが…</p>
-								<ul class="area">
-								    <li><img src="images/common/icon_map.png"></li>
-								    <li>沖縄県 ＞ </li>
-								    <li>那覇市</li>
+				<!-- プラン一覧 -->
+				<?php if(count($arrPlan) > 0):?>
+					<?php foreach($arrPlan as $key => $plans):?>
+						<div id="tab<?php echo $key + 1;?>" class="content outer">
+							<?php foreach($plans as $plandata):?>
+								<ul class="plan_box">
+									<li class="inner">
+										<a href="">
+											<?php if ($plandata["SHOPPLAN_PIC1"] != "" || $plandata["SHOPPLAN_PIC1"] != "") {?>
+												<img src="<?php print URL_SLAKER_COMMON."/images/".$plandata["SHOPPLAN_PIC1"]?>" class="fl-l" alt="<?php print $plandata["SHOPPLAN_NAME"]?>" style='width: 170px;'>
+											<?php }else{?>
+												<img src="<?php print URL_SLAKER_COMMON?>assets/noImage.jpg" class="fl-l" alt="<?php print $plandata["SHOPPLAN_NAME"]?>">
+											<?php }?>
+											
+											<p class="title">
+												<?php 
+													echo mb_substr(redirectForReturn($plandata['SHOPPLAN_CATCH']), 0, 40, 'UTF-8');
+												
+													if(mb_strlen( $plandata['SHOPPLAN_CATCH']) > 40){
+														echo "…";
+													}
+												?>
+											</p>
+												<ul class="area">
+													<li><img src="images/common/icon_map.png"></li>
+													<li><?php echo $arrAreaParent[$plandata['SHOPPLAN_AREA_LIST2']]; ?> ＞ </li>
+													<li><?php echo $arrAreaChild[$plandata['SHOPPLAN_AREA_LIST3']]; ?></li>
+												</ul>
+											<p class="price"><?php echo number_format($plandata['money_all']); ?>円～</p>
+										</a>
+									</li>
 								</ul>
-							<p class="price">4500円～</p>
-							</a></li>
-						</ul>
-						<ul class="plan_box">
-							<li class="inner"><a href="">
-							<img src="images/common/img_demo1.png">
-							<p class="title">水圧で空を飛ぶ！未体験の空中浮遊を楽しもう♪初心者歓迎プランはインストラクターが…</p>
-								<ul class="area">
-								    <li><img src="images/common/icon_map.png"></li>
-								    <li>沖縄県 ＞ </li>
-								    <li>那覇市</li>
-								</ul>
-							<p class="price">4500円～</p>
-							</a></li>
-						</ul>
-						<ul class="plan_box">
-							<li class="inner"><a href="">
-							<img src="images/common/img_demo1.png">
-							<p class="title">水圧で空を飛ぶ！未体験の空中浮遊を楽しもう♪初心者歓迎プランはインストラクターが…</p>
-								<ul class="area">
-								    <li><img src="images/common/icon_map.png"></li>
-								    <li>沖縄県 ＞ </li>
-								    <li>那覇市</li>
-								</ul>
-							<p class="price">4500円～</p>
-							</a></li>
-						</ul>
-						<ul class="plan_box">
-							<li class="inner"><a href="">
-							<img src="images/common/img_demo1.png">
-							<p class="title">水圧で空を飛ぶ！未体験の空中浮遊を楽しもう♪初心者歓迎プランはインストラクターが…</p>
-								<ul class="area">
-								    <li><img src="images/common/icon_map.png"></li>
-								    <li>沖縄県 ＞ </li>
-								    <li>那覇市</li>
-								</ul>
-							<p class="price">4500円～</p>
-							</a></li>
-						</ul>
-						<ul class="plan_box">
-							<li class="inner"><a href="">
-							<img src="images/common/img_demo1.png">
-							<p class="title">水圧で空を飛ぶ！未体験の空中浮遊を楽しもう♪初心者歓迎プランはインストラクターが…</p>
-								<ul class="area">
-								    <li><img src="images/common/icon_map.png"></li>
-								    <li>沖縄県 ＞ </li>
-								    <li>那覇市</li>
-								</ul>
-							<p class="price">4500円～</p>
-							</a></li>
-						</ul>
-					</div>
-					<div id="tab2" class="content outer">
-					コンテンツB
-					</div>
-					<div id="tab3" class="content outer">
-					コンテンツB
-					</div>
-					<a href="javascript:;" onclick="document.search_form.submit();" style=""><div class="search_form">プラン一覧を表示</div></a>
-				</section>
+							<?php endforeach;?>
+						</div>
+					<?php endforeach;?>
+				<?php endif;?>
+				<!-- // プラン一覧 -->
+				<a href="javascript:;" onclick="document.search_form.submit();" style=""><div class="search_form">プラン一覧を表示</div></a>
 			</section>
+		</section>
 
 
 
@@ -382,16 +491,20 @@ $(document).ready(function() {
 		        <!-- /エリアTOP -->
 
 
-
+<!-- 
 			<section style="clear: both;margin-top: 100px;">
+ -->
 		        <!--口コミ-->
+<!--  
 	        	<section id="report_list">	        		
 		        	<h2>みんなの体験レポート</h2>
 		        	<a href="/kuchikomi-search.html"><div class="search_report">体験レポートをもっと見る</div></a>
+-->
         <?php if (count($dspKArray) > 0) {
 			foreach ($dspKArray as $kk) {
 			//print_r($kk);
 	?>
+<!-- 
 					<div class="outer">
 						<ul class="plan_box">
 							<li class="inner"><a href="">
@@ -429,7 +542,7 @@ $(document).ready(function() {
 							</a></li>
 						</ul>
 					</div>
-
+ -->
 <!--
 			        	<a href="/kuchikomi-detail.html?k_id=<?php print $kk["KUCHIKOMI_ID"]?>">
 			        		<ul>
@@ -455,8 +568,9 @@ $(document).ready(function() {
 			}
 	}
 	?>
-
+<!-- 
 		        </section>
+ -->
 		        <!--/口コミ-->
 
 		
