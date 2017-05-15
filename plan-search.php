@@ -1,4 +1,5 @@
 <?php
+var_dump($_POST);
 
 require_once('includes/applicationInc.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shop.php');
@@ -33,6 +34,11 @@ else {
 	$collection->setByKey($collection->getKeyValue(), "age", $_GET["age"]);
 	$collection->setByKey($collection->getKeyValue(), "facility", $_GET["fa"]);
 
+	// <<<<< add settenLab
+	$collection->setByKey($collection->getKeyValue(), "top_area_id", $_GET["ta"]);
+	$collection->setByKey($collection->getKeyValue(), "top_category_id", $_GET["tc"]);
+	// >>>>> add settenLab
+	
 	$collection->setByKey($collection->getKeyValue(), "area", $_GET["area"]);
 	$collection->setByKey($collection->getKeyValue(), "category", $_GET["cate"]);
 	$collection->setByKey($collection->getKeyValue(), "tag", $_GET["tag"]);
@@ -44,12 +50,12 @@ else {
 	  	}
 	 	else{
 			//$collection->setByKey($collection->getKeyValue(), "undecide_sch", "2");
-			$collection->setByKey($collection->getKeyValue(), "undecide_sch", "1");
+// 			$collection->setByKey($collection->getKeyValue(), "undecide_sch", "1");
 		}
 	}
 	else {
 		$collection->setByKey($collection->getKeyValue(), "search_date", date('Y年m月d日'));
-		$collection->setByKey($collection->getKeyValue(), "undecide_sch", "1");
+// 		$collection->setByKey($collection->getKeyValue(), "undecide_sch", "1");
 	}
 	if($_GET["calender"] != ""){
 		$collection->setByKey($collection->getKeyValue(), "calender", $_GET["calender"]);
@@ -59,11 +65,6 @@ else {
 
 	cmSetHotelSearchDef($collection);
 }
-
-
-
-
-
 
 $collection->setByKey($collection->getKeyValue(), "pageNum", 10);
 
@@ -89,20 +90,10 @@ $targetId = "";
 $shop = new shop($dbMaster);
 $shop->selectListPublicPlan($collection);
 
-
 //print($shop->getMaxCount());
-
-
-
-
-
-
-
-
 
 //設定
 //$collection->setByKey($collection->getKeyValue(), "priceper_num", 3);
-
 
 $mArea = new mArea($dbMaster);
 $mArea->selectListGroup($collection);
@@ -306,6 +297,68 @@ $pager_options = array(
 );
 $pager =& Pager::factory($pager_options);
 $navi = $pager->getLinks();
+
+// <<<<< add settenLab
+
+// TOPエリア取得
+$mAreaTop = new mArea($dbMaster);
+$mAreaTop->selectTop();
+$mAreaTop->setPost();
+
+$arrAreaTopData = $mAreaTop->getCollection();
+$arrAreaTop     = array();
+$arrAreaPlanCnt = array();
+// 配列生成
+foreach($arrAreaTopData as $top_data){
+	$arrAreaTop[$top_data['M_AREA_ID']] = $top_data['M_AREA_NAME'];
+	$arrAreaPlanCnt[$top_data['M_AREA_ID']] = 0;
+}
+
+// エリア別プラン数取得
+$mAreaTopPlan       = new mArea($dbMaster);
+$arrAreaTopPlanData = $mAreaTopPlan->selectTopAreaPlanCnt();
+// 配列生成
+foreach($arrAreaTopPlanData as $plan_data){
+	$arrAreaPlanCnt[$plan_data['area_id']] = $plan_data['cnt'];
+}
+
+
+// ジャンル(TOPカテゴリ)取得
+$arrTopCategoryData = $mActivityCategory->getCollection();
+$arrTopCategory     = array();
+$arrCategoryPlanCnt = array();
+// 配列作成
+foreach($arrTopCategoryData as $cat_data){
+	// TOPカテゴリのみ
+	if($cat_data['M_ACT_CATEGORY_TYPE'] == 1){
+		$arrTopCategory[$cat_data['M_ACT_CATEGORY_ID']] = $cat_data['M_ACT_CATEGORY_NAME'];
+		$arrCategoryPlanCnt[$cat_data['M_ACT_CATEGORY_ID']] = 0;
+	}
+}
+
+// カテゴリ別プラン数取得
+$arrCategoryPlanData = $mAreaTopPlan->selectTopCategoryPlanCnt();
+// 配列生成
+foreach($arrCategoryPlanData as $plan_data){
+	$arrCategoryPlanCnt[$plan_data['category_id']] = $plan_data['cnt'];
+}
+
+// プルダウンoption配列
+$arrPrice   = array(1000,2000,3000,4000,5000,6000,8000,10000,15000,20000,30000,40000,50000);
+$arrAge     = array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,50,60);
+$arrUseTime = array(
+				array('val' => 30, 'label' => "30分以内")
+				,array('val' => 60, 'label' => "1時間以内")
+				,array('val' => 90, 'label' => "1時間30分以内")
+				,array('val' => 120, 'label' => "2時間以内")
+				,array('val' => 180, 'label' => "3時間以内")
+				,array('val' => 240, 'label' => "4時間以内")
+				,array('val' => 360, 'label' => "6時間以内")
+				,array('val' => 1440, 'label' => "1日以内")
+				,array('val' => 2880, 'label' => "2日以内")
+			);
+
+// >>>>> add settenLab
 ?>
 
 
@@ -388,335 +441,237 @@ $(function() {
    <!-- side nav -->
     <div id="left">
 	<div class="inner">
-  
-      <section class="accordion">
-        <h4 class="search-title" >エリアから探す<a class="toggle"><i class="fa fa-arrow-circle-down fa-2" aria-hidden="true"></i></a></h4>
-        <ul class="nest">
-		  <li>
-              <p class="link">
-                <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                 <a href="/plan-search.html?area=11">北海道(4207)</a>
-              </p>
-          </li>  
-          
-          <li>
-              <p class="link">   
-				  <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                  <a href="/plan-search.html?area=10">東北(5160)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">  
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>   
-                  <a href="/plan-search.html?area=9">関東(25164)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">    
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                  <a href="/plan-search.html?area=8">甲信越(4597)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">    
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                  <a href="/plan-search.html?area=7">北陸(1957)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">  
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                  <a href="/plan-search.html?area=6">東海(8282)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">   
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                  <a href="/plan-search.html?area=5">関西(10902)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">  
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>  
-                  <a href="/plan-search.html?area=4">山陰・山陽(4104)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">   
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                  <a href="/plan-search.html?area=3">四国(2146)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">    
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                  <a href="/plan-search.html?area=2">九州(6790)</a>
-              </p>
-          </li>
-            
-          
-          <li>
-              <p class="link">   
-                 <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>  
-                  <a href="/plan-search.html?area=1">沖縄(5140)</a>
-              </p>
-          </li>
-        </ul>
-      </section>
-      
-      
-      <section class="accordion">
-        <h4 class="search-title">ジャンルから探す<a class="toggle"><i class="fa fa-arrow-circle-down fa-2" aria-hidden="true"></i></a></h4>
-        <ul class="nest">
-
-	<?php// foreach($mActivityCategory->getCollection() as $ac){?>
-          <li>
-              <p class="link">  
-                    <i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
-                     <a href="/plan-search.html?cate=1">マリンレジャー(544)</a>
-                 </p>
-          </li>
-        </ul>
-      </section>
+	
+	<section class="accordion">
+		<h4 class="search-title" >エリアから探す<a class="toggle"><i class="fa fa-arrow-circle-down fa-2" aria-hidden="true"></i></a></h4>
+		<?php if(count($arrAreaTop) > 0):?>
+			<ul class="nest">
+				<?php foreach($arrAreaTop as $area_id => $area_name):?>
+					<li>
+						<p class="link">
+							<i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
+							<a href="/plan-search.html?ta=<?php echo $area_id; ?>"><?php echo $area_name; ?>(<?php echo $arrAreaPlanCnt[$area_id]; ?>)</a>
+						</p>
+					</li>
+				<?php endforeach;?>
+			</ul>
+		<?php endif?>
+	</section>
+			
+	<section class="accordion">
+		<h4 class="search-title">ジャンルから探す<a class="toggle"><i class="fa fa-arrow-circle-down fa-2" aria-hidden="true"></i></a></h4>
+		<?php if(count($arrTopCategory) > 0):?>
+			<ul class="nest">
+				<?php foreach($arrTopCategory as $category_id => $category_name):?>
+					<li>
+						<p class="link">
+							<i class="fa fa-caret-right fa-1 listtop" aria-hidden="true"></i>
+							<a href="/plan-search.html?tc=<?php echo $category_id; ?>"><?php echo $category_name; ?>(<?php echo $arrCategoryPlanCnt[$category_id]; ?>)</a>
+						</p>
+					</li>
+				<?php endforeach;?>
+			</ul>
+		<?php endif;?>
+	</section>
 
 
-   <form name="search-side-list" id="search-side-list" method="POST" action="/plan-search.html">
-      <section class="accordion">
-      <h4 class="search-title">希望・予算から探す<a class="toggle"><i class="fa fa-arrow-circle-down fa-2" aria-hidden="true"></i></a></h4>
-      <ul class="nest">
-        <input type="hidden" name="search_date" value="">
-        <li class="title"><label for="priceper_num">人数</label></li>
-        	<li class=""><input type="number" name="priceper_num" min="1" max="999" value="" id="priceper_num">人</li>
-        <li class="title"><label for="price">予算</label></li>
-			<li class="">
-				<select name="price">
-				<option value="">指定なし</option>
-				<option value="1000">\1,000以内</option>
-				<option value="2000">\2,000以内</option>
-				<option value="3000">\3,000以内</option>
-				<option value="4000">\4,000以内</option>
-				<option value="5000">\5,000以内</option>
-				<option value="6000">\6,000以内</option>
-				<option value="8000">\8,000以内</option>
-				<option value="10000">\10,000以内</option>
-				<option value="15000">\15,000以内</option>
-				<option value="20000">\20,000以内</option>
-				<option value="30000">\30,000以内</option>
-				<option value="40000">\40,000以内</option>
-				<option value="50000">\50,000以内</option>
-				</select>
-			</li>
-        <li class="title"><label for="targetAge">対象年齢</label></li>
-        <li class="">
-        	<select name="targetAge" id="targetAge" class="">
-        		<option value="">指定なし</option>
-        		<option value="0">0歳以上</option>
-        		<option value="1">1歳以上</option>
-        		<option value="2">2歳以上</option>
-        		<option value="3">3歳以上</option>
-        		<option value="4">4歳以上</option>
-        		<option value="5">5歳以上</option>
-        		<option value="6">6歳以上</option>
-        		<option value="7">7歳以上</option>
-        		<option value="8">8歳以上</option>
-        		<option value="9">9歳以上</option>
-        		<option value="10">10歳以上</option>
-        		<option value="11">11歳以上</option>
-        		<option value="12">12歳以上</option>
-        		<option value="13">13歳以上</option>
-        		<option value="14">14歳以上</option>
-        		<option value="15">15歳以上</option>
-        		<option value="16">16歳以上</option>
-        		<option value="17">17歳以上</option>
-        		<option value="18">18歳以上</option>
-        		<option value="50">50歳以上</option>
-        		<option value="60">60歳以上</option>
-        	</select>
-        </li>
-        <li class="title"><label for="usetime">所要時間</label></li>
-        	<li class="">
-        		<select name="usetime" id="usetime" class="">
-        			<option value="">指定なし</option>
-        			<option value="30">30分以内</option>
-        			<option value="60">1時間以内</option>
-        			<option value="90">1時間30分以内</option>
-        			<option value="120">2時間以内</option>
-        			<option value="180">3時間以内</option>
-        			<option value="240">4時間以内</option>
-        			<option value="360">6時間以内</option>
-        			<option value="1440">1日以内</option>
-        			<option value="2880">2日以内</option>
-				</select>
-       		</li>
-        <li class="btn">
-            <div class="btn_submit"><input type="submit" value="この条件で検索" onclick="document.search-side-list.submit();" class="search-list-btn"></div>
-        </li>
-      </ul>
-      </section>
-      
-      
-      <section class="accordion">
-        <h4 class="search-title">詳細条件から探す<a class="toggle"><i class="fa fa-arrow-circle-down fa-2" aria-hidden="true"></i></a></h4>
-        <ul class="nest">
-           
-            <li class="subtitle">利用シーン</li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="6" id="tag6"> 1人参加可</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="13" id="tag13"> こどもとおでかけ</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="14" id="tag14"> デート</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="15" id="tag15"> 記念日</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="16" id="tag16"> 女子会・女子旅</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="17" id="tag17"> 夜景</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="18" id="tag18"> 雨の日</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="23" id="tag23"> 3000円以下</label>
-              </li>
-              
-            <li class="subtitle">支払い方法</li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="11" id="tag11"> 現地払い</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="12" id="tag12"> 事前払い</label>
-              </li>
-              
-            <li class="subtitle">団体予約</li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="19" id="tag19"> 10人以上</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="20" id="tag20"> 20人以上</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="21" id="tag21"> 30人以上</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="22" id="tag22"> 100人以上</label>
-              </li>
-              
-            <li class="subtitle">サービス</li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="1" id="tag1"> 食事付</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="2" id="tag2"> 送迎付</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="3" id="tag3"> ガイド同行</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="7" id="tag7"> ペット参加可</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="8" id="tag8"> 貸切可</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="29" id="tag29"> 料金割引</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="30" id="tag30"> ライセンス</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="31" id="tag31"> 保険</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="32" id="tag32"> レンタル</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="33" id="tag33"> 初心者OK</label>
-              </li>
-              
-            <li class="subtitle">空間・設備</li>
-              <li class="check">
-                <label><input type="checkbox" name="facility" value="1" id="facility1"> シャワー</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="facility" value="2" id="facility2"> トイレ</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="facility" value="3" id="facility3"> ドライヤー</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="facility" value="4" id="facility4"> ロッカー</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="facility" value="5" id="facility5"> 売店</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="facility" value="6" id="facility6"> 更衣室</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="facility" value="7" id="facility7"> 貴重品預かり</label>
-              </li>
-            <li class="subtitle">駐車場あり</li>
-              <li class="check">
-                <label><input type="checkbox" name="access" value="1" id="access1"> 有料駐車場</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="access" value="2" id="access2"> 無料駐車場</label>
-              </li>
-              
-            <li class="subtitle">日程</li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="9" id="tag9"> 午前</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="10" id="tag10"> 午後</label>
-              </li>
-              
-            <li class="subtitle">シーズン</li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="24" id="tag24"> オールシーズン</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="25" id="tag25"> 春</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="26" id="tag26"> 夏</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="27" id="tag27"> 秋</label>
-              </li>
-              <li class="check">
-                <label><input type="checkbox" name="tag" value="28" id="tag28"> 冬</label>
-              </li>
-          <li class="btn">
-            <div class="btn_submit"><input type="submit" value="この条件で検索する" onclick="document.search-side-list.submit();" class="search-list-btn"></div>
-          </li>
-        </ul>
-      </section>
- 
+	<form name="search_side_list" id="search_side_list" method="POST" action="/plan-search.html">
+		<input type="hidden" name="search_date" value="<?php print $collection->getByKey($collection->getKeyValue(), "search_date");?>">
+		<section class="accordion">
+			<h4 class="search-title">希望・予算から探す<a class="toggle"><i class="fa fa-arrow-circle-down fa-2" aria-hidden="true"></i></a></h4>
+			<ul class="nest">
+				<li class="title"><label for="priceper_num">人数</label></li>
+				<li class=""><input type="number" name="priceper_num" min="1" max="999" value="<?php echo $collection->getByKey($collection->getKeyValue(), "priceper_num");?>" id="priceper_num">人</li>
+				<li class="title"><label for="price">予算</label></li>
+					<li class="">
+						<select name="price">
+						<option value="">指定なし</option>
+						<?php
+							$price = $collection->getByKey($collection->getKeyValue(), "price");
+							foreach($arrPrice as $p){
+								$selected = ($price != "" && $p == $price)?"selected='selected'":"";
+								echo "<option value='".$p."' ".$selected.">&yen;".number_format($p)."以内</option>";
+							}
+						?>
+						</select>
+					</li>
+				<li class="title"><label for="targetAge">対象年齢</label></li>
+				<li class="">
+					<select name="targetAge" id="targetAge" class="">
+						<option value="">指定なし</option>
+						<?php
+							$targetAge = $collection->getByKey($collection->getKeyValue(), "targetAge");
+							foreach($arrAge as $age){
+								$selected = ($targetAge != "" && $age == $targetAge)?"selected='selected'":"";
+								echo "<option value='".$age."' ".$selected.">".$age."歳以上</option>";
+							}
+						?>
+					</select>
+				</li>
+				<li class="title"><label for="usetime">所要時間</label></li>
+					<li class="">
+						<select name="usetime" id="usetime" class="">
+							<option value="">指定なし</option>
+							<?php
+								$usetime = $collection->getByKey($collection->getKeyValue(), "usetime");
+								foreach($arrUseTime as $time){
+									$selected = ($usetime != "" && $time['val'] == $usetime)?"selected='selected'":"";
+									echo "<option value='".$time['val']."' ".$selected.">".$time['label']."</option>";
+								}
+							?>
+						</select>
+					</li>
+				<li class="btn">
+					<div class="btn_submit"><input type="button" value="この条件で検索" onclick="document.search_side_list.submit();" class="search-list-btn"></div>
+				</li>
+			</ul>
+		</section>
+		
+		<section class="accordion">
+			<h4 class="search-title">詳細条件から探す<a class="toggle"><i class="fa fa-arrow-circle-down fa-2" aria-hidden="true"></i></a></h4>
+			<ul class="nest">
+				 
+				<li class="subtitle">利用シーン</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="6" id="tag6"> 1人参加可</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="13" id="tag13"> こどもとおでかけ</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="14" id="tag14"> デート</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="15" id="tag15"> 記念日</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="16" id="tag16"> 女子会・女子旅</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="17" id="tag17"> 夜景</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="18" id="tag18"> 雨の日</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="23" id="tag23"> 3000円以下</label>
+					</li>
+					
+				<li class="subtitle">支払い方法</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="11" id="tag11"> 現地払い</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="12" id="tag12"> 事前払い</label>
+					</li>
+					
+				<li class="subtitle">団体予約</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="19" id="tag19"> 10人以上</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="20" id="tag20"> 20人以上</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="21" id="tag21"> 30人以上</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="22" id="tag22"> 100人以上</label>
+					</li>
+					
+				<li class="subtitle">サービス</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="1" id="tag1"> 食事付</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="2" id="tag2"> 送迎付</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="3" id="tag3"> ガイド同行</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="7" id="tag7"> ペット参加可</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="8" id="tag8"> 貸切可</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="29" id="tag29"> 料金割引</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="30" id="tag30"> ライセンス</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="31" id="tag31"> 保険</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="32" id="tag32"> レンタル</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="33" id="tag33"> 初心者OK</label>
+					</li>
+					
+				<li class="subtitle">空間・設備</li>
+					<li class="check">
+						<label><input type="checkbox" name="facility" value="1" id="facility1"> シャワー</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="facility" value="2" id="facility2"> トイレ</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="facility" value="3" id="facility3"> ドライヤー</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="facility" value="4" id="facility4"> ロッカー</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="facility" value="5" id="facility5"> 売店</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="facility" value="6" id="facility6"> 更衣室</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="facility" value="7" id="facility7"> 貴重品預かり</label>
+					</li>
+				<li class="subtitle">駐車場あり</li>
+					<li class="check">
+						<label><input type="checkbox" name="access" value="1" id="access1"> 有料駐車場</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="access" value="2" id="access2"> 無料駐車場</label>
+					</li>
+					
+				<li class="subtitle">日程</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="9" id="tag9"> 午前</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="10" id="tag10"> 午後</label>
+					</li>
+					
+				<li class="subtitle">シーズン</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="24" id="tag24"> オールシーズン</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="25" id="tag25"> 春</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="26" id="tag26"> 夏</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="27" id="tag27"> 秋</label>
+					</li>
+					<li class="check">
+						<label><input type="checkbox" name="tag" value="28" id="tag28"> 冬</label>
+					</li>
+				<li class="btn">
+					<div class="btn_submit"><input type="button" value="この条件で検索する" onclick="document.search_side_list.submit();" class="search-list-btn"></div>
+				</li>
+			</ul>
+		</section>
+	</form>
 	</div>
-</form>
 </div>
 
 

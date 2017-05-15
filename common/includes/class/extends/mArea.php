@@ -318,7 +318,38 @@ class mArea extends collection {
 		parent::setCollection($sql, mArea::keyName);
 	}
 
-
+	
+	/**
+	 * TOPエリアプラン数取得
+	 * @return Array area_idをキーにしたプラン数
+	 */
+	public function selectTopAreaPlanCnt(){
+		$sql  = " SELECT ";
+		$sql .= " SHOPPLAN_AREA_LIST1 as area_id , COUNT(*) as cnt";
+		$sql .= " FROM SHOPPLAN ";
+		
+		$sql .= " WHERE SHOPPLAN_STATUS = 2 ";
+		
+		$sql .= "GROUP BY SHOPPLAN_AREA_LIST1";
+		parent::setCollection($sql, "", false, true);
+		return parent::getCollection();
+	}
+	
+	/**
+	 * TOPカテゴリプラン数取得
+	 * @return Array area_idをキーにしたプラン数
+	 */
+	public function selectTopCategoryPlanCnt(){
+		$sql  = " SELECT ";
+		$sql .= " SHOPPLAN_CATEGORY1 as category_id , COUNT(*) as cnt";
+		$sql .= " FROM SHOPPLAN ";
+	
+		$sql .= " WHERE SHOPPLAN_STATUS = 2 ";
+	
+		$sql .= "GROUP BY SHOPPLAN_CATEGORY1";
+		parent::setCollection($sql, "", false, true);
+		return parent::getCollection();
+	}
 
 
 	private function createXmlArray() {

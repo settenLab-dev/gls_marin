@@ -168,6 +168,7 @@ class shop extends collection {
 
 		//	料金タイプ
 		for ($i=1; $i<=12; $i++) {
+			$sql .= "hpayt".$i.".MAX_HOTELMONEY, ";
 			$sql .= "hpayt".$i.".SHOP_PRICETYPE_ID as SHOP_PRICETYPE_ID".$i.", ";
 			$sql .= "hpayt".$i.".SHOP_PRICETYPE_KIND as SHOP_PRICETYPE_KIND".$i.", ";
 			$sql .= "hpayt".$i.".SHOP_PRICETYPE_MONEYKIND1 as SHOP_PRICETYPE_MONEYKIND1".$i.", ";
@@ -231,7 +232,7 @@ class shop extends collection {
 			parent::setMaxCount();
 		}
 
-//	print_r($sql);
+// 	print_r($sql);
 
 	}
 
@@ -409,33 +410,35 @@ class shop extends collection {
 				$sql .= "where s.COMPANY_ID in ($CID) ";
  			}
  		}
-
+ 		
+// <<<<< del settenLab
 		//	エリア
-		if ($collection->getByKey($collection->getKeyValue(), "area") != "") {
-			if ($CID != ""){
-			  $sql .= "and ";
-			}
-			else {
-			  $sql .= "where ";
-			}
-			$AREA_S = "%:".$collection->getByKey($collection->getKeyValue(), "area").":%";
-			$sql .= "s.SHOP_AREA_LIST like '$AREA_S' ";
-		}
+// 		if ($collection->getByKey($collection->getKeyValue(), "area") != "") {
+// 			if ($CID != ""){
+// 			  $sql .= "and ";
+// 			}
+// 			else {
+// 			  $sql .= "where ";
+// 			}
+// 			$AREA_S = "%:".$collection->getByKey($collection->getKeyValue(), "area").":%";
+// 			$sql .= "s.SHOP_AREA_LIST like '$AREA_S' ";
+// 		}
 		//	カテゴリ
-		if ($collection->getByKey($collection->getKeyValue(), "category") != "") {
-			if ($CID != ""){
-			  $sql .= "and ";
-			}
-			elseif ($AREA_S != "") {
-			  $sql .= "and ";
-			}
-			else {
-			  $sql .= "where ";
-			}
-			$CATE_S = "%:".$collection->getByKey($collection->getKeyValue(), "category").":%";
-			$sql .= "s.SHOP_CATEGORY_LIST like '$CATE_S' ";
-		}
-
+// 		if ($collection->getByKey($collection->getKeyValue(), "category") != "") {
+// 			if ($CID != ""){
+// 			  $sql .= "and ";
+// 			}
+// 			elseif ($AREA_S != "") {
+// 			  $sql .= "and ";
+// 			}
+// 			else {
+// 			  $sql .= "where ";
+// 			}
+// 			$CATE_S = "%:".$collection->getByKey($collection->getKeyValue(), "category").":%";
+// 			$sql .= "s.SHOP_CATEGORY_LIST like '$CATE_S' ";
+// 		}
+// >>>>> del settenLab
+ 		
 		//	ショップID
 		if ($collection->getByKey($collection->getKeyValue(), "COMPANY_ID") != "") {
 			$COMPANY_S = $collection->getByKey($collection->getKeyValue(), "COMPANY_ID");
@@ -457,13 +460,13 @@ class shop extends collection {
 			  $sql .= "and ";
 			}
 			else {
-			  $sql .= "where ";
+			  //$sql .= "where ";
 			}
 
-			$FREE_S = "%".$collection->getByKey($collection->getKeyValue(), "free")."%";
-			$sql .= "(s.SHOP_NAME like '$FREE_S' ";
-			$sql .= "or s.SHOP_NAME_KANA like '$FREE_S' ";
-			$sql .= "or s.SHOP_TEXT like '$FREE_S') ";
+// 			$FREE_S = "%".$collection->getByKey($collection->getKeyValue(), "free")."%";
+// 			$sql .= "(s.SHOP_NAME like '$FREE_S' ";
+// 			$sql .= "or s.SHOP_NAME_KANA like '$FREE_S' ";
+// 			$sql .= "or s.SHOP_TEXT like '$FREE_S') ";
 		}
 
 		$sql .= ") st ";
@@ -681,7 +684,7 @@ class shop extends collection {
 //			$sql .= "and ".parent::expsData("sp.SHOPPLAN_DATE_SALE_TO", ">=", $date, true)." ";
 			//	料金設定日
 			if ($collection->getByKey($collection->getKeyValue(), "top_area") != "1") {
-				$sql .= "and '$DATE_S' between sp.SHOPPLAN_SALE_FROM and sp.SHOPPLAN_SALE_TO ";
+				$sql .= "and ('$DATE_S' between sp.SHOPPLAN_SALE_FROM and sp.SHOPPLAN_SALE_TO) ";
 			}
 		}
 
@@ -689,7 +692,7 @@ class shop extends collection {
 		if ($collection->getByKey($collection->getKeyValue(), "undecide_sch") != 1) {
 			//	指定日
 			if ($collection->getByKey($collection->getKeyValue(), "top_area") != "1") {
-				$sql .= "and DATEDIFF('".$date."','".date("Y-m-d")."') > sp.SHOPPLAN_ACC_DAY ";
+				$sql .= "and (DATEDIFF('".$date."','".date("Y-m-d")."') > sp.SHOPPLAN_ACC_DAY ";
 				$sql .= "or DATEDIFF('".$date."','".date("Y-m-d")."') = sp.SHOPPLAN_ACC_DAY ";
 
 			/*--2015-10-08追加（牛腸）--*/
@@ -762,7 +765,7 @@ class shop extends collection {
 					$sql .= "when sp.SHOPPLAN_ACC_MIN = '12' then '55' ";
 					$sql .= "else '' end)";
 
-					$sql .= " > ".$time_min." ";
+					$sql .= " > ".$time_min.") ";
 
 
 				//}
@@ -799,6 +802,7 @@ class shop extends collection {
 		$sql .= "hpay.HOTELPAY_SERVICE, ";
 		$sql .= "hpay.HOTELPAY_MONEY_FLG, ";
 		$sql .= "hpay.HOTELPAY_REMARKS, ";
+		$sql .= "GREATEST(hpay.HOTELPAY_MONEY1,hpay.HOTELPAY_MONEY2,hpay.HOTELPAY_MONEY3,hpay.HOTELPAY_MONEY4,hpay.HOTELPAY_MONEY5,hpay.HOTELPAY_MONEY6,hpay.HOTELPAY_MONEY7,hpay.HOTELPAY_MONEY8) as MAX_HOTELMONEY, ";
 //		for ($i=1; $i<=8; $i++) {
 			$sql .= "hpay.HOTELPAY_MONEY1, ";
 			$sql .= "hpay.HOTELPAY_MONEY2, ";
@@ -921,6 +925,7 @@ class shop extends collection {
 		$sql .= "hpay.HOTELPAY_SERVICE, ";
 		$sql .= "hpay.HOTELPAY_MONEY_FLG, ";
 		$sql .= "hpay.HOTELPAY_REMARKS, ";
+		$sql .= "GREATEST(hpay.HOTELPAY_MONEY1,hpay.HOTELPAY_MONEY2,hpay.HOTELPAY_MONEY3,hpay.HOTELPAY_MONEY4,hpay.HOTELPAY_MONEY5,hpay.HOTELPAY_MONEY6,hpay.HOTELPAY_MONEY7,hpay.HOTELPAY_MONEY8) as MAX_HOTELMONEY, ";
 //		for ($i=1; $i<=8; $i++) {
 			$sql .= "hpay.HOTELPAY_MONEY1, ";
 			$sql .= "hpay.HOTELPAY_MONEY2, ";
@@ -1197,6 +1202,54 @@ class shop extends collection {
 			}
 			$where .= parent::expsData("ct.".shop::keyName, "=", $collection->getByKey($collection->getKeyValue(), "COMPANY_ID"))." ";
 		}
+		
+		// <<<<< add settenLab
+		//// エリア
+		// TOPエリア
+		if ($collection->getByKey($collection->getKeyValue(), "top_area_id") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_AREA_LIST1 = ".$collection->getByKey($collection->getKeyValue(), "top_area_id").") ";
+		}
+		// 子エリア
+		if ($collection->getByKey($collection->getKeyValue(), "child_area_id") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_AREA_LIST3 = ".$collection->getByKey($collection->getKeyValue(), "child_area_id").") ";
+		}
+		
+		// TOPカテゴリ
+		if ($collection->getByKey($collection->getKeyValue(), "top_category_id") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_CATEGORY1 = ".$collection->getByKey($collection->getKeyValue(), "top_category_id").") ";
+		}
+		
+		// 子カテゴリ
+		if ($collection->getByKey($collection->getKeyValue(), "child_category_id") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_CATEGORY2 = ".$collection->getByKey($collection->getKeyValue(), "child_category_id").") ";
+		}
+		
+		// 予算
+		if ($collection->getByKey($collection->getKeyValue(), "price") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$price = $collection->getByKey($collection->getKeyValue(), "price");
+			$arrWhere = array();
+			for ($i=1; $i<=12; $i++) {
+			$arrWhere[] = " IFNULL(hpayt".$i.".MAX_HOTELMONEY,0) <= ".$price;
+			}
+			$where .= implode(" AND ", $arrWhere);
+		}
+		
+		// >>>>> add settenLab
 
 /*
 		if ($collection->getByKey($collection->getKeyValue(), "usetime") != "") {
