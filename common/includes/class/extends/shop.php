@@ -168,6 +168,7 @@ class shop extends collection {
 
 		//	料金タイプ
 		for ($i=1; $i<=12; $i++) {
+			$sql .= "hpayt".$i.".MIN_HOTELMONEY, ";
 			$sql .= "hpayt".$i.".MAX_HOTELMONEY, ";
 			$sql .= "hpayt".$i.".SHOP_PRICETYPE_ID as SHOP_PRICETYPE_ID".$i.", ";
 			$sql .= "hpayt".$i.".SHOP_PRICETYPE_KIND as SHOP_PRICETYPE_KIND".$i.", ";
@@ -217,8 +218,23 @@ class shop extends collection {
 
 	//	print $sql;
 		$sql = "(".$sql.") ";
-
-		$sql .= "order by spt.SHOPPLAN_ORDER ";
+		
+		//// 並び替え
+		$orderdata = $collection->getByKey($collection->getKeyValue(), "orderdata");
+		
+		// 新着順
+		if($orderdata == 0){
+			$sql .= " order by spt.SHOPPLAN_REGSIT DESC ";
+		// 料金が安い順
+		}elseif($orderdata == 1){
+			$sql .= " order by hpayt1.MAX_HOTELMONEY ASC ";
+		// 料金が高い順
+		}elseif($orderdata == 2){
+			$sql .= " order by hpayt1.MAX_HOTELMONEY DESC ";
+		// 並び順
+		}else{
+			$sql .= " order by spt.SHOPPLAN_ORDER ";
+		}
 
 			//  プランで検索
 		if ($collection->getByKey($collection->getKeyValue(), "limitptn") == "plan") {
@@ -386,7 +402,7 @@ class shop extends collection {
 			$sql .= "s.SHOP_PIC".$i.", ";
 			$sql .= "s.SHOP_PIC_TEXT".$i.", ";
 		}
-		for ($i=1; $i<=9; $i++) {
+		for ($i=1; $i<=12; $i++) {
 			$sql .= "s.SHOP_FACILITY".$i.", ";
 		}
 		$sql .= "s.SHOP_LANG_FLG, ";
@@ -396,10 +412,14 @@ class shop extends collection {
 		for ($i=1; $i<=7; $i++) {
 			$sql .= "s.SHOP_CHILD".$i.", ";
 		}
+		
+		$sql .= "s.SHOP_PARKINGFLG, ";
+		$sql .= "s.SHOP_PARKINGMONEYFLG, ";
+		
 		$sql .= "s.SHOP_TEXT, ";
 		$sql .= "s.SHOP_REGIST, ";
- 		$sql .= "s.SHOP_STATUS ";
-
+		$sql .= "s.SHOP_STATUS ";
+		
 		$sql .= "from SHOP s ";
 		
 //		$sql .= "where ";
@@ -802,6 +822,7 @@ class shop extends collection {
 		$sql .= "hpay.HOTELPAY_SERVICE, ";
 		$sql .= "hpay.HOTELPAY_MONEY_FLG, ";
 		$sql .= "hpay.HOTELPAY_REMARKS, ";
+		$sql .= "LEAST(hpay.HOTELPAY_MONEY1,hpay.HOTELPAY_MONEY2,hpay.HOTELPAY_MONEY3,hpay.HOTELPAY_MONEY4,hpay.HOTELPAY_MONEY5,hpay.HOTELPAY_MONEY6,hpay.HOTELPAY_MONEY7,hpay.HOTELPAY_MONEY8) as MIN_HOTELMONEY, ";
 		$sql .= "GREATEST(hpay.HOTELPAY_MONEY1,hpay.HOTELPAY_MONEY2,hpay.HOTELPAY_MONEY3,hpay.HOTELPAY_MONEY4,hpay.HOTELPAY_MONEY5,hpay.HOTELPAY_MONEY6,hpay.HOTELPAY_MONEY7,hpay.HOTELPAY_MONEY8) as MAX_HOTELMONEY, ";
 //		for ($i=1; $i<=8; $i++) {
 			$sql .= "hpay.HOTELPAY_MONEY1, ";
@@ -925,6 +946,7 @@ class shop extends collection {
 		$sql .= "hpay.HOTELPAY_SERVICE, ";
 		$sql .= "hpay.HOTELPAY_MONEY_FLG, ";
 		$sql .= "hpay.HOTELPAY_REMARKS, ";
+		$sql .= "LEAST(hpay.HOTELPAY_MONEY1,hpay.HOTELPAY_MONEY2,hpay.HOTELPAY_MONEY3,hpay.HOTELPAY_MONEY4,hpay.HOTELPAY_MONEY5,hpay.HOTELPAY_MONEY6,hpay.HOTELPAY_MONEY7,hpay.HOTELPAY_MONEY8) as MIN_HOTELMONEY, ";
 		$sql .= "GREATEST(hpay.HOTELPAY_MONEY1,hpay.HOTELPAY_MONEY2,hpay.HOTELPAY_MONEY3,hpay.HOTELPAY_MONEY4,hpay.HOTELPAY_MONEY5,hpay.HOTELPAY_MONEY6,hpay.HOTELPAY_MONEY7,hpay.HOTELPAY_MONEY8) as MAX_HOTELMONEY, ";
 //		for ($i=1; $i<=8; $i++) {
 			$sql .= "hpay.HOTELPAY_MONEY1, ";
@@ -1212,6 +1234,13 @@ class shop extends collection {
 			}
 			$where .= " (spt.SHOPPLAN_AREA_LIST1 = ".$collection->getByKey($collection->getKeyValue(), "top_area_id").") ";
 		}
+		// 親エリア
+		if ($collection->getByKey($collection->getKeyValue(), "parent_area_id") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_AREA_LIST2 = ".$collection->getByKey($collection->getKeyValue(), "parent_area_id").") ";
+		}
 		// 子エリア
 		if ($collection->getByKey($collection->getKeyValue(), "child_area_id") != "") {
 			if ($where != "") {
@@ -1227,13 +1256,26 @@ class shop extends collection {
 			}
 			$where .= " (spt.SHOPPLAN_CATEGORY1 = ".$collection->getByKey($collection->getKeyValue(), "top_category_id").") ";
 		}
-		
+		// 親カテゴリ
+		if ($collection->getByKey($collection->getKeyValue(), "parent_category_id") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_CATEGORY2 = ".$collection->getByKey($collection->getKeyValue(), "parent_category_id").") ";
+		}
 		// 子カテゴリ
 		if ($collection->getByKey($collection->getKeyValue(), "child_category_id") != "") {
 			if ($where != "") {
 				$where .= " and ";
 			}
-			$where .= " (spt.SHOPPLAN_CATEGORY2 = ".$collection->getByKey($collection->getKeyValue(), "child_category_id").") ";
+			$where .= " (spt.SHOPPLAN_CATEGORY3 = ".$collection->getByKey($collection->getKeyValue(), "child_category_id").") ";
+		}
+		// 詳細カテゴリ
+		if ($collection->getByKey($collection->getKeyValue(), "detail_category_id") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_CATEGORY_DETAIL = ".$collection->getByKey($collection->getKeyValue(), "detail_category_id").") ";
 		}
 		
 		// 予算
@@ -1244,9 +1286,157 @@ class shop extends collection {
 			$price = $collection->getByKey($collection->getKeyValue(), "price");
 			$arrWhere = array();
 			for ($i=1; $i<=12; $i++) {
-			$arrWhere[] = " IFNULL(hpayt".$i.".MAX_HOTELMONEY,0) <= ".$price;
+				$arrWhere[] = " IFNULL(hpayt".$i.".MAX_HOTELMONEY,0) <= ".$price;
 			}
 			$where .= implode(" AND ", $arrWhere);
+		}
+		
+		// 対象年齢
+		if ($collection->getByKey($collection->getKeyValue(), "targetAge") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$targetAge = $collection->getByKey($collection->getKeyValue(), "targetAge");
+			$where .= " spt.SHOPPLAN_AGE_FROM <= ".$targetAge;
+		}
+		
+		// 所要時間
+		if ($collection->getByKey($collection->getKeyValue(), "usetime") != "") {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$usetime = $collection->getByKey($collection->getKeyValue(), "usetime");
+			$where .= " (
+						  ifnull(spt.SHOPPLAN_SCEDULE_TIME1,0)
+						+ ifnull(spt.SHOPPLAN_SCEDULE_TIME2,0)
+						+ ifnull(spt.SHOPPLAN_SCEDULE_TIME3,0)
+						+ ifnull(spt.SHOPPLAN_SCEDULE_TIME4,0)
+						+ ifnull(spt.SHOPPLAN_SCEDULE_TIME5,0)
+						+ ifnull(spt.SHOPPLAN_SCEDULE_TIME6,0)
+						+ ifnull(spt.SHOPPLAN_SCEDULE_TIME7,0)
+						+ ifnull(spt.SHOPPLAN_SCEDULE_TIME8,0)
+						) <= ".$usetime." ";
+		}
+		
+		///////////////// チェックボックス検索項目
+		$arrTag      = $collection->getByKey($collection->getKeyValue(), "tag");
+		$arrPay      = $collection->getByKey($collection->getKeyValue(), "pay");
+		$arrFacility = $collection->getByKey($collection->getKeyValue(), "facility");
+		$arrAccess   = $collection->getByKey($collection->getKeyValue(), "access");
+		
+		//// タグ
+		$arrWhereTag = array();
+		$whereTag = "";
+		foreach($arrTag as $tag){
+			$arrWhereTag[] = " (spt.SHOPPLAN_TAG_LIST LIKE '%:".$tag.":%') ";
+		}
+		
+		if(count($arrWhereTag) > 0){
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$whereTag = implode("or", $arrWhereTag);
+			$where .= $whereTag;
+		}
+		
+		//// 支払い方法
+		// 現地払い
+		if ( in_array(11, $arrPay)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_PAYMENT1 = 1 OR spt.SHOPPLAN_PAYMENT2 = 1) ";
+		}
+		
+		// 事前払い
+		if ( in_array(12, $arrPay)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (spt.SHOPPLAN_PAYMENT3 = 1 OR spt.SHOPPLAN_PAYMENT4 = 1) ";
+		}
+		
+		//// 空間・設備
+		// シャワー
+		if ( in_array(1, $arrFacility)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (st.SHOP_FACILITY3 = 1 OR st.SHOP_FACILITY3 = 2) ";
+		}
+		
+		// トイレ
+		if ( in_array(2, $arrFacility)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (st.SHOP_FACILITY5 = 1 OR st.SHOP_FACILITY5 = 2) ";
+		}
+		
+		// ドライヤー
+		if ( in_array(3, $arrFacility)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (st.SHOP_FACILITY2 = 1 OR st.SHOP_FACILITY2 = 2) ";
+		}
+		
+		// ロッカー
+		if ( in_array(4, $arrFacility)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (st.SHOP_FACILITY1 = 1 OR st.SHOP_FACILITY1 = 2) ";
+		}
+		
+		// 売店
+		if ( in_array(5, $arrFacility)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (st.SHOP_FACILITY10 = 1) ";
+		}
+		
+		// 更衣室
+		if ( in_array(6, $arrFacility)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (st.SHOP_FACILITY4 = 1 OR st.SHOP_FACILITY4 = 2) ";
+		}
+		
+		// 貴重品預かり(未定)
+// 		if ( in_array(0, $arrFacility)) {
+// 			if ($where != "") {
+// 				$where .= "and ";
+// 			}
+// 			$where .= " (st.SHOP_FACILITY4 = 1 OR st.SHOP_FACILITY4 = 2) ";
+// 		}
+
+		//// 駐車場あり
+		// 有料駐車場
+		if ( in_array(1, $arrAccess)) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			if(in_array(2, $arrAccess)){
+				$where .= " ((st.SHOP_PARKINGFLG = 1 AND st.SHOP_PARKINGMONEYFLG = 2) ";
+			} else {
+				$where .= " (st.SHOP_PARKINGFLG = 1 AND st.SHOP_PARKINGMONEYFLG = 2) ";
+			}
+		}
+		
+		// 無料駐車場
+		if ( in_array(2, $arrAccess)) {
+			if ($where != "") {
+				$where .= (in_array(1, $arrAccess))?" or ":" and ";
+			}
+			
+			if(in_array(1, $arrAccess)){
+				$where .= " (st.SHOP_PARKINGFLG = 1 AND st.SHOP_PARKINGMONEYFLG = 1)) ";
+			} else {
+				$where .= " (st.SHOP_PARKINGFLG = 1 AND st.SHOP_PARKINGMONEYFLG = 1) ";
+			}
 		}
 		
 		// >>>>> add settenLab

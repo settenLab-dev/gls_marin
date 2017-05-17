@@ -9,7 +9,7 @@
         <div class="left">
 			<form name="key-search" method="POST" action="/plan-search.html">
 			<div class="key-search-box">
-	  			<input type="search" name="free" placeholder="例）フライボード、ダイビング" value="" class="search-inner">
+	  			<input type="search" name="free" placeholder="例）フライボード、ダイビング" value="<?php echo $collection->getByKey($collection->getKeyValue(), "free");?>" class="search-inner">
 	  			<!--<input type="hidden" name="undecide_sch" value="1">-->
 				<button class="key-search-btn" onclick="document.key-search.submit();">検索</button>
 			</div>

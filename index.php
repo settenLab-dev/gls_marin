@@ -53,7 +53,7 @@ for($i = 0; $i <= $after_days; $i++){
 	$collection->setByKey($collection->getKeyValue(), "limit", 5);
 	$collection->setByKey($collection->getKeyValue(), "limitptn", "plan");
 	$collection->setByKey($collection->getKeyValue(), "search_date", $search_date);
-	$collection->setByKey($collection->getKeyValue(), "priceper_num", 1);
+// 	$collection->setByKey($collection->getKeyValue(), "priceper_num", 1);	// 人数指定なし
 	cmSetHotelSearchDef($collection);
 	
 	$shop->selectListPublicPlan($collection);
@@ -61,45 +61,47 @@ for($i = 0; $i <= $after_days; $i++){
 	
 	foreach($arrPlanData as $key => $data) {
 		$count_spi = "";
-		for ($i=1; $i<=12; $i++){
-			if($data["SHOPPLAN_MEET_TIMEHOUR".$i] > "0"){
-				$count_spi = $i;
+		for ($j=1; $j<=12; $j++){
+			if($data["SHOPPLAN_MEET_TIMEHOUR".$j] > "0"){
+				$count_spi = $j;
 			}
 		}
 		
 		// 各プランの料金書き出す
-		for ($i=1; $i<=$count_spi; $i++){
+		for ($j=1; $j<=$count_spi; $j++){
 			$search_collection = new collection($db);
 			$search_collection->setByKey($search_collection->getKeyValue(), "SHOPPLAN_ID", $data["SHOPPLAN_ID"]);
-			$search_collection->setByKey($search_collection->getKeyValue(), "SHOP_PRICETYPE_ID", $data["SHOP_PRICETYPE_ID".$i]);
+			$search_collection->setByKey($search_collection->getKeyValue(), "SHOP_PRICETYPE_ID", $data["SHOP_PRICETYPE_ID".$j]);
 			$search_collection->setByKey($search_collection->getKeyValue(), "SEARCH_DATE", $collection->getByKey($collection->getKeyValue(), "search_date"));
 			//日付指定なし
-			$search_collection->setByKey($search_collection->getKeyValue(), "undecide_sch", 1);
-			$search_collection->setByKey($search_collection->getKeyValue(), "priceper_num", $collection->getByKey($collection->getKeyValue(), "priceper_num"));
+// 			$search_collection->setByKey($search_collection->getKeyValue(), "undecide_sch", 1);
+// 			$search_collection->setByKey($search_collection->getKeyValue(), "priceper_num", $collection->getByKey($collection->getKeyValue(), "priceper_num"));
 		
 			if ($collection->getByKey($collection->getKeyValue(), "undecide_sch") == 1) {
 				//	指定なし
 		
+				//ルーム毎の大人人数計算
 				$room_sch = $shop->selectMoneyEveryRoomUndecideSch($search_collection);
 		
 				// 設定されている料金帯の数をカウント
 				if($room_sch != ""){
-					$room[$i] = $room_sch;
+					$room[$j] = $room_sch;
 				}
 			}
 			else {
+				//ルーム毎の大人人数計算
 				$room_sch = $shop->selectMoneyEveryRoom($search_collection);
 				if($room_sch != ""){
-					$room[$i] = $room_sch;
+					$room[$j] = $room_sch;
 				}
 			}
 		}
 		
 		$money_total = "";
 		$money_total_perroom = 0;
-		for ($i=1; $i<=12; $i++){
-			if($room[$i]["money_ALL"] !=""){
-				$money_total[$i] = $room[$i]["money_ALL"];
+		for ($j=1; $j<=12; $j++){
+			if($room[$j]["money_ALL"] !=""){
+				$money_total[$j] = $room[$j]["money_ALL"];
 			}
 		}
 		
@@ -108,6 +110,7 @@ for($i = 0; $i <= $after_days; $i++){
 		$keys = array_keys($money_total);
 		$money_total_cid = $keys[0];
 		
+		// 最安料金をセット
 		if ($arrPlanData[$key]["money_all"] == "" || $arrPlanData[$key]["money_all"] > $data["money_all"]) {
 			$arrPlanData[$key]["money_all"] = $money_total[$money_total_cid];
 		}
@@ -173,6 +176,9 @@ foreach($arrCategoryParentData as $categ_parent){
 		$arrPullCategoryParent[] = $categ_parent;
 	}
 }
+
+// inputクラス生成
+$inputs = new inputs();
 
 ?>
 
@@ -319,11 +325,11 @@ $(document).ready(function() {
 		<section>
 			<section id="result_box">
 				<form method="post" action="plan-search.html" name="search_form" id="search_form">
-					<input type="hidden" name="priceper_num" id="priceper_num" value="1">
+					<!-- <input type="hidden" name="priceper_num" id="priceper_num" value="1"> --><?php // del settenLab 人数指定は必要ないためコメントアウト ?>
 					<ul class="search_selecter">
 						<li class="search_icon"> </li>
 						<li class="search_area">
-							<select name="area" id="area">
+							<select name="child_area_id" id="child_area_id">
 								<option value="" selected="selected">エリアを選択</option>
 								<?php if (count($arrPullAreaChild) > 0) {?>
 									<?php
@@ -336,7 +342,7 @@ $(document).ready(function() {
 							<span>×</span>
 						</li>
 						<li class="search_category">
-							<select name="category" id="category">
+							<select name="parent_category_id" id="parent_category_id">
 								<option value="" selected="selected">カテゴリを選択</option>
 								<?php if (count($arrPullCategoryParent) > 0) {?>
 								<?php
@@ -382,11 +388,21 @@ $(document).ready(function() {
 							<?php foreach($plans as $plandata):?>
 								<ul class="plan_box">
 									<li class="inner">
-										<a href="">
+										<?php $formplan = "frm_".$key."_".$plandata["COMPANY_ID"]."_".$plandata["SHOPPLAN_ID"];?>
+										<form action="plan-detail.html?cid=<?php echo $plandata["COMPANY_ID"];?>&pid=<?php echo $plandata["SHOPPLAN_ID"];?>&num=<?php echo $collection->getByKey($collection->getKeyValue(), "priceper_num");?>" method="post" id="<?php echo $formplan; ?>" name="<?php echo $formplan; ?>">
+											<?php echo $inputs->hidden("COMPANY_ID", $plandata["COMPANY_ID"])?>
+											<?php echo $inputs->hidden("SHOP_ID", $plandata["SHOP_ID"])?>
+											<?php echo $inputs->hidden("SHOPPLAN_ID", $plandata["SHOPPLAN_ID"])?>
+											<?php echo $inputs->hidden("search_date", $collection->getByKey($collection->getKeyValue(), "search_date"))?>
+											<?php echo $inputs->hidden("undecide_sch", $collection->getByKey($collection->getKeyValue(), "undecide_sch"))?>
+											<?php echo $inputs->hidden("priceper_num", $collection->getByKey($collection->getKeyValue(), "priceper_num"))?>
+											<?php echo $inputs->hidden("calender_mon", $plandata["money_all"])?>
+										</form>
+										<a href="javascript:void(0);" onclick='document.<?php echo $formplan; ?>.submit();'>
 											<?php if ($plandata["SHOPPLAN_PIC1"] != "" || $plandata["SHOPPLAN_PIC1"] != "") {?>
-												<img src="<?php print URL_SLAKER_COMMON."/images/".$plandata["SHOPPLAN_PIC1"]?>" class="fl-l" alt="<?php print $plandata["SHOPPLAN_NAME"]?>" style='width: 170px;'>
+												<img src="<?php echo URL_SLAKER_COMMON."/images/".$plandata["SHOPPLAN_PIC1"]?>" class="fl-l" alt="<?php print $plandata["SHOPPLAN_NAME"]?>" style='width: 170px;'>
 											<?php }else{?>
-												<img src="<?php print URL_SLAKER_COMMON?>assets/noImage.jpg" class="fl-l" alt="<?php print $plandata["SHOPPLAN_NAME"]?>">
+												<img src="<?php echo URL_SLAKER_COMMON?>assets/noImage.jpg" class="fl-l" alt="<?php print $plandata["SHOPPLAN_NAME"]?>">
 											<?php }?>
 											
 											<p class="title">
