@@ -66,21 +66,30 @@ else {
 	cmSetHotelSearchDef($collection);
 }
 
-$collection->setByKey($collection->getKeyValue(), "pageNum", 10);
+// $collection->setByKey($collection->getKeyValue(), "pageNum", 10);
 
 //print_r($collection);
 
 //	ページャ設定
+// 表示件数
 $perpage = $collection->getByKey($collection->getKeyValue(), "pageNum");
+if(empty($perpage)){
+	$perpage = 10;
+}
+// 現在のページ
 $page = $collection->getByKey($collection->getKeyValue(), "pageID");
+if(empty($page)){
+	$page = 1;
+}
 $currentPage = 0;
 if (!cmCheckNull($page) or !cmCheckPtn($page, CHK_PTN_NUM) or $page <= 0) {
 	$currentPage = 0;
-}
-else {
+} else {
 	$currentPage = $page-1;
 }
-$limit = ($currentPage*$perpage).",".$perpage;
+
+$limit = ($currentPage * $perpage).",".$perpage;
+var_dump($limit);
 $collection->setByKey($collection->getKeyValue(), "limit", $limit);
 $collection->setByKey($collection->getKeyValue(), "limitptn", "plan");
 
@@ -116,18 +125,24 @@ if ($shop->getCount() > 0) {
 	foreach ($shop->getCollection() as $data) {
 //print_r($dspArray);
 		$planCnt++;
-		$dspArray[$planCnt]["COMPANY_ID"] = $data["COMPANY_ID"];
-		$dspArray[$planCnt]["SHOP_ID"] = $data["SHOP_ID"];
-		$dspArray[$planCnt]["SHOP_NAME"] = $data["SHOP_NAME"];
-		$dspArray[$planCnt]["SHOPPLAN_ID"] = $data["SHOPPLAN_ID"];
-		$dspArray[$planCnt]["SHOPPLAN_NAME"] = $data["SHOPPLAN_NAME"];
-		$dspArray[$planCnt]["SHOPPLAN_PIC1"] = $data["SHOPPLAN_PIC1"];
+		$dspArray[$planCnt]["COMPANY_ID"]         = $data["COMPANY_ID"];
+		$dspArray[$planCnt]["SHOP_ID"]            = $data["SHOP_ID"];
+		$dspArray[$planCnt]["SHOP_NAME"]          = $data["SHOP_NAME"];
+		$dspArray[$planCnt]["SHOP_ADDRESS"]       = $data["SHOP_ADDRESS"];
+		
+		$dspArray[$planCnt]["SHOPPLAN_ID"]        = $data["SHOPPLAN_ID"];
+		$dspArray[$planCnt]["SHOPPLAN_NAME"]      = $data["SHOPPLAN_NAME"];
+		$dspArray[$planCnt]["SHOPPLAN_PIC1"]      = $data["SHOPPLAN_PIC1"];
 		$dspArray[$planCnt]["SHOPPLAN_SALE_FROM"] = $data["SHOPPLAN_SALE_FROM"];
-		$dspArray[$planCnt]["SHOPPLAN_SALE_TO"] = $data["SHOPPLAN_SALE_TO"];
+		$dspArray[$planCnt]["SHOPPLAN_SALE_TO"]   = $data["SHOPPLAN_SALE_TO"];
 
 		$dspArray[$planCnt]["SHOPPLAN_DISCRIPTION"] = $data["SHOPPLAN_DISCRIPTION"];
+		
+		$dspArray[$planCnt]["SHOPPLAN_AGE_FROM"]    = $data["SHOPPLAN_AGE_FROM"];
+		$dspArray[$planCnt]["SHOPPLAN_DEPARTS_MIN"] = $data["SHOPPLAN_DEPARTS_MIN"];
+		$dspArray[$planCnt]["SHOPPLAN_ALL_TIME"]    = $data["SHOPPLAN_ALL_TIME"];
 
-		$dspArray[$planCnt]["SHOP_LIST_AREA"] = $data["SHOP_LIST_AREA"];
+		$dspArray[$planCnt]["SHOP_LIST_AREA"]      = $data["SHOP_LIST_AREA"];
 		$dspArray[$planCnt]["SHOPPLAN_AREA_LIST1"] = $data["SHOPPLAN_AREA_LIST1"];
 		$dspArray[$planCnt]["SHOPPLAN_AREA_LIST2"] = $data["SHOPPLAN_AREA_LIST2"];
 		$dspArray[$planCnt]["SHOPPLAN_AREA_LIST3"] = $data["SHOPPLAN_AREA_LIST3"];
@@ -284,8 +299,8 @@ else {
 }
 //	ページャ取得
 $pager_options = array(
-		'mode'       => 'Jumping', // 表示タイプ(Jumping/Sliding)
-		'perPage'    => $perpage,        // 一ページ内で表示する件数
+		'mode'       => 'Jumping',              // 表示タイプ(Jumping/Sliding)
+		'perPage'    => $perpage,               // 一ページ内で表示する件数
 		'totalItems' => $shop->getMaxCount(),   // ページング対象データの総数
 		'httpMethod' => 'POST',
 		'importQuery'=> FALSE,
@@ -293,7 +308,7 @@ $pager_options = array(
 		'spacesAfterSeparator'=> 2,
 		'prevImg'=> '<span class="prev">前へ</span>',
 		'nextImg'=> '<span class="next">次へ</span>',
-		'extraVars'  =>$page_post
+// 		'extraVars'  =>$page_post
 );
 $pager =& Pager::factory($pager_options);
 $navi = $pager->getLinks();
@@ -432,6 +447,13 @@ $arrUseTime = array(
 				,array('val' => 2880, 'label' => "2日以内")
 			);
 
+// タグ取得
+$arrTagData     = $mTag->getCollection();
+$arrListTagData = array();
+// タグ配列作成
+foreach($arrTagData as $data){
+	$arrTagData[$data['M_TAG_ID']] = $data["M_TAG_NAME"];
+}
 // >>>>> add settenLab
 ?>
 
@@ -609,6 +631,7 @@ $(function() {
 										$arrPay      = $collection->getByKey($collection->getKeyValue(), "pay");
 										$arrFacility = $collection->getByKey($collection->getKeyValue(), "facility");
 										$arrAccess   = $collection->getByKey($collection->getKeyValue(), "access");
+										$insurance   = $collection->getByKey($collection->getKeyValue(), "insurance");
 									?>
 									<li class="subtitle">利用シーン</li>
 										<li class="check">
@@ -643,7 +666,7 @@ $(function() {
 										<li class="check">
 											<label><input type="checkbox" name="pay[]" value="12" id="tag12" <?php if(in_array(12, $arrPay)) echo "checked='checked'"; ?>> 事前払い</label>
 										</li>
-										
+									<!-- 
 									<li class="subtitle">団体予約</li>
 										<li class="check">
 											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 10人以上</label>
@@ -657,7 +680,7 @@ $(function() {
 										<li class="check">
 											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 100人以上</label>
 										</li>
-										
+									 -->
 									<li class="subtitle">サービス</li>
 										<li class="check">
 											<label><input type="checkbox" name="tag[]" value="16" id="tag16" <?php if(in_array(16, $arrTag)) echo "checked='checked'"; ?>> 食事付</label>
@@ -681,7 +704,7 @@ $(function() {
 											<label><input type="checkbox" name="tag[]" value="13" id="tag13" <?php if(in_array(13, $arrTag)) echo "checked='checked'"; ?>> ライセンス</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="tag" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 保険</label>
+											<label><input type="checkbox" name="insurance" value="1" id="tag" <?php if($insurance == 1) echo "checked='checked'"; ?>> 保険</label>
 										</li>
 										<li class="check">
 											<label><input type="checkbox" name="tag[]" value="14" id="tag14" <?php if(in_array(14, $arrTag)) echo "checked='checked'"; ?>> レンタル</label>
@@ -733,16 +756,16 @@ $(function() {
 											<label><input type="checkbox" name="tag[]" value="3" id="tag3" <?php if(in_array(3, $arrTag)) echo "checked='checked'"; ?>> オールシーズン</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 春</label>
+											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 春</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 夏</label>
+											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 夏</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 秋</label>
+											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 秋</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 冬</label>
+											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 冬</label>
 										</li>
 									<li class="btn">
 										<div class="btn_submit"><input type="button" value="この条件で検索する" onclick="document.search_side_list.submit();" class="search-list-btn"></div>
@@ -776,7 +799,8 @@ $(function() {
 					<div class="search-result">
 							
 						<form name="frmSearchChange" id="frmSearchChange" method="POST" action="/plan-search.html">
-							<input type="hidden" name="orderdata" value="" />
+							<input type="hidden" name="orderdata" value="<?php echo $collection->getByKey($collection->getKeyValue(), "orderdata"); ?>" >
+							<input type="hidden" name="pageID" value="<?php echo $collection->getByKey($collection->getKeyValue(), "pageID"); ?>" >
 							<div class="">
 						
 								<div class="search-change-box">
@@ -808,7 +832,7 @@ $(function() {
 											<li class="int_cross">×</li>
 										<li class="box"><a href="#menu5">さらに詳しく</a></li>
 									</ul>
-									<button class="search-change-btn" type="submit" onclick="document.frmSearchChange.submit();">この条件で検索</button>
+									<button class="search-change-btn" type="submit" onclick="setPage(1);document.frmSearchChange.submit();">この条件で検索</button>
 								</div>
 						
 								<div class="menu2" id="menu2">
@@ -985,7 +1009,7 @@ $(function() {
 												<label class="multiple-option"><input type="checkbox" name="pay[]" value="11" id="tag11" <?php if(in_array(11, $arrPay)) echo "checked='checked'"; ?>> 現地払い</label>
 												<label class="multiple-option"><input type="checkbox" name="pay[]" value="12" id="tag12" <?php if(in_array(12, $arrPay)) echo "checked='checked'"; ?>> 事前払い</label>
 											</div>
-						
+											<!-- 
 											<b class="sub-head">団体予約</b>
 											<div class="sub-wrap">
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 10人以上</label>
@@ -993,6 +1017,7 @@ $(function() {
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 30人以上</label>
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 100人以上</label>
 											</div>
+											 -->
 											<b class="sub-head">サービス</b>
 											<div class="sub-wrap">
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="16" id="tag16" <?php if(in_array(16, $arrTag)) echo "checked='checked'"; ?>> 食事付</label>
@@ -1002,7 +1027,7 @@ $(function() {
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="12" id="tag12" <?php if(in_array(12, $arrTag)) echo "checked='checked'"; ?>> 貸切可</label>
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="11" id="tag11" <?php if(in_array(11, $arrTag)) echo "checked='checked'"; ?>> 料金割引</label>
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="13" id="tag13" <?php if(in_array(13, $arrTag)) echo "checked='checked'"; ?>> ライセンス</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="tag" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 保険</label>
+												<label class="multiple-option"><input type="checkbox" name="insurance" value="1" id="insurance" <?php if($insurance == 1) echo "checked='checked'"; ?>> 保険</label>
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="14" id="tag14" <?php if(in_array(14, $arrTag)) echo "checked='checked'"; ?>> レンタル</label>
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="19" id="tag19" <?php if(in_array(19, $arrTag)) echo "checked='checked'"; ?>> 初心者OK</label>
 											</div>
@@ -1029,10 +1054,10 @@ $(function() {
 											<b class="sub-head">シーズン</b>
 											<div class="sub-wrap">
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="3" id="tag3" <?php if(in_array(3, $arrTag)) echo "checked='checked'"; ?>> オールシーズン</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 春</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 夏</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 秋</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(0, $arrTag)) echo "checked='checked'"; ?>> 冬</label>
+												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 春</label>
+												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 夏</label>
+												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 秋</label>
+												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 冬</label>
 											</div>
 										</div><!-- /.sub-inner -->
 									</div><!-- /.inner -->
@@ -1120,36 +1145,40 @@ $(function() {
 												<li class="">現地払い</li>
 											</ul>
 										-->
-							
-											<ul class="tag">
-												<li class="">グループ・団体向け</li>
-												<li class="">子供参加可</li>
-												<li class="">午後</li>
-												<li class="">現地払い</li>
-												<li class="">雨の日</li>
-												<li class="">オールシーズン</li>
-											</ul>
+											<?php
+												// 登録タグ表示
+												$arrPlanTagData = array();
+												$arrPlanTagData = explode(":", $plandata['SHOPPLAN_TAG_LIST']);
+												$arrPlanTagData = array_values(array_filter($arrPlanTagData));
+											?>
+											<?php if(count($arrPlanTagData) > 0): ?>
+												<ul class="tag">
+													<?php foreach($arrPlanTagData as $tag_id): ?>
+														<li class=''><?php echo $arrTagData[$tag_id];?></li>
+													<?php endforeach; ?>
+												</ul>
+											<?php endif; ?>
 						
-											<p class="plan-disc"><?php print cmStrimWidth($plandata["SHOPPLAN_DISCRIPTION"], 0, 272, '…')?></p>
+											<p class="plan-disc"><?php echo cmStrimWidth($plandata["SHOPPLAN_DISCRIPTION"], 0, 272, '…');?></p>
 						
 											<div class="box_detail">
 												<div class="plan-address">
-													<p><i class="fa fa-map-marker fa-1" aria-hidden="true"></i> 東京都中央区銀座5-10-1プリンスビル3階(サンプル)</p>
+													<p><i class="fa fa-map-marker fa-1" aria-hidden="true"></i> <?php echo $plandata['SHOP_ADDRESS']; ?></p>
 												</div>
 												<ul>
 													<li>
 														<p>
-															【所要時間】1時間半～
+															【所要時間】<?php echo $plandata['SHOPPLAN_ALL_TIME']; ?>～
 														</p>
 													</li>
 													<li>
 														<p>
-															【対象年齢】1時間半～
+															【対象年齢】<?php echo $plandata['SHOPPLAN_AGE_FROM']; ?>歳～
 														</p>
 													</li>
 													<li>
 														<p>
-															【催行人数】1時間半～
+															【催行人数】<?php echo $plandata['SHOPPLAN_DEPARTS_MIN']; ?>人～
 														</p>
 													</li>
 												</ul>
@@ -1170,6 +1199,7 @@ $(function() {
 							<?php endif; ?>
 						</ul>
 					
+						<!-- 
 						<?php if ($navi["back"] != "" or $navi["next"] != "") {?>
 							<ul class="navigation-se clearfix">
 								<?php if ($navi["back"] != "") {?>
@@ -1181,23 +1211,45 @@ $(function() {
 								<?php }?>
 							</ul>
 						<?php }?>
-							
-						<div class="nav_cont">
-							<ul class="navigation-se">
-								<li class="prev"><a href="#">前へ</a></li>
-								<li class="current">1</li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#">6</a></li>
-								<li><a href="#">7</a></li>
-								<li><a href="#">8</a></li>
-								<li><a href="#">9</a></li>
-								<li><a href="#">10</a></li>
-								<li class="next"><a href="#">次へ</a></li>
-							</ul>
-						</div><!-- /.nav_cont -->
+						-->
+						
+						<?php // ページネーション ?>
+						<script type="text/javascript">
+							function setPage(page){
+								$("input[name='pageID']").val(page);
+							}
+							function page_submit(page){
+								setPage (page);
+								document.frmSearchChange.submit();
+							}
+						</script>
+						<?php if($pager->numPages() > 1): ?>
+							<?php
+								$totalPage     = $pager->numPages();
+								$currentPageID = $pager->getCurrentPageID();
+								$nextPageID    = $pager->getNextPageID();
+								$prevPageID    = $pager->getPreviousPageID();
+							?>
+							<div class="nav_cont">
+								<ul class="navigation-se">
+									<?php if(!empty($prevPageID)):?>
+										<li class="prev"><a href="javascript:void(0);" onclick='page_submit(<?php echo $prevPageID;?>);return false;'>前へ</a></li>
+									<?php endif;?>
+									<?php 
+										for($i = 1; $i <= $totalPage; $i++){
+											if($currentPageID == $i){
+												echo "<li class='current'>".$i."</li>";
+											} else {
+												echo "<li><a href='javascript:void(0);' onclick='page_submit(".$i.");return false;'>".$i."</a></li>";
+											}
+										}
+									?>
+									<?php if(!empty($nextPageID)):?>
+										<li class="next"><a href="javascript:void(0);" onclick='page_submit(<?php echo $nextPageID;?>);return false;'>次へ</a></li>
+									<?php endif;?>
+								</ul>
+							</div><!-- /.nav_cont -->
+						<?php endif; ?>
 					</div>
 				</div><!-- /#right -->
 			</div>

@@ -22,6 +22,11 @@ class shop extends collection {
 		//	合計人数
 		$checkNum = $this->resStayNum($collection);
 
+		// 最大数SQL作成
+		$countMaxSQL = "select ";
+		$countMaxSQL .= "count(spt.SHOPPLAN_ID) as cnt ";
+		
+		// 検索SQL作成
 		$sql  = "select ";
 	//	$sql .= "SQL_CALC_FOUND_ROWS ";
 
@@ -42,7 +47,6 @@ class shop extends collection {
 		for ($i=1; $i<=7; $i++) {
 			$sql .= "st.SHOP_CHILD".$i.", ";
 		}
-
 
 		//	プラン
 		$sql .= "spt.SHOPPLAN_ID, ";
@@ -183,7 +187,10 @@ class shop extends collection {
 		}
 		$sql .= "spt.SHOPPLAN_ORDER ";
 
+		// FROM取得
 		$sql .= $this->resFrom($collection);
+		$countMaxSQL .= $this->resFrom($collection);
+		
 		//	検索件数対象
 		if ($collection->getByKey($collection->getKeyValue(), "limitptn") == "company") {
 			if ($collection->getByKey($collection->getKeyValue(), "targetId") != "") {
@@ -201,15 +208,18 @@ class shop extends collection {
 
 		if ($where != "") {
 			$sql .= "where ".$where." ";
+			$countMaxSQL .= "where ".$where." ";
 		}
 		//  検索方法でgroup分化
 			//  ショップで検索
 		if ($collection->getByKey($collection->getKeyValue(), "limitptn") == "company") {
 			$sql .= "group by spt.SHOPPLAN_ID, ct.COMPANY_ID ";
+			$countMaxSQL .= "group by spt.SHOPPLAN_ID, ct.COMPANY_ID ";
 		}
 			//  プランで検索
 		if ($collection->getByKey($collection->getKeyValue(), "limitptn") == "plan") {
 			$sql .= "group by spt.SHOPPLAN_ID ";
+			$countMaxSQL .= "group by spt.SHOPPLAN_ID ";
 		}
 
 		$having = "";
@@ -218,6 +228,7 @@ class shop extends collection {
 
 	//	print $sql;
 		$sql = "(".$sql.") ";
+		$countMaxSQL = "(".$countMaxSQL.") ";
 		
 		//// 並び替え
 		$orderdata = $collection->getByKey($collection->getKeyValue(), "orderdata");
@@ -236,17 +247,19 @@ class shop extends collection {
 			$sql .= " order by spt.SHOPPLAN_ORDER ";
 		}
 
-			//  プランで検索
+		//  プランで検索時の表示分母
+		parent::setCollection($countMaxSQL, "", false, true);
+		// 最大数をセット
+		if ($collection->getByKey($collection->getKeyValue(), "limitptn") == "plan") {
+			parent::setMaxCount();
+		}
+		//  プランで検索
 		if ($collection->getByKey($collection->getKeyValue(), "limitptn") == "plan") {
 			if ($collection->getByKey($collection->getKeyValue(), "limit") != "") {
 				$sql .= "limit ".$collection->getByKey($collection->getKeyValue(), "limit")." ";
 			}
 		}
-			//  プランで検索時の表示分母
 		parent::setCollection($sql, "", false, true);
-		if ($collection->getByKey($collection->getKeyValue(), "limitptn") == "plan") {
-			parent::setMaxCount();
-		}
 
 // 	print_r($sql);
 
@@ -398,6 +411,10 @@ class shop extends collection {
 		$sql .= "s.SHOP_ADDRESS, ";
 		$sql .= "s.SHOP_OPENTIME, ";
 		$sql .= "s.SHOP_CLOSEDAY, ";
+		
+		$sql .= "s.SHOP_SAFETY_FACFLG, ";
+		$sql .= "s.SHOP_SAFETY_INJFLG, ";
+		
 		for ($i=1; $i<=6; $i++) {
 			$sql .= "s.SHOP_PIC".$i.", ";
 			$sql .= "s.SHOP_PIC_TEXT".$i.", ";
@@ -1323,6 +1340,7 @@ class shop extends collection {
 		$arrPay      = $collection->getByKey($collection->getKeyValue(), "pay");
 		$arrFacility = $collection->getByKey($collection->getKeyValue(), "facility");
 		$arrAccess   = $collection->getByKey($collection->getKeyValue(), "access");
+		$insurance   = $collection->getByKey($collection->getKeyValue(), "insurance");
 		
 		//// タグ
 		$arrWhereTag = array();
@@ -1337,6 +1355,14 @@ class shop extends collection {
 			}
 			$whereTag = implode("or", $arrWhereTag);
 			$where .= $whereTag;
+		}
+		
+		// 保険
+		if ($insurance == 1) {
+			if ($where != "") {
+				$where .= " and ";
+			}
+			$where .= " (st.SHOP_SAFETY_FACFLG = 1 OR (st.SHOP_SAFETY_INJFLG = 2 OR st.SHOP_SAFETY_INJFLG = 3)) ";
 		}
 		
 		//// 支払い方法
