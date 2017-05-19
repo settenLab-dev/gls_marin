@@ -818,75 +818,75 @@ EOM;
 			{$year}年{$month}月
 		</th>
 	</tr>
-    <tr>
-        <th class="red" width="100">日</th>
-        <th width="100">月</th>
-        <th width="100">火</th>
-        <th width="100">水</th>
-        <th width="100">木</th>
-        <th width="100">金</th>
-        <th width="100" class="blue">土</th>
-    </tr>\n
+	<tr>
+		<th class="red" width="100">日</th>
+		<th width="100">月</th>
+		<th width="100">火</th>
+		<th width="100">水</th>
+		<th width="100">木</th>
+		<th width="100">金</th>
+		<th width="100" class="blue">土</th>
+	</tr>\n
 EOM;
 
 		$lc = 0;
-	    //月末分繰り返す
-	    for ($i = 1; $i < $l_day + 1;$i++) {
-	        //曜日の取得
-	        $week = date("w", mktime(0, 0, 0, $month, $i, $year));
-	        //曜日が日曜日の場合
-	        if ($week == 0) {
-	            $tmp .= "\t<tr>\n";
-	            $lc++;
-	        }
-	        //1日の場合
-	        if ($i == 1) {
-	            if($week != 0) {
-	                $tmp .= "\t<tr>\n";
-	                $lc++;
-	            }
-	            $tmp .= repeat($week);
-	        }
+		//月末分繰り返す
+		for ($i = 1; $i < $l_day + 1;$i++) {
+			//曜日の取得
+			$week = date("w", mktime(0, 0, 0, $month, $i, $year));
+			//曜日が日曜日の場合
+			if ($week == 0) {
+				$tmp .= "\t<tr>\n";
+				$lc++;
+			}
+			//1日の場合
+			if ($i == 1) {
+				if($week != 0) {
+					$tmp .= "\t<tr>\n";
+					$lc++;
+				}
+				$tmp .= repeat($week);
+			}
 
-	        $val = "off";
-	        $class = "";
-	        $today = $year."-".str_pad($month, 2, "0", STR_PAD_LEFT)."-".str_pad($i, 2, "0", STR_PAD_LEFT);
+			$val = "off";
+			$class = "";
+			$today = $year."-".str_pad($month, 2, "0", STR_PAD_LEFT)."-".str_pad($i, 2, "0", STR_PAD_LEFT);
 
-	        if ($_POST["date"][$today] == "on") {
-		        $val = "on";
-		        $class = "active";
-	        }
+			if ($_POST["date"][$today] == "on") {
+				$val = "on";
+				$class = "active";
+			}
 
-	        $flgHoliday = false;
-	        $classHoliday = " ";
-	        if (cmHolidayCheck($today)) {
-	        	$flgHoliday = true;
-	        	$classHoliday = " holiday ";
-	        }
-	        elseif ($holiady != "") {
-		        $targetHliday = date("Y-m-d",strtotime("1 day" ,strtotime($today)));
-	        	if ($holiady->getByKey($targetHliday, "M_HOLIDAY_ID") != "") {
-	        		$flgHoliday = true;
-		        	$classHoliday = " holiday ";
-	        	}
-	        }
+			$flgHoliday = false;
+			$classHoliday = " ";
+			if (cmHolidayCheck($today)) {
+				$flgHoliday = true;
+				$classHoliday = " holiday ";
+			}
+			elseif ($holiady != "") {
+				$targetHliday = date("Y-m-d",strtotime("1 day" ,strtotime($today)));
+				if ($holiady->getByKey($targetHliday, "M_HOLIDAY_ID") != "") {
+					$flgHoliday = true;
+					$classHoliday = " holiday ";
+				}
+			}
 
-	        if ($i < date("j")+$acc_day && $year == date("Y") && $month == date("n")) {
-	        	$tmp .= "\t\t<td valign='top' class='outday'><p class='date'>{$i}</p></td>\n";
-	        }
-// 	        elseif ($i == date("j") && $year == date("Y") && $month == date("n")) {
-// 	            //現在の日付の場合
+			if ($i < date("j")+$acc_day && $year == date("Y") && $month == date("n")) {
+				$tmp .= "\t\t<td valign='top' class='outday'><p class='date'>{$i}</p></td>\n";
+			}
+// 			elseif ($i == date("j") && $year == date("Y") && $month == date("n")) {
+// 				//現在の日付の場合
 // 				$tmp .= '<td class="bg4  '.$class.$classHoliday.'">';
-// 	            $tmp .= $i;
+// 				$tmp .= $i;
 // 				$tmp .= '<input type="hidden" id="date'.$today.'" name="date['.$today.']" value="'.$val.'" />';
-// 	        	if ($flgHoliday) {
+// 				if ($flgHoliday) {
 // 					$tmp .= '<input type="hidden" id="holiday'.$today.'" name="holiday['.$today.']" value="'.$flgHoliday.'" />';
 // 				}
 // 				$tmp .= '</td>';
-// 	        }
-	        else {
+// 			}
+			else {
 
-	        	$date = $year."-".str_pad($month, 2, "0", STR_PAD_LEFT)."-".str_pad($i, 2, "0", STR_PAD_LEFT);
+				$date = $year."-".str_pad($month, 2, "0", STR_PAD_LEFT)."-".str_pad($i, 2, "0", STR_PAD_LEFT);
 
 			$nowdate = date('Y-m-d');
 			$time_hour = date('H');
@@ -912,111 +912,112 @@ EOM;
 				//提供室数ではなく、残室数表示する
 				//print_r($hotelPayList);
 				$leftRoomNum = $hotelPayList[$date]["calender_room"];
-				$dsp_Price = $hotelPayList[$date]["calender_price"];
+				$dsp_Price   = $hotelPayList[$date]["calender_price"];
 //print $leftRoomNum;
 //print $dsp_Price;
 
-	        	if ($acc_flg == 1 && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
-	        		$formname = "frm".$hotelPayList[$date]["COMPANY_ID"]."_".$hotelPayList[$date]["SHOPPLAN_ID"]."_".str_replace("-", "", $date);
-	        		$tmp .= '<td class="bg1 '.$class.$classHoliday.'" valign="top">';
+				if ($acc_flg == 1 && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
+					$formname = "frm".$hotelPayList[$date]["COMPANY_ID"]."_".$hotelPayList[$date]["SHOPPLAN_ID"]."_".str_replace("-", "", $date);
+					$tmp .= '<td class="bg1 '.$class.$classHoliday.'" valign="top">';
 					if ($acc_flg == 1 && ($dsp_Price > 0 || $dsp_Price != "x") && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
 						$tmp .= '<a href="javascript:;"  onclick="document.'.$formname.'.submit();" style="">';
 					}
-	        	}
-	        	else {
-		            $tmp .= '<td class=" '.$class.$classHoliday.'" valign="top" align="center">';
-	        	}
-	        	
-	            $tmp .= '<p class="date">'.$i.'</p>';
+				}
+				else {
+					$tmp .= '<td class=" '.$class.$classHoliday.'" valign="top" align="center">';
+				}
+				
+				$tmp .= '<p class="date">'.$i.'</p>';
 
-	            if ($acc_flg == 1 && ($dsp_Price > 0 || $dsp_Price != "x") && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
+				if ($acc_flg == 1 && ($dsp_Price > 0 || $dsp_Price != "x") && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
 			//print $dsp_Price;
-		            $tmp .= '<ul><li><b>￥'.number_format($dsp_Price).'</b></li>';
-	            }
-	            else {
-		            $tmp .= '<ul><li>－</li>';
-	            }
+					$tmp .= '<ul><li><b>￥'.number_format($dsp_Price).'</b></li>';
+				}
+				else {
+					$tmp .= '<ul><li>－</li>';
+				}
 /*
-	            if ($hotelPayList[$date]["HOTELPROVIDE_FLG_STOP"] == 1 && $hotelPayList[$date]["money_1"] > 0 && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
-		            $tmp .= '<li class="stxt">(￥'.number_format($hotelPayList[$date]["money_1"]).'/人)</li>';
-	            }
-		    else {
-		            $tmp .= '<li class="stxt">－</li>';
-	            }
+				if ($hotelPayList[$date]["HOTELPROVIDE_FLG_STOP"] == 1 && $hotelPayList[$date]["money_1"] > 0 && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
+					$tmp .= '<li class="stxt">(￥'.number_format($hotelPayList[$date]["money_1"]).'/人)</li>';
+				}
+			else {
+					$tmp .= '<li class="stxt">－</li>';
+				}
 */				
 				//ポイント数も表示  HOTELPAY_ROOM_NUM
 /*				if ($hotelPayList[$date]["HOTELPROVIDE_FLG_STOP"] == 1 && $hotelPayList[$date]["HOTELPAY_ROOM_NUM"] > 0 && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
-				    $tmp .= '<!--<li class="point radius10"><span>ポイント'.number_format($hotelPayList[$date]["HOTELPAY_ROOM_NUM"]).'%</span></li>--></ul>';
+					$tmp .= '<!--<li class="point radius10"><span>ポイント'.number_format($hotelPayList[$date]["HOTELPAY_ROOM_NUM"]).'%</span></li>--></ul>';
 				}
-		    		else {
-		            		$tmp .= '</ul>';
-	    	                }
+					else {
+							$tmp .= '</ul>';
+							}
 */
 //				print_r($hotelPayList);
-	            	//	売り
-	            	if ($leftRoomNum == "R") {
-	            		$tmp .= '<p>'."◆".'</p>';
-	            	}
-	            	else {
-	            		if($leftRoomNum < 1){
-	            			$tmp .= '<p>'."×".'</p>';
-	            		}
-	            		else{
-	            			if ($acc_flg == 1 && ($dsp_Price > 0 || $dsp_Price != "x")) {
-					   if ($leftRoomNum <= 3) {
-	            			      $tmp .= '<p>△</p>';
-					   }elseif ($leftRoomNum <= 5) {
-	            			      $tmp .= '<p>○</p>';
-					   }elseif ($leftRoomNum <= 10) {
-	            			      $tmp .= '<p>◎</p>';
-					   }elseif ($leftRoomNum == "R") {
-	            			      $tmp .= '<p>◆</p>';
+				//	売り
+				if ($leftRoomNum == "R") {
+					// リクエスト予約
+// 					$tmp .= '<p>'."◆".'</p>';
+					$tmp .= '<p>'."□".'</p>';
+				} else {
+					// 通常(部屋数)
+					if($leftRoomNum < 1){
+						$tmp .= '<p>'."×".'</p>';
+					} else {
+						if ($acc_flg == 1 && ($dsp_Price > 0 || $dsp_Price != "x")) {
+// 							if ($leftRoomNum <= 3) {
+// 								$tmp .= '<p>△</p>';
+// 							}elseif ($leftRoomNum <= 5) {
+// 								$tmp .= '<p>○</p>';
+// 							}elseif ($leftRoomNum <= 10) {
+// 								$tmp .= '<p>◎</p>';
+// 							}elseif ($leftRoomNum == "R") {
+// 								$tmp .= '<p>◆</p>';
+// 							}else {
+// 								$tmp .= '<p>'."×".'</p>';
+// 							}
+							$tmp .= '<p>○</p>';
+						}
+					}
+				}
 
-	            			}else {
-	            				$tmp .= '<p>'."×".'</p>';
-	            			}
-	            		}
-	            	}
-	            }
+				if ($acc_flg == 1 && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
 
-	            if ($acc_flg == 1 && ($leftRoomNum > 0 || $leftRoomNum != "x")) {
+					$formname = "frm".$hotelPayList[$date]["COMPANY_ID"]."_".$hotelPayList[$date]["SHOPPLAN_ID"]."_".str_replace("-", "", $date);
+// 					$formname = "frm".$hotelPayList[$date]["COMPANY_ID"]."_".$hotelPayList[$date]["SHOPPLAN_ID"]."_".$hotelPayList[$date]["HOTELPAY_ID"];
+					$inputs = new inputs();
+//					print_r($hotelPayList[$date]);exit;
+					if ($acc_flg == 1 && ($leftRoomNum > 0 || $leftRoomNum != "x") && ($dsp_Price > 0 || $dsp_Price != "x") ) {
 
-	            	$formname = "frm".$hotelPayList[$date]["COMPANY_ID"]."_".$hotelPayList[$date]["SHOPPLAN_ID"]."_".str_replace("-", "", $date);
-// 	            	$formname = "frm".$hotelPayList[$date]["COMPANY_ID"]."_".$hotelPayList[$date]["SHOPPLAN_ID"]."_".$hotelPayList[$date]["HOTELPAY_ID"];
-	            	$inputs = new inputs();
-//	            	print_r($hotelPayList[$date]);exit;
-	            	if ($acc_flg == 1 && ($leftRoomNum > 0 || $leftRoomNum != "x") && ($dsp_Price > 0 || $dsp_Price != "x") ) {
-
-	            		$tmp .= '<form action="corse-select.html" method="post" id="'.$formname.'" name="'.$formname.'"><div style="text-align:center;">';
-	            		$tmp .=  $inputs->hidden("COMPANY_ID", $hotelPayList[$date]["COMPANY_ID"]);
-	            		$tmp .=  $inputs->hidden("SHOPPLAN_ID", $hotelPayList[$date]["SHOPPLAN_ID"]);
-	            		$tmp .=  $inputs->hidden("target_date", $date);
-	            		$tmp .=  $inputs->hidden("priceper_num", $hotelPayList[$date]["priceper_num"]);
-	            		$tmp .= '</div></form>';
+						$tmp .= '<form action="corse-select.html" method="post" id="'.$formname.'" name="'.$formname.'"><div style="text-align:center;">';
+						$tmp .=  $inputs->hidden("COMPANY_ID", $hotelPayList[$date]["COMPANY_ID"]);
+						$tmp .=  $inputs->hidden("SHOPPLAN_ID", $hotelPayList[$date]["SHOPPLAN_ID"]);
+						$tmp .=  $inputs->hidden("target_date", $date);
+						$tmp .=  $inputs->hidden("priceper_num", $hotelPayList[$date]["priceper_num"]);
+						$tmp .= '</div></form>';
 
 
-/*	            		if ($leftRoomNum == "R") {
-	            			$tmp .= '<form action="reservation-request.html" method="post" id="'.$formname.'" name="'.$formname.'"><div style="text-align:center;">';
-//	            			$tmp .= ' <a href="javascript:void(0)" onclick="document.'.$formname.'.submit();" class="vacancy2" >リクエスト予約</a>';
-	            		}
-	            		else{
-		            		$tmp .= '<form action="reservation.html" method="post" id="'.$formname.'" name="'.$formname.'"><div style="text-align:center;">';
-//		            		$tmp .= ' <a href="javascript:void(0)" onclick="document.'.$formname.'.submit();" class="vacancy" >予約</a>';
-	            		}
-	            		$tmp .=  $inputs->hidden("COMPANY_ID", $hotelPayList[$date]["COMPANY_ID"]);
-	            		$tmp .=  $inputs->hidden("SHOPPLAN_ID", $hotelPayList[$date]["SHOPPLAN_ID"]);
-//	            		$tmp .=  $inputs->hidden("ROOM_ID", $hotelPayList[$date]["ROOM_ID"]);
-//	            		$tmp .=  $inputs->hidden("HOTELPAY_ID", $hotelPayList[$date]["HOTELPAY_ID"]);
-//	            		$tmp .=  $inputs->hidden("HOTELPROVIDE_ID", $hotelPayList[$date]["HOTELPROVIDE_ID"]);
-	            		$tmp .=  $inputs->hidden("target_date", $date);
+/*						if ($leftRoomNum == "R") {
+							$tmp .= '<form action="reservation-request.html" method="post" id="'.$formname.'" name="'.$formname.'"><div style="text-align:center;">';
+//							$tmp .= ' <a href="javascript:void(0)" onclick="document.'.$formname.'.submit();" class="vacancy2" >リクエスト予約</a>';
+						}
+						else{
+							$tmp .= '<form action="reservation.html" method="post" id="'.$formname.'" name="'.$formname.'"><div style="text-align:center;">';
+//							$tmp .= ' <a href="javascript:void(0)" onclick="document.'.$formname.'.submit();" class="vacancy" >予約</a>';
+						}
+						$tmp .=  $inputs->hidden("COMPANY_ID", $hotelPayList[$date]["COMPANY_ID"]);
+						$tmp .=  $inputs->hidden("SHOPPLAN_ID", $hotelPayList[$date]["SHOPPLAN_ID"]);
+//						$tmp .=  $inputs->hidden("ROOM_ID", $hotelPayList[$date]["ROOM_ID"]);
+//						$tmp .=  $inputs->hidden("HOTELPAY_ID", $hotelPayList[$date]["HOTELPAY_ID"]);
+//						$tmp .=  $inputs->hidden("HOTELPROVIDE_ID", $hotelPayList[$date]["HOTELPROVIDE_ID"]);
+						$tmp .=  $inputs->hidden("target_date", $date);
 
-	            		$tmp .=  $inputs->hidden("priceper_num", $hotelPayList[$date]["priceper_num"]);
+						$tmp .=  $inputs->hidden("priceper_num", $hotelPayList[$date]["priceper_num"]);
 
-	            		$tmp .= '</div></form>';
+						$tmp .= '</div></form>';
 */
-	            	}
+					}
 
-	            }
+				}
 
 /*
 				if ($dsp_Price > 0 || $dsp_Price != "x") {
@@ -1024,29 +1025,29 @@ EOM;
 				}
 */
 				$tmp .= '</td>';
-	            //現在の日付ではない場合
-	        }
-	        //月末の場合
-	        if ($i == $l_day) {
-	            $tmp .= repeat(6 - $week);
-	        }
-	        //土曜日の場合
-	        if($week == 6) {
-	            $tmp .= "\t</tr>\n";
-	        }
-	    }
-	    if($lc < 6) {
-	        $tmp .= "\t<tr>\n";
-	        $tmp .= repeat(7);
-	        $tmp .= "\t</tr>\n";
-	    }
-	    if($lc == 4) {
-	        $tmp .= "\t<tr>\n";
-	        $tmp .= repeat(7);
-	        $tmp .= "\t</tr>\n";
-	    }
-	    $tmp .= "</table>\n";
-	    return $tmp;
+				//現在の日付ではない場合
+			}
+			//月末の場合
+			if ($i == $l_day) {
+				$tmp .= repeat(6 - $week);
+			}
+			//土曜日の場合
+			if($week == 6) {
+				$tmp .= "\t</tr>\n";
+			}
+		}
+		if($lc < 6) {
+			$tmp .= "\t<tr>\n";
+			$tmp .= repeat(7);
+			$tmp .= "\t</tr>\n";
+		}
+		if($lc == 4) {
+			$tmp .= "\t<tr>\n";
+			$tmp .= repeat(7);
+			$tmp .= "\t</tr>\n";
+		}
+		$tmp .= "</table>\n";
+		return $tmp;
 
 	}
 
