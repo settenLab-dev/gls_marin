@@ -350,18 +350,22 @@ $(document).ready(function() {
 				<li>
 					<a href="/shop-search.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">プラン一覧</a>
 				</li>
+				<!-- 
 				<li>
 					<a href="/shop-report.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">レポート</a>
 				</li>
+				 -->
 				<li>
 					<a href="/shop-gallery.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">写真・動画</a>
 				</li>
 				<li>
 					<a href="/shop-map.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">地図・アクセス</a>
 				</li>
+				<!-- 
 				<li>
 					<a href="/shop-etc.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">その他</a>
 				</li>
+				 -->
 			<ul>
 		</section>
 		<!-- /ショップメニュー -->
@@ -633,7 +637,19 @@ $(document).ready(function() {
 					</tr>
 					<tr>
 						<td class="price">
-							<span><?php print number_format($collection->getByKey($collection->getKeyValue(), "calender_mon"))?></span>円～
+							<span>
+								<?php 
+									$search_date = $collection->getByKey($collection->getKeyValue(), "search_date");
+									if(empty($search_date)){
+										$search_date = date('Y-m-d');
+									}else{
+										$search_date = preg_replace("/年|月/", "-", $search_date);
+										$search_date = preg_replace("/日/", "", $search_date);
+									}
+									echo number_format($arPayList[$search_date]['money_all']);
+// 									print number_format($collection->getByKey($collection->getKeyValue(), "calender_mon))；
+								?>
+							</span>円～
 						</td>
 					</tr>
 
@@ -1075,7 +1091,7 @@ $(document).ready(function() {
 						</th>
 						<td>
 							<?php //TODO 公開時APIキーを取得して設定 ?>
-							<script src="https://maps.googleapis.com/maps/api/js?key=xxxxxxx" type="text/javascript"></script>
+							<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARHX6DkSJkgcGW2ZtJiQquQnbqnskxoNI" type="text/javascript"></script>
 							<ul>
 								<?php for($i = 1; $i <= 3; $i++): ?>
 									<li class="address">
@@ -1091,11 +1107,14 @@ $(document).ready(function() {
 										<div id="address_map<?php echo $i; ?>" style='width: 800px; height: 300px;'></div>
 										<script type="text/javascript">
 										$(function() {
-											var query = '<?php echo $arrShopAccess[$access_id]['SHOP_ACCESS_ADDRESS']?>';
+											var query = '<?php echo $arrShopAccess[$access_id]['SHOP_ACCESS_ADDRESS']; ?>';
 											var lon = '';
 											var lat = '';
 											var geocoder;
 											var map;
+
+											var init_flg = true;
+											
 											function initialize() {
 												$("#info_access").show();
 												geocoder = new google.maps.Geocoder();
@@ -1112,29 +1131,34 @@ $(document).ready(function() {
 											}
 											function codeAddress() {
 												var address = query;
-												geocoder.geocode({ 'address': address }, function (results, status) {
-													if (status == google.maps.GeocoderStatus.OK) {
-														map.setCenter(results[0].geometry.location);
-														var marker = new google.maps.Marker({
-															map: map,
-															position: results[0].geometry.location,
-															title:address,
-															animation: google.maps.Animation.DROP 
-														});
-														var infowindow = new google.maps.InfoWindow({
-															content: "<span style='font-size:11px'><b>住所：</b>" + address + "</span>",
-															pixelOffset:0, 
-															position: results[0].geometry.location
-											
-														});
-														google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); });
-													} else {
-														//alert("この住所が存在しておりません");
-													}
-												});
-												$("#info_access").hide();
+												if(init_flg){
+													geocoder.geocode({ 'address': address }, function (results, status) {
+														if (status == google.maps.GeocoderStatus.OK) {
+															map.setCenter(results[0].geometry.location);
+															var marker = new google.maps.Marker({
+																map: map,
+																position: results[0].geometry.location,
+																title:address,
+																animation: google.maps.Animation.DROP 
+															});
+															var infowindow = new google.maps.InfoWindow({
+																content: "<span style='font-size:11px'><b>住所：</b>" + address + "</span>",
+																pixelOffset:0, 
+																position: results[0].geometry.location
+												
+															});
+															google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); });
+														} else {
+															//alert("この住所が存在しておりません");
+														}
+													});
+												
+													$("#info_access").hide();
+													init_flg = false;
+												}
 											}
 											google.maps.event.addDomListener(window, 'load', initialize);
+											
 										});
 										</script>
 									</li>

@@ -114,7 +114,11 @@ for($i = 0; $i <= $after_days; $i++){
 		if ($arrPlanData[$key]["money_all"] == "" || $arrPlanData[$key]["money_all"] > $data["money_all"]) {
 			$arrPlanData[$key]["money_all"] = $money_total[$money_total_cid];
 		}
+		
+		// 検索日をセット
+		$arrPlanData[$key]["search_date"] = $search_date;
 	}
+	
 	$arrPlan[] = $arrPlanData;
 }
 
@@ -393,7 +397,7 @@ $(document).ready(function() {
 											<?php echo $inputs->hidden("COMPANY_ID", $plandata["COMPANY_ID"])?>
 											<?php echo $inputs->hidden("SHOP_ID", $plandata["SHOP_ID"])?>
 											<?php echo $inputs->hidden("SHOPPLAN_ID", $plandata["SHOPPLAN_ID"])?>
-											<?php echo $inputs->hidden("search_date", $collection->getByKey($collection->getKeyValue(), "search_date"))?>
+											<?php echo $inputs->hidden("search_date", $plandata["search_date"])?>
 											<?php echo $inputs->hidden("undecide_sch", $collection->getByKey($collection->getKeyValue(), "undecide_sch"))?>
 											<?php echo $inputs->hidden("priceper_num", $collection->getByKey($collection->getKeyValue(), "priceper_num"))?>
 											<?php echo $inputs->hidden("calender_mon", $plandata["money_all"])?>

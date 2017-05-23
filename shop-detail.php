@@ -16,6 +16,11 @@ require_once(PATH_SLAKER_COMMON.'includes/class/extends/mActivityCategory.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/mActivityCategoryDetail.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/mTag.php');
 
+// <<<<< settenLab Add
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelPic.php');
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelPicGroup.php');
+// >>>>> settenLab Add
+
 $dbMaster = new dbMaster();
 
  // print_r($_POST);
@@ -260,13 +265,29 @@ if (!$xmlArea->getXml()) {
 }
 
 $inputs = new inputs();
+
+// <<<<< add settenlab
+// プラン取得
+$search_date = date('Y-m-d');
+$collection->setByKey($collection->getKeyValue(), "limit", 5);
+$collection->setByKey($collection->getKeyValue(), "limitptn", "plan");
+$collection->setByKey($collection->getKeyValue(), "search_date", $search_date);
+$collection->setByKey($collection->getKeyValue(), "undecide_sch", "2");
+$shop->selectListPublicPlan($collection);
+$arrPlanData = $shop->getCollection();
+
+// ショップ画像取得
+$hotelPic = new hotelPic($dbMaster);
+$hotelPic->select("", "2", $collection->getByKey($collection->getKeyValue(), "COMPANY_ID"));
+$arrShopPic = $hotelPic->getCollection();
+// >>>>> add settenlab
 ?>
 <?php require("includes/box/common/doctype.php"); ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php require("includes/box/common/meta_detail.php"); ?>
-<title>プラン詳細 ｜ <?php print SITE_PUBLIC_NAME?></title>
+<title>ショップ基本情報 ｜ <?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?> | <?php print SITE_PUBLIC_NAME?></title>
 <meta name="keywords" content="プラン,<?php print SITE_PUBLIC_KEYWORD?>" />
 <meta name="description" content="<?php print SITE_PUBLIC_DESCRIPTION?>" />
 
@@ -330,346 +351,346 @@ $(document).ready(function() {
             <li><span>ショップ情報</span></li>
         </ul>
 
-	<!-- プラン詳細 -->
-	<article id="detail_plan">
-
-		<!-- ショップメニュー -->
-		<section id="detail_menu">
-			<ul>
-				<li class="current">
-					<a href="/shop-detail.html?cid=">ショップ情報</a>
-				</li>
-				<li>
-					<a href="/shop-search.html?cid=">プラン一覧</a>
-				</li>
-				<li>
-					<a href="/shop-report.html?cid=">レポート</a>
-				</li>
-				<li>
-					<a href="/shop-gallery.html?cid=">写真・動画</a>
-				</li>
-				<li>
-					<a href="/shop-map.html?cid=">地図・アクセス</a>
-				</li>
-				<li>
-					<a href="">その他</a>
-				</li>
-			<ul>
-		</section>
-		<!-- /ショップメニュー -->
-
-
-		<section id="plan_name">
-			<h1>テストテキスト<?php print $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_NAME")?></h1>
-		</section>
-
-		<section id="area_tag">
-			<div>
-				<h2>エリア</h2>
-				<ul class="area">
-       			<?php
-				foreach($mArea->getCollection() as $area){
-			?>
-
-				<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST1") !=""){
-					     if($area["M_AREA_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST1")){?>
-					<li>
-						<?php print ($area["M_AREA_NAME"])?>エリア
+		<!-- ショップ詳細 -->
+		<article id="detail_plan">
+	
+			<!-- ショップメニュー -->
+			<?php $company_id = $collection->getByKey($collection->getKeyValue(), "COMPANY_ID"); ?>
+			<section id="detail_menu">
+				<ul>
+					<li class="current">
+						<a href="/shop-detail.html?cid=<?php echo $company_id; ?>">ショップ情報</a>
 					</li>
-				<?php	    }
-				      }
-				?>
-				<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST2") !=""){
-					     if($area["M_AREA_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST2")){?>
 					<li>
-						<?php print " ＞ ".$area["M_AREA_NAME"]?>
+						<a href="/shop-search.html?cid=<?php echo $company_id; ?>">プラン一覧</a>
 					</li>
-				<?php	    }
-				      }
-				?>
-				<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST3") !=""){
-					     if($area["M_AREA_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST3")){?>
+					<!-- 
 					<li>
-						<?php print " ＞ ".$area["M_AREA_NAME"]?>
+						<a href="/shop-report.html?cid=<?php echo $company_id; ?>">レポート</a>
 					</li>
-				<?php	    }
-				      }
-				?>
-			<?php
-				}
-			?>
-
+					 -->
+					<li>
+						<a href="/shop-gallery.html?cid=<?php echo $company_id; ?>">写真・動画</a>
+					</li>
+					<li>
+						<a href="/shop-map.html?cid=<?php echo $company_id; ?>">地図・アクセス</a>
+					</li>
+					<!-- 
+					<li>
+						<a href="/shop-etc.html?cid=<?php echo $company_id; ?>">その他</a>
+					</li>
+					 -->
 				</ul>
-			</div>
-			<div>
-				<h2>カテゴリ</h2>
-				<ul class="category">
-       			<?php
-				foreach($mActivityCategory->getCollection() as $ac){
-			?>
-
-				<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY1") !=""){
-					     if($ac["M_ACT_CATEGORY_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY1")){?>
-					<li>
-						<?php print ($ac["M_ACT_CATEGORY_NAME"])?>
-					</li>
-				<?php	    }
-				      }
+			</section>
+			<!-- /ショップメニュー -->
+	
+	
+			<section id="plan_name">
+				<h1><?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?></h1>
+			</section>
+	
+			<section id="area_tag">
+				<div>
+					<h2>エリア</h2>
+					<ul class="area">
+	       			<?php
+					foreach($mArea->getCollection() as $area){
 				?>
-				<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY2") !=""){
-					     if($ac["M_ACT_CATEGORY_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY2")){?>
-					<li>
-						<?php print " ＞ ".$ac["M_ACT_CATEGORY_NAME"]?>
-					</li>
-				<?php	    }
-				      }
+	
+					<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST1") !=""){
+						     if($area["M_AREA_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST1")){?>
+						<li>
+							<?php print ($area["M_AREA_NAME"])?>エリア
+						</li>
+					<?php	    }
+					      }
+					?>
+					<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST2") !=""){
+						     if($area["M_AREA_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST2")){?>
+						<li>
+							<?php print " ＞ ".$area["M_AREA_NAME"]?>
+						</li>
+					<?php	    }
+					      }
+					?>
+					<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST3") !=""){
+						     if($area["M_AREA_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_AREA_LIST3")){?>
+						<li>
+							<?php print " ＞ ".$area["M_AREA_NAME"]?>
+						</li>
+					<?php	    }
+					      }
+					?>
+				<?php
+					}
 				?>
-				<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY3") !=""){
-					     if($ac["M_ACT_CATEGORY_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY3")){?>
-					<li>
-						<?php print " ＞ ".$ac["M_ACT_CATEGORY_NAME"]?>
-					</li>
-				<?php	    }
-				      }
+	
+					</ul>
+				</div>
+				<div>
+					<h2>カテゴリ</h2>
+					<ul class="category">
+	       			<?php
+					foreach($mActivityCategory->getCollection() as $ac){
 				?>
-			<?php
-				}
-			?>
-       			<?php
-				foreach($mActivityCategoryDetail->getCollection() as $acd){
-			?>
-				<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY_DETAIL") !=""){
-					     if($ac["M_ACT_D_CATEGORY_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY_DETAIL")){?>
-					<li>
-						<?php print " ＞ ".$ac["M_ACT_D_CATEGORY_NAME"]?>
-					</li>
-				<?php	    }
-				      }
+	
+					<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY1") !=""){
+						     if($ac["M_ACT_CATEGORY_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY1")){?>
+						<li>
+							<?php print ($ac["M_ACT_CATEGORY_NAME"])?>
+						</li>
+					<?php	    }
+					      }
+					?>
+					<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY2") !=""){
+						     if($ac["M_ACT_CATEGORY_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY2")){?>
+						<li>
+							<?php print " ＞ ".$ac["M_ACT_CATEGORY_NAME"]?>
+						</li>
+					<?php	    }
+					      }
+					?>
+					<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY3") !=""){
+						     if($ac["M_ACT_CATEGORY_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY3")){?>
+						<li>
+							<?php print " ＞ ".$ac["M_ACT_CATEGORY_NAME"]?>
+						</li>
+					<?php	    }
+					      }
+					?>
+				<?php
+					}
 				?>
-			<?php
-				}
-			?>
-				</ul>
-			</div>
-			<div>
-				<h2>レポート</h2>
-				<a href="/shop-report.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID");?>"><?php print count($reportTarget);?> 件</a>
-			</div>
-		</section>
-
-
-		<!-- leftコンテンツ -->
-		<section id="left">
-
-			<section id="pic">
-				<div id="mainimage" class="main">
+	       			<?php
+					foreach($mActivityCategoryDetail->getCollection() as $acd){
+				?>
+					<?php if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY_DETAIL") !=""){
+						     if($ac["M_ACT_D_CATEGORY_ID"] == $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_CATEGORY_DETAIL")){?>
+						<li>
+							<?php print " ＞ ".$ac["M_ACT_D_CATEGORY_NAME"]?>
+						</li>
+					<?php	    }
+					      }
+					?>
+				<?php
+					}
+				?>
+					</ul>
+				</div>
+				<!-- 
+				<div>
+					<h2>レポート</h2>
+					<a href="/shop-report.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID");?>"><?php print count($reportTarget);?> 件</a>
+				</div>
+				 -->
+			</section>
+	
+	
+			<!-- leftコンテンツ -->
+			<section id="left">
+	
+				<section id="pic">
+					<div id="mainimage" class="main">
+						<?php if($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC1") != ""){ ?>
+							<img src="<?php print URL_SLAKER_COMMON?>images/<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC1")?>" alt="<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>">
+						<?php }else{?>
+					    		<img src="<?php print URL_SLAKER_COMMON?>assets/noImage.jpg" alt="<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>">
+					    	<?php }?>
+	
+					</div>
 					<?php if($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC1") != ""){ ?>
-						<img src="<?php print URL_SLAKER_COMMON?>images/<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC1")?>" alt="<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>">
-					<?php }else{?>
-				    		<img src="<?php print URL_SLAKER_COMMON?>assets/noImage.jpg" alt="<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>">
-				    	<?php }?>
-
-				</div>
-				<?php if($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC1") != ""){ ?>
-				<ul id="subimage" class="sub">
-			    		<?php for ($i=1; $i<=4; $i++) {?>
-			    		 	<?php if ($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC".$i) != "") {?>
-			    				<li><a href="<?php print URL_SLAKER_COMMON?>images/<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC".$i)?>"><img src="<?php print URL_SLAKER_COMMON?>images/<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC".$i)?>" alt="<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>"></a>
-			    			<?php }?>
-			    		<?php }?>
-				</ul>
-				<?php }else{}?>
-				
+					<ul id="subimage" class="sub">
+				    		<?php for ($i=1; $i<=4; $i++) {?>
+				    		 	<?php if ($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC".$i) != "") {?>
+				    				<li><a href="<?php print URL_SLAKER_COMMON?>images/<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC".$i)?>"><img src="<?php print URL_SLAKER_COMMON?>images/<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PIC".$i)?>" alt="<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>"></a>
+				    			<?php }?>
+				    		<?php }?>
+					</ul>
+					<?php }else{}?>
+					
+				</section>
+	
+				<section id="description">
+					<!-- 
+					<h2><?php print redirectForReturn($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_CATCH"))?>テストテキスト</h2>
+					<h3><?php print redirectForReturn($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_DISCRIPTION"))?>テストテキスト</h3>
+					 -->
+					<h3><?php echo redirectForReturn($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_TEXT")); ?></h3>
+				</section>
+	
+	
 			</section>
-
-			<section id="description">
-				<h2><?php print redirectForReturn($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_CATCH"))?>テストテキスト</h2>
-				<h3><?php print redirectForReturn($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_DISCRIPTION"))?>テストテキスト</h3>
+	
+	
+	
+			<!-- rightコンテンツ -->
+	
+			<section id="right">
+				<h2 class="title_def">ショップ基本情報</h2>
+				<section id="base">
+					<table>
+						<tr>
+							<th>
+								店舗名
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								営業時間
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_OPENTIME"); ?>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								定休日
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_CLOSEDAY"); ?>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								所在地
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS")?>
+							</td>
+						</tr>
+						<!-- 
+						<tr>
+							<th>
+								交通アクセス
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS")?>
+							</td>
+						</tr>
+						 -->
+						<tr>
+							<th>
+								駐車場
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<?php
+									$parking_flg = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGFLG");
+									if($parking_flg == 1){
+										echo "あり";
+										
+										echo "<br>";
+										
+	// 									echo "<br>【駐車場料金】<br>";
+										$parking_money_flg = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGMONEYFLG");
+										if($parking_money_flg == 1){
+											echo "無料";
+										}elseif($parking_money_flg == 2){
+											echo "有料";
+											$parking_money = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGMONEY");
+											if(!empty($parking_money)){
+												echo "(".$parking_money.")";
+											}
+										}
+										echo "<br>";
+										
+	// 									echo "<br>【駐車場事前予約】<br>";
+										$parking_book_flg = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGBOOKFLG");
+										if($parking_book_flg == 1){
+											echo "事前予約不要";
+										}elseif($parking_flg == 2){
+											echo "事前予約必要";
+										}
+										echo "<br>";
+										
+	// 									echo "<br>【駐車台数】<br>";
+										$parking_cap = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGCAP");
+										echo $parking_cap;
+										
+									}elseif($parking_flg == 2){
+										echo "なし";
+									}
+									
+								?>
+								<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKING")?>
+							</td>
+						</tr>
+					</table>
+					<div id="btn">
+						<a href="/shop-search.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>"><p class="btn_cal">プラン一覧へ</p></a>
+					</div>
+				</section>
 			</section>
-
-
-		</section>
-
-
-
-		<!-- rightコンテンツ -->
-
-		<section id="right">
-			<h2 class="title_def">ショップ基本情報</h2>
-			<section id="base">
-				<table>
-					<tr>
-						<th>
-							店舗名
-						</th>
-					</tr>
-					<tr>
-						<td>
-							<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>テストテキスト
-						</td>
-					</tr>
-					<tr>
-						<th>
-							営業期間
-						</th>
-					</tr>
-					<tr>
-						<td>
-							<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOPPLAN_AGE_FROM")?>歳～<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOPPLAN_AGE_TO")?>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							開催期間
-						</th>
-					</tr>
-					<tr>
-						<td>
-							<?php print $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_SALE_FROM")?>～<?php print $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_SALE_TO")?>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							定休日
-						</th>
-					</tr>
-					<tr>
-						<td>
-							<?php print "毎週水曜日"?>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							所在地
-						</th>
-					</tr>
-					<tr>
-						<td>
-							<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS")?>テストテキスト
-						</td>
-					</tr>
-					<tr>
-						<th>
-							交通アクセス
-						</th>
-					</tr>
-					<tr>
-						<td>
-							<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS")?>テストテキスト
-						</td>
-					</tr>
-					<tr>
-						<th>
-							駐車場
-						</th>
-					</tr>
-					<tr>
-						<td>
-							<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKING")?>テストテキスト
-						</td>
-					</tr>
-				</table>
-				<div id="btn">
-					<a href="/shop-search.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>"><p class="btn_cal">プラン一覧へ</p></a>
-				</div>
-			</section>
-		</section>
-</article>
+		</article>
 				
 		<setcion id="detail_box">
 				<div class="inner">
 					<h2 class="title_def">動画・360度パノラマビュー・写真ギャラリー</h2>
 					<ul class="gallery">
-					　　<li>
-					　　	<a href="/gall-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
-					　　<li>
-					　　	<a href="/gall-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
-					　　<li>
-					　　	<a href="/gall-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
-					　　<li>
-					　　	<a href="/gall-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
-					　　<li>
-					　　	<a href="/gall-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
+						<?php
+							$cnt =0;
+							foreach($arrShopPic as $key => $pic_data):
+								if($cnt == 5){
+									break;
+								}
+						?>
+							<?php
+								if($pic_data['HOTELPIC_DISPLAY_FLG'] == 1):
+									$cnt++;
+							?>
+								<li>
+									<a href="/gall-detail.html?pic=<?php echo $pic_data['HOTELPIC_ID']; ?>">
+										<div class="contena">
+											<?php if ($pic_data["HOTELPIC_DATA"] != "") {?>
+												<img src="<?php echo URL_SLAKER_COMMON."/images/".$pic_data["HOTELPIC_DATA"]; ?>" alt="<?php echo "ショップ写真".($key + 1); ?>">
+											<?php }else{?>
+												<img src="<?php echo URL_SLAKER_COMMON?>assets/noImage.jpg" alt="<?php echo "ショップ写真".($key + 1); ?>">
+											<?php }?>
+											<p class="cap"><?php echo nl2br($pic_data["HOTELPIC_DISCRIPTION"]); ?></p>
+										</div>
+									</a>
+								</li>
+							<?php endif;?>
+						<?php endforeach;?>
 					</ul>
 				</div>
 				
 				<div class="inner">
 					<h2 class="title_def">「<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>」のおすすめプラン</h2>
-						<p class="link"><a href="/shop-search.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">▼プラン一覧へ</a></p>
+					<p class="link"><a href="/shop-search.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">▼プラン一覧へ</a></p>
 					<ul class="planpick">
-					　　<li>
-					　　	<a href="/plan-detail.html?cid=&pid=">
-					　	   <div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-								<h3 class="title_cont">テストテキスト</h3>
-							</div>
-						</a>
-					　　</li>
-					　　<li>
-					　　	<a href="/plan-detail.html?cid=&pid=">
-					　	   <div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-								<h3 class="title_cont">テストテキスト</h3>
-							</div>
-						</a>
-					　　</li>
-					　　<li>
-					　　	<a href="/plan-detail.html?cid=&pid=">
-					　	   <div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-								<h3 class="title_cont">テストテキスト</h3>
-							</div>
-						</a>
-					　　</li>
-					　　<li>
-					　　	<a href="/plan-detail.html?cid=&pid=">
-					　	   <div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-								<h3 class="title_cont">テストテキスト</h3>
-							</div>
-						</a>
-					　　</li>
-					　　<li>
-					　　	<a href="/plan-detail.html?cid=&pid=">
-					　	   <div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-								<h3 class="title_cont">テストテキスト</h3>
-							</div>
-						</a>
-					　　</li>
+						<?php foreach($arrPlanData as $plandata):?>
+							<li>
+								<a href="/plan-detail.html?cid=<?php echo $plandata["COMPANY_ID"]; ?>&pid=<?php echo $plandata["SHOPPLAN_ID"]; ?>&search_date=<?php echo date('Y-m-d'); ?>">
+									<div class="contena">
+										<?php if ($plandata["SHOPPLAN_PIC1"] != "" || $plandata["SHOPPLAN_PIC1"] != "") {?>
+											<img src="<?php echo URL_SLAKER_COMMON."/images/".$plandata["SHOPPLAN_PIC1"]?>" alt="<?php print $plandata["SHOPPLAN_NAME"]?>">
+										<?php }else{?>
+											<img src="<?php echo URL_SLAKER_COMMON?>assets/noImage.jpg" alt="<?php print $plandata["SHOPPLAN_NAME"]?>">
+										<?php }?>
+										<h3 class="title_cont"><?php echo $plandata['SHOPPLAN_NAME']; ?></h3>
+									</div>
+								</a>
+							</li>
+						<?php endforeach;?>
 					</ul>
 				</div>
 	
+				<!-- 
 					<div class="inner">
 					<h2 class="title_def">「<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>」の体験レポート</h2>
 						<p class="link"><a href="/shop-report.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">▼体験レポート一覧へ</a></p>
@@ -713,17 +734,12 @@ $(document).ready(function() {
 					　　</li>
 					</ul>
 				</div>		
-			
+				 -->
 		</setcion>
-				
-	
-	<!-- /プラン詳細 -->
-       
-
-
-    </main>
+		<!-- /ショップ詳細 -->
+	</main>
 	<!-- InstanceEndEditable -->
-    <!--/main-->
+	<!--/main-->
 
 
 </div>

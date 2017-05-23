@@ -327,42 +327,48 @@ $(document).ready(function() {
 		<ul id="panlist">
         	<li><a href="index.html">TOP</a></li>
             <li><a href="plan-search.html">検索結果</a></li>
-            <li><span>ショップ情報</span></li>
+            <li><span>地図・アクセス</span></li>
         </ul>
 
 	<!-- プラン詳細 -->
 	<article id="detail_plan">
 
 		<!-- ショップメニュー -->
+		<?php $company_id = $collection->getByKey($collection->getKeyValue(), "COMPANY_ID"); ?>
 		<section id="detail_menu">
 			<ul>
 				<li>
-					<a href="/shop-detail.html?cid=">ショップ情報</a>
+					<a href="/shop-detail.html?cid=<?php echo $company_id; ?>">ショップ情報</a>
 				</li>
 				<li>
-					<a href="/shop-search.html?cid=">プラン一覧</a>
+					<a href="/shop-search.html?cid=<?php echo $company_id; ?>">プラン一覧</a>
 				</li>
+				<!-- 
 				<li>
-					<a href="/shop-report.html?cid=">レポート</a>
+					<a href="/shop-report.html?cid=<?php echo $company_id; ?>">レポート</a>
 				</li>
+				 -->
 				<li>
-					<a href="/shop-gallery.html?cid=">写真・動画</a>
+					<a href="/shop-gallery.html?cid=<?php echo $company_id; ?>">写真・動画</a>
 				</li>
 				<li class="current">
-					<a href="/shop-map.html?cid=">地図・アクセス</a>
+					<a href="/shop-map.html?cid=<?php echo $company_id; ?>">地図・アクセス</a>
 				</li>
+				<!-- 
 				<li>
-					<a href="">その他</a>
+					<a href="/shop-etc.html?cid=<?php echo $company_id; ?>">その他</a>
 				</li>
-			<ul>
+				 -->
+			</ul>
 		</section>
 		<!-- /ショップメニュー -->
 
 
 		<section id="plan_name">
-			<h1>テストテキスト<?php print $shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_NAME")?></h1>
+			<h1><?php echo $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME"); ?></h1>
 		</section>
 
+		<!-- 
 		<section id="area_tag">
 			<div>
 				<h2>エリア</h2>
@@ -456,7 +462,8 @@ $(document).ready(function() {
 				<a href="/shop-report.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID");?>"><?php print count($reportTarget);?> 件</a>
 			</div>
 		</section>
-
+		 -->
+		</article><!-- /#detail_plan -->
 			
 		<setcion id="detail_box">
 			<section id="info_access" class="shop">
@@ -467,9 +474,56 @@ $(document).ready(function() {
 							所在地
 						</th>
 						<td>
-							<p class="add_info">〒　住所</p>
-							<div class="map">
-								<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0"  src="http://maps.google.co.jp/maps?q=沖縄県那覇市久米1-1-13&iwloc=J&output=embed"></iframe>
+							<p class="add_info"><?php echo nl2br($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS")); ?></p>
+							<?php //TODO 公開時APIキーを取得して設定 ?>
+							<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARHX6DkSJkgcGW2ZtJiQquQnbqnskxoNI" type="text/javascript"></script>
+							<script type="text/javascript">
+								$(function() {
+									var query = '<?php echo $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS"); ?>';
+									var lon = '';
+									var lat = '';
+									var geocoder;
+									var map;
+									function initialize() {
+										geocoder = new google.maps.Geocoder();
+										var myOptions = {
+											center: new google.maps.LatLng(lon, lat),
+											zoom: 18,
+											mapTypeId: google.maps.MapTypeId.ROADMAP  
+										}
+										map = new google.maps.Map(document.getElementById("shop_map"),myOptions);
+										codeAddress();
+										google.maps.event.trigger(map, 'resize');
+										
+									}
+									function codeAddress() {
+										var address = query;
+										geocoder.geocode({ 'address': address }, function (results, status) {
+											if (status == google.maps.GeocoderStatus.OK) {
+												map.setCenter(results[0].geometry.location);
+												var marker = new google.maps.Marker({
+													map: map,
+													position: results[0].geometry.location,
+													title:address,
+													animation: google.maps.Animation.DROP 
+												});
+												var infowindow = new google.maps.InfoWindow({
+													content: "<span style='font-size:11px'><b>住所：</b>" + address + "</span>",
+													pixelOffset:0, 
+													position: results[0].geometry.location
+									
+												});
+												google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); });
+											} else {
+												//alert("この住所が存在しておりません");
+											}
+										});
+									}
+									google.maps.event.addDomListener(window, 'load', initialize);
+								});
+							</script>
+							<div class="map" id='shop_map' style='width: 764px; height: 450px;'>
+								<!-- <iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0"  src="http://maps.google.co.jp/maps?q=沖縄県那覇市久米1-1-13&iwloc=J&output=embed"></iframe> -->
 							</div>
 						</td>
 					</tr>
@@ -478,14 +532,7 @@ $(document).ready(function() {
 							交通アクセス
 						</th>
 						<td>
-							<ul>
-								<li class="address">
-									〒住所
-								</li>
-								<li class="address_map">
-									〒住所
-								</li>
-							</ul>
+							<?php echo nl2br($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_TEXT")); ?>
 						</td>
 					</tr>
 					<tr>
@@ -493,8 +540,46 @@ $(document).ready(function() {
 							駐車場について
 						</th>
 						<td>
-							沖縄県那覇市波の上
-						</td>
+							<?php
+								$parking_flg = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGFLG");
+								if($parking_flg == 1){
+									echo "あり";
+									
+									echo "<br>";
+									
+// 									echo "<br>【駐車場料金】<br>";
+									$parking_money_flg = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGMONEYFLG");
+									if($parking_money_flg == 1){
+										echo "無料";
+									}elseif($parking_money_flg == 2){
+										echo "有料";
+										$parking_money = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGMONEY");
+										if(!empty($parking_money)){
+											echo "(".$parking_money.")";
+										}
+									}
+									echo "<br>";
+									
+// 									echo "<br>【駐車場事前予約】<br>";
+									$parking_book_flg = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGBOOKFLG");
+									if($parking_book_flg == 1){
+										echo "事前予約不要";
+									}elseif($parking_flg == 2){
+										echo "事前予約必要";
+									}
+									echo "<br>";
+									
+// 									echo "<br>【駐車台数】<br>";
+									$parking_cap = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKINGCAP");
+									echo $parking_cap;
+									
+								}elseif($parking_flg == 2){
+									echo "なし";
+								}
+								
+							?>
+							<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_PARKING")?>
+					</td>
 					</tr>
 				</table>
 			</section>

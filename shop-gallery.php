@@ -16,6 +16,11 @@ require_once(PATH_SLAKER_COMMON.'includes/class/extends/mActivityCategory.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/mActivityCategoryDetail.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/mTag.php');
 
+// <<<<< settenLab Add
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelPic.php');
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelPicGroup.php');
+// >>>>> settenLab Add
+
 $dbMaster = new dbMaster();
 
  // print_r($_POST);
@@ -260,6 +265,13 @@ if (!$xmlArea->getXml()) {
 }
 
 $inputs = new inputs();
+
+// <<<<< add settenlab
+// ショップ画像取得
+$hotelPic = new hotelPic($dbMaster);
+$hotelPic->select("", "2", $collection->getByKey($collection->getKeyValue(), "COMPANY_ID"));
+$arrShopPic = $hotelPic->getCollection();
+// >>>>> add settenlab
 ?>
 <?php require("includes/box/common/doctype.php"); ?>
 <html>
@@ -276,6 +288,9 @@ $inputs = new inputs();
 <link rel="stylesheet" href="<?php print URL_PUBLIC?>common/css/popupwindow.css" type="text/css" media="screen" />
 <script type="text/javascript" src="<?php print URL_PUBLIC?>common/js/popupwindow-1.6.js"></script>
 <script type="text/javascript" src="/js/lineup.js"></script>
+
+<script type="text/javascript" src="<?php print URL_SLAKER_COMMON?>js/jquery.lightbox-0.5.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php print URL_PUBLIC?>css/jquery.lightbox-0.5.css" media="screen" />
 <style>
 .dspNon {
 	display: none;
@@ -334,35 +349,41 @@ $(document).ready(function() {
 	<article id="detail_plan">
 
 		<!-- ショップメニュー -->
+		<?php $company_id = $collection->getByKey($collection->getKeyValue(), "COMPANY_ID"); ?>
 		<section id="detail_menu">
 			<ul>
 				<li>
-					<a href="/shop-detail.html?cid=">ショップ情報</a>
+					<a href="/shop-detail.html?cid=<?php echo $company_id; ?>">ショップ情報</a>
 				</li>
 				<li>
-					<a href="/shop-search.html?cid=">プラン一覧</a>
+					<a href="/shop-search.html?cid=<?php echo $company_id; ?>">プラン一覧</a>
 				</li>
+				<!-- 
+				<li>
+					<a href="/shop-report.html?cid=<?php echo $company_id; ?>">レポート</a>
+				</li>
+				 -->
 				<li class="current">
-					<a href="/shop-report.html?cid=">レポート</a>
+					<a href="/shop-gallery.html?cid=<?php echo $company_id; ?>">写真・動画</a>
 				</li>
 				<li>
-					<a href="/shop-gallery.html?cid=">写真・動画</a>
+					<a href="/shop-map.html?cid=<?php echo $company_id; ?>">地図・アクセス</a>
 				</li>
+				<!-- 
 				<li>
-					<a href="/shop-map.html?cid=">地図・アクセス</a>
+					<a href="/shop-etc.html?cid=<?php echo $company_id; ?>">その他</a>
 				</li>
-				<li>
-					<a href="">その他</a>
-				</li>
-			<ul>
+				 -->
+			</ul>
 		</section>
 		<!-- /ショップメニュー -->
 
 
 		<section id="plan_name">
-			<h1>テストテキスト<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?></h1>
+			<h1><?php echo $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME"); ?></h1>
 		</section>
 
+		<!-- 
 		<section id="area_tag">
 			<div>
 				<h2>エリア</h2>
@@ -456,56 +477,42 @@ $(document).ready(function() {
 				<a href="/shop-report.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID");?>"><?php print count($reportTarget);?> 件</a>
 			</div>
 		</section>
+		 -->
 
-</article>
+		</article><!-- /#detail_plan -->
 				
 		<setcion id="detail_box">
 				<div class="inner">
 					<h2 class="title_def">動画・360度パノラマビュー・写真ギャラリー</h2>
+					<script type="text/javascript">
+						$(document).ready(function() {
+							$('.gallery a').lightBox({fixedNavigation:true});
+						});
+					</script>
 					<ul class="gallery">
-					　　<li>
-					　　	<a href="/pic-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
-					　　<li>
-					　　	<a href="/pic-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
-					　　<li>
-					　　	<a href="/pic-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
-					　　<li>
-					　　	<a href="/gall-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
-					　　<li>
-					　　	<a href="/gall-detail.html?pic=">
-							<div class="contena">
-					　　　　	<img src="http://playbooking.jp/images/common/test.png">
-					　　　　	<p class="cap">テストテキスト</p>
-							</div>
-						  </a>
-					  </li>
+						<?php foreach($arrShopPic as $key => $pic_data): ?>
+							<?php if($pic_data['HOTELPIC_DISPLAY_FLG'] == 1): ?>
+								<?php
+									if ($pic_data["HOTELPIC_DATA"] != "") {
+										$hotel_pic_data = URL_SLAKER_COMMON."/images/".$pic_data["HOTELPIC_DATA"];
+									} else {
+										$hotel_pic_data = URL_SLAKER_COMMON."assets/noImage.jpg";
+									}
+								?>
+								<li>
+									<a href="<?php echo $hotel_pic_data;?>" title='<?php echo $pic_data["HOTELPIC_DISCRIPTION"]; ?>'>
+										<div class="contena">
+											<img src="<?php echo $hotel_pic_data; ?>" alt="<?php echo "ショップ写真".($key + 1); ?>">
+											<p class="cap"><?php echo nl2br($pic_data["HOTELPIC_DISCRIPTION"]); ?></p>
+										</div>
+									</a>
+								</li>
+							<?php endif;?>
+						<?php endforeach;?>
 					</ul>
 				</div>
 				
+				<!-- 
 				<div class="inner">
 					<h2 class="title_def">「<?php print $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME")?>」のおすすめプラン</h2>
 						<p class="link"><a href="/shop-search.html?cid=<?php print $collection->getByKey($collection->getKeyValue(), "COMPANY_ID")?>">▼プラン一覧へ</a></p>
@@ -596,7 +603,7 @@ $(document).ready(function() {
 					　　</li>
 					</ul>
 				</div>		
-			
+				 -->
 		</setcion>
 				
 	

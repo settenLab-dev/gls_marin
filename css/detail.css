@@ -94,7 +94,7 @@
 .search #right .category-result {
 	margin: 0;
 	padding:0;
-	margin-top: -30px;
+	/* margin-top: -30px; */
 }
 
 .search #right ul.search-cate {
@@ -692,9 +692,10 @@ margin-right: 20px;
 #detail_box .inner ul{
 	display: block;
 	overflow: hidden;
-	padding-top: -1em;
+	/* padding-top: -1em;*/
 	position: relative;
 	font-size: 12px;
+	margin-top: 2em;
 }
 #detail_box .inner ul .contena{
  height: 160px;
@@ -722,7 +723,7 @@ margin-right: 20px;
 }
 #detail_box .inner ul li:nth-child(5n){
   //float: right;
-	margin-top:-21px;
+	/*margin-top:-21px;*/
 }
 #detail_box .inner ul li:first-child,
 #detail_box .inner ul li:nth-child(6n){
@@ -748,7 +749,7 @@ margin-right: 20px;
 	overflow: hidden;
 	position:absolute;
 	background: #FFF;
-	margin-top: -20px;
+	/* margin-top: -20px; */
 	width: 100%;
 	color: #000;
 		filter:alpha(opacity=50);

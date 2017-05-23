@@ -781,6 +781,7 @@ $(function() {
 						<a href="" class=""><img class="" src="" alt=""></a>
 				</div>-->
 				<div id="right">
+					<!-- 
 					<div class="category-result">
 						<h1 class="title_def">カテゴリー指定</h1>
 						<ul class="search-cate">
@@ -796,6 +797,7 @@ $(function() {
 							</li>
 						</ul>
 					</div>
+					 -->
 					<div class="search-result">
 							
 						<form name="frmSearchChange" id="frmSearchChange" method="POST" action="/plan-search.html">

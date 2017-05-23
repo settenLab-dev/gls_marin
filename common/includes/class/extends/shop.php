@@ -484,21 +484,21 @@ class shop extends collection {
 		}
 		//	キーワード検索
 		if ($collection->getByKey($collection->getKeyValue(), "free") != "") {
-			if ($AREA_S != ""){
-			  $sql .= "and ";
-			}
-			elseif ($CATE_S != "") {
-			  $sql .= "and ";
-			}
-			elseif ($COMPANY_S != "") {
-			  $sql .= "and ";
-			}
-			elseif ($CID != "") {
-			  $sql .= "and ";
-			}
-			else {
-			  //$sql .= "where ";
-			}
+// 			if ($AREA_S != ""){
+// 			  $sql .= "and ";
+// 			}
+// 			elseif ($CATE_S != "") {
+// 			  $sql .= "and ";
+// 			}
+// 			elseif ($COMPANY_S != "") {
+// 			  $sql .= "and ";
+// 			}
+// 			elseif ($CID != "") {
+// 			  $sql .= "and ";
+// 			}
+// 			else {
+// 			  $sql .= "where ";
+// 			}
 
 // 			$FREE_S = "%".$collection->getByKey($collection->getKeyValue(), "free")."%";
 // 			$sql .= "(s.SHOP_NAME like '$FREE_S' ";
