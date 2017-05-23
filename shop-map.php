@@ -463,11 +463,10 @@ $(document).ready(function() {
 			</div>
 		</section>
 		 -->
-		</article><!-- /#detail_plan -->
 			
 		<setcion id="detail_box">
 			<section id="info_access" class="shop">
-			<h3 class="info_label">地図・アクセス情報</h3>
+				<h3 class="info_label">地図・アクセス情報</h3>
 				<table>
 					<tr>
 						<th>
@@ -585,6 +584,8 @@ $(document).ready(function() {
 			</section>
 			
 		</setcion>
+		
+	</article><!-- /#detail_plan -->
 				
 	
 	<!-- /プラン詳細 -->
