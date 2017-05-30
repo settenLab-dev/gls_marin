@@ -45,6 +45,8 @@ $company->select($collection->getByKey($collection->getKeyValue(), "COMPANY_ID")
 ///////////////////////
 
 $shopBooking = new shopBooking($dbMaster);
+$shopBooking->setPost();
+
 $is_request=false;
 
 require_once('includes/box/hotel/reservpb.php');
@@ -83,7 +85,7 @@ $inputs = new inputs();
 <!-- InstanceBeginEditable name="indextop" --><!-- InstanceEndEditable -->
 
 <!--content-->
-<div id="content_mini" class="clearfix">
+<div id="content" class="clearfix">
 
 	<!--main-->
 	<!-- InstanceBeginEditable name="maincontents" -->

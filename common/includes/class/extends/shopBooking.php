@@ -993,7 +993,7 @@ class shopBooking extends collection {
 		}
 */
 		// 初回かつ在庫タイプの指定があるときのみ在庫管理実施
-		if (($dataList['ROOM_ID'] > 0) && ($update_flg = false)){
+		if (($dataList['ROOM_ID'] > 0) && ($update_flg == false)){
 
 			// 人数ごと料金の時は人数の合計を引き落とし
 			if ($dataList['SHOP_PRICETYPE_KIND'] ==1){
@@ -1009,8 +1009,9 @@ class shopBooking extends collection {
 				$sql = "";
 				$sql .= "update HOTELPROVIDE set HOTELPROVIDE_BOOKEDNUM = HOTELPROVIDE_BOOKEDNUM+".$booking_num;
 				$sql .= " where ROOM_ID=".$dataList["ROOM_ID"]." and COMPANY_ID = ".$dataList["COMPANY_ID"];
-				$sql .= " and HOTELPROVIDE_DATE = '".date('Y-m-d',strtotime($dataList["BOOKING_DATE"])+$i*60*60*24)."'";
-			print $sql;
+				// $sql .= " and HOTELPROVIDE_DATE = '".date('Y-m-d',strtotime($dataList["BOOKING_DATE"])+$i*60*60*24)."'";
+				$sql .= " and HOTELPROVIDE_DATE = '".$dataList["BOOKING_DATE"]."'";
+// 				print $sql;
 
 				if (!$this->saveExec($sql)) {
 					$this->db->rollback();
@@ -1023,7 +1024,7 @@ class shopBooking extends collection {
 		}
 
 		// サイトから予約した時かつ初回はメールを送信する。
-		if (($dataList['BOOKING_HOW'] == 0) && ($update_flg = false)){
+		if (($dataList['BOOKING_HOW'] == 0) && ($update_flg == false)){
 
 			$mMail = new mMail($this->db);
 			//ユーザー宛て予約メール
@@ -1258,7 +1259,7 @@ class shopBooking extends collection {
 			$body = cmReplace($body, "[!ADDRESS!]", parent::getByKey(parent::getKeyValue(), "BOOKING_CITY").' '.parent::getByKey(parent::getKeyValue(), "BOOKING_ADDRESS").' '.parent::getByKey(parent::getKeyValue(), "BOOKING_BUILD"));
 			$body = cmReplace($body, "[!BIRTHDAY!]", parent::getByKey(parent::getKeyValue(), "BOOKING_AGE"));
 			$body = cmReplace($body, "[!JOB!]", parent::getByKey(parent::getKeyValue(), ""));
-	 	//	echo $mailid.$from.'<BR>'.$to.'<BR>'.$subject.'<BR>'.$body;exit;	
+// 	 		echo $mailid.$from.'<BR>'.$to.'<BR>'.$subject.'<BR>'.$body;exit;	
 			//print "$to";exit;	
 			if (!cmMailSendQueue($from, $to, $subject, $body)) {
 				parent::setErrorFirst("予約メールの送信に失敗しました。");
@@ -1267,25 +1268,26 @@ class shopBooking extends collection {
 				return false;
 			}
 			////////////////////////////////////////////////////////////////////////////////////////////
+			// FAXは使用しない為コメントアウト
 			//	fax
-			if (parent::getByKey(parent::getKeyValue(), "COMPANY_FAX") != "" || $this->selectCompanyFaxId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID"))) {
-				parent::setByKey(parent::setKeyValue(), "COMPANY_FAX",$this->selectCompanyFaxId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID")));
+// 			if (parent::getByKey(parent::getKeyValue(), "COMPANY_FAX") != "" || $this->selectCompanyFaxId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID"))) {
+// 				parent::setByKey(parent::setKeyValue(), "COMPANY_FAX",$this->selectCompanyFaxId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID")));
 
-				//	FAX番号確認
-				if (parent::getByKey(parent::getKeyValue(), "BOOKSET_BOOKING_HOW1") != 2) {
-					//	FAX通知希望確認
+// 				//	FAX番号確認
+// 				if (parent::getByKey(parent::getKeyValue(), "BOOKSET_BOOKING_HOW1") != 2) {
+// 					//	FAX通知希望確認
 
-					$faxnumer = cmReplace(parent::getByKey(parent::getKeyValue(), "COMPANY_FAX"), "-", "");
+// 					$faxnumer = cmReplace(parent::getByKey(parent::getKeyValue(), "COMPANY_FAX"), "-", "");
 					
-					$sendfax = new sendfax($faxnumer, $body);
-					if (!$sendfax->send()) {
-						parent::setErrorFirst("予約FAXの送信に失敗しました。");
-						parent::setErrorFirst("大変お手数ですが管理者にお問い合わせ下さい。");
-						$this->db->rollback();
-						return false;
-					}
-				}
-			}
+// 					$sendfax = new sendfax($faxnumer, $body);
+// 					if (!$sendfax->send()) {
+// 						parent::setErrorFirst("予約FAXの送信に失敗しました。");
+// 						parent::setErrorFirst("大変お手数ですが管理者にお問い合わせ下さい。");
+// 						$this->db->rollback();
+// 						return false;
+// 					}
+// 				}
+// 			}
 			////////////////////////////////////////////////////////////////////////////////////////////
 		}else{} //通知は管理画面以外からの予約のみ
 
@@ -1683,7 +1685,107 @@ class shopBooking extends collection {
 	}
 	
 	public function checkAll($bookingcontArray) {
+		// 主催会社
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "COMPANY_ID"))) {
+			parent::setErrorFirst("主催会社の取得に失敗しました");
+		}
 		
+		// プランID
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "SHOPPLAN_ID"))) {
+			parent::setErrorFirst("プランの取得に失敗しました");
+		}
+		
+		// 料金タイプID
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "HOTELPAY_ID"))) {
+			parent::setErrorFirst("料金情報の取得に失敗しました");
+		}
+		
+		// コースID
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "ROOM_ID"))) {
+			parent::setErrorFirst("コースの取得に失敗しました");
+		}
+		
+		// 催行日
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "target_date"))) {
+			parent::setErrorFirst("催行日の取得に失敗しました");
+			// parent::setError("BOOKING_DATE", "必須項目です");
+		}
+		
+		// 申し込み人数
+		$price_person = 0;
+		for($i = 1 ; $i <= 8; $i++){
+			$price_person += parent::getByKey(parent::getKeyValue(), "BOOKING_PRICEPERSON".$i);
+		}
+		if($price_person == 0){
+			// 			parent::setErrorFirst("申し込み人数が選択されていません");
+			parent::setError("BOOKING_PRICEPERSON", "申し込み人数が選択されていません");
+		}
+		
+		//// 予約代表者の情報
+		// お名前
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_NAME1"))
+		|| !cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_NAME2")) ) {
+			parent::setError("BOOKING_NAME", "必須項目です");
+		}
+		
+		// ふりがな
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_KANA1"))
+		|| !cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_KANA2")) ) {
+			parent::setError("BOOKING_KANA", "必須項目です");
+		}
+		
+		if ((cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_KANA1")) && !preg_match('/^[ァ-ヶ]+$/u', parent::getByKey(parent::getKeyValue(), "BOOKING_KANA1")))
+		|| (cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_KANA2")) && !preg_match('/^[ァ-ヶ]+$/u', parent::getByKey(parent::getKeyValue(), "BOOKING_KANA2"))) ) {
+			parent::setError("BOOKING_KANA", "全角カタカナで入力してください");
+		}
+		
+		// メールアドレス
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_MAILADDRESS")) ) {
+			parent::setError("BOOKING_MAILADDRESS", "必須項目です");
+		}
+		
+		//// ご住所
+		// 都道府県
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_PREF_ID")) ) {
+			parent::setError("BOOKING_PREF_ID", "必須項目です");
+		}
+		// 市町村
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_CITY")) ) {
+			parent::setError("BOOKING_CITY", "必須項目です");
+		}
+		// その他住所
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_ADDRESS")) ) {
+			parent::setError("BOOKING_ADDRESS", "必須項目です");
+		}
+		// 建物名
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_BUILD")) ) {
+			parent::setError("BOOKING_BUILD", "必須項目です");
+		}
+		
+		// 電話番号
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_TEL")) ) {
+			parent::setError("BOOKING_TEL", "必須項目です");
+		} else {
+			$member_tel = parent::getByKey(parent::getKeyValue(), "BOOKING_TEL");
+			$member_tel = mb_convert_kana($member_tel, "n", "utf-8");
+			if(!preg_match("/^[0-9]{2,4}-[0-9]{2,4}-[0-9]{3,4}$/", $member_tel)){
+				parent::setError("BOOKING_TEL", "00-0000-0000のように、-(ハイフン)付きで入力して下さい。");
+			}
+			parent::setByKey(parent::getKeyValue(), "BOOKING_TEL", $member_tel);
+		}
+		
+		// ご質問項目
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_ANSWER")) ) {
+			// 予約者の回答が必須の場合
+			if (parent::getByKey(parent::getKeyValue(), "SHOPPLAN_QUESTION_REC") == 1 ){
+				parent::setError("BOOKING_ANSWER", "必須項目です");
+			}
+		}
+		
+		// お支払い方法 選択させる場合はコメントアウト解除
+		/*if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_PAYMENT")) ) {
+			parent::setError("BOOKING_PAYMENT", "必須項目です");
+		}*/
 /*
 		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_MEET_TIME"))) {
 			parent::setError("BOOKING_MEET_TIME", "必須項目です");
@@ -1735,10 +1837,11 @@ class shopBooking extends collection {
 		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "ROOM_ID"))) {
 			parent::setErrorFirst("部屋タイプの取得に失敗しました");
 		}
-
+		
 		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_DATE"))) {
 			parent::setError("BOOKING_DATE", "必須項目です");
 		}
+		
 
 // 		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_DATE_CANCEL_END"))) {
 // 			parent::setError("BOOKING_DATE_CANCEL_END", "必須項目です");

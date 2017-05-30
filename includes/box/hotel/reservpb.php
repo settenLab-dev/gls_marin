@@ -368,19 +368,20 @@ if ($collection->getByKey($collection->getKeyValue(), "confirm_x") or $collectio
 	$shopBooking->setByKey($shopBooking->getKeyValue(), "check_out_time", $collection->getByKey($collection->getKeyValue(), "BOOKING_MEET_TIME"));
 	$shopBooking->setByKey($shopBooking->getKeyValue(), "cancel", $dataCancel);
 	$shopBooking->setByKey($shopBooking->getKeyValue(), "payment", $mail_contents);
-	$shopBooking->setByKey($shopBooking->getKeyValue(), "BOOKING_DEMAND", $shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_DEMAND"));
+// 	$shopBooking->setByKey($shopBooking->getKeyValue(), "BOOKING_DEMAND", $shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_DEMAND"));
 	$shopBooking->setByKey($shopBooking->getKeyValue(), "shop_url", URL_PUBLIC."search-detail.html?id=".$collection->getByKey($collection->getKeyValue(), "COMPANY_ID"));
 
 	$shopBooking->setByKey($shopBooking->getKeyValue(), "plan_contents", $shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_DISCRIPTION"));
 
 	
-	print_r($shopBooking);
+// 	print_r($shopBooking);
 	$shopBooking->checkAll($shopBookingcontArray);
 
 	if ($shopBooking->getCount() <= 0) {
 
 		// 		print_r($shopBookingcontArray);
 
+		// 保存処理
 		if ($collection->getByKey($collection->getKeyValue(), "regist")) {
 
 			$saveStat = $shopBooking->save($shopBookingcontArray,$is_request);

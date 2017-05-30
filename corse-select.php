@@ -359,7 +359,7 @@ if($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_SALE_TO")
 
 			<p>ご希望のコースをお選びください</p>
 
-			<h2 class="plan_info">[選択中の日程] <?php print $collection->getByKey($collection->getKeyValue(), "search_date")?></h2>
+			<h2 class="plan_info">[選択中の日程] <?php print $collection->getByKey($collection->getKeyValue(), "target_date")?></h2>
 			<h2 class="plan_info">[選択中のプラン] <?php print cmStrimWidth($shopPlanTarget->getByKey($shopPlanTarget->getKeyValue(), "SHOPPLAN_NAME"), 0, 90, '…')?></h2>
 			<h2 class="plan_info">[催行会社] <?php print cmStrimWidth($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_NAME"), 0, 90, '…')?></h2>
 
