@@ -732,9 +732,11 @@ $(function() {
 										<li class="check">
 											<label><input type="checkbox" name="facility[]" value="6" id="facility6" <?php if(in_array(6, $arrFacility)) echo "checked='checked'"; ?>> 更衣室</label>
 										</li>
+										<!-- 
 										<li class="check">
 											<label><input type="checkbox" name="facility[]" value="7" id="facility7" <?php if(in_array(7, $arrFacility)) echo "checked='checked'"; ?>> 貴重品預かり</label>
 										</li>
+										 -->
 									<li class="subtitle">駐車場あり</li>
 										<li class="check">
 											<label><input type="checkbox" name="access[]" value="1" id="access1" <?php if(in_array(1, $arrAccess)) echo "checked='checked'"; ?>> 有料駐車場</label>
@@ -756,16 +758,16 @@ $(function() {
 											<label><input type="checkbox" name="tag[]" value="3" id="tag3" <?php if(in_array(3, $arrTag)) echo "checked='checked'"; ?>> オールシーズン</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 春</label>
+											<label><input type="checkbox" name="tag[]" value="20" id="tag20" <?php if(in_array(20, $arrTag)) echo "checked='checked'"; ?>> 春</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 夏</label>
+											<label><input type="checkbox" name="tag[]" value="21" id="tag21" <?php if(in_array(21, $arrTag)) echo "checked='checked'"; ?>> 夏</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 秋</label>
+											<label><input type="checkbox" name="tag[]" value="22" id="tag22" <?php if(in_array(22, $arrTag)) echo "checked='checked'"; ?>> 秋</label>
 										</li>
 										<li class="check">
-											<label><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 冬</label>
+											<label><input type="checkbox" name="tag[]" value="23" id="tag23" <?php if(in_array(23, $arrTag)) echo "checked='checked'"; ?>> 冬</label>
 										</li>
 									<li class="btn">
 										<div class="btn_submit"><input type="button" value="この条件で検索する" onclick="document.search_side_list.submit();" class="search-list-btn"></div>
@@ -1041,7 +1043,7 @@ $(function() {
 												<label class="multiple-option"><input type="checkbox" name="facility[]" value="4" id="facility4" <?php if(in_array(4, $arrFacility)) echo "checked='checked'"; ?>> ロッカー</label>
 												<label class="multiple-option"><input type="checkbox" name="facility[]" value="5" id="facility5" <?php if(in_array(5, $arrFacility)) echo "checked='checked'"; ?>> 売店</label>
 												<label class="multiple-option"><input type="checkbox" name="facility[]" value="6" id="facility6" <?php if(in_array(6, $arrFacility)) echo "checked='checked'"; ?>> 更衣室</label>
-												<label class="multiple-option"><input type="checkbox" name="facility[]" value="7" id="facility7" <?php if(in_array(7, $arrFacility)) echo "checked='checked'"; ?>> 貴重品預かり</label>
+												<!-- <label class="multiple-option"><input type="checkbox" name="facility[]" value="7" id="facility7" <?php if(in_array(7, $arrFacility)) echo "checked='checked'"; ?>> 貴重品預かり</label> -->
 											</div>
 											<b class="sub-head">駐車場あり</b>
 											<div class="sub-wrap">
@@ -1056,10 +1058,10 @@ $(function() {
 											<b class="sub-head">シーズン</b>
 											<div class="sub-wrap">
 												<label class="multiple-option"><input type="checkbox" name="tag[]" value="3" id="tag3" <?php if(in_array(3, $arrTag)) echo "checked='checked'"; ?>> オールシーズン</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 春</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 夏</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 秋</label>
-												<label class="multiple-option"><input type="checkbox" name="tag[]" value="" id="" <?php if(in_array(999, $arrTag)) echo "checked='checked'"; ?>> 冬</label>
+												<label class="multiple-option"><input type="checkbox" name="tag[]" value="20" id="tag20" <?php if(in_array(20, $arrTag)) echo "checked='checked'"; ?>> 春</label>
+												<label class="multiple-option"><input type="checkbox" name="tag[]" value="21" id="tag21" <?php if(in_array(21, $arrTag)) echo "checked='checked'"; ?>> 夏</label>
+												<label class="multiple-option"><input type="checkbox" name="tag[]" value="22" id="tag22" <?php if(in_array(22, $arrTag)) echo "checked='checked'"; ?>> 秋</label>
+												<label class="multiple-option"><input type="checkbox" name="tag[]" value="23" id="tag23" <?php if(in_array(23, $arrTag)) echo "checked='checked'"; ?>> 冬</label>
 											</div>
 										</div><!-- /.sub-inner -->
 									</div><!-- /.inner -->

@@ -203,7 +203,7 @@ class shop extends collection {
 		$where = "";
 		$where = $this->resWhere($collection);
 
-		print $where;
+// 		print $where;
 
 
 		if ($where != "") {
