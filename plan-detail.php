@@ -1097,71 +1097,75 @@ $(document).ready(function() {
 									<li class="address">
 										<?php
 											$access_id = ${"shop_access_id".$i};
+											$access_address = "";
 											if(!empty($access_id)){
-												echo $i.")&nbsp;".$arrShopAccess[$access_id]['SHOP_ACCESS_ADDRESS'];
+												$access_address = $arrShopAccess[$access_id]['SHOP_ACCESS_ADDRESS'];
+												echo $i.")&nbsp;".$access_address;
 											}
 										?>
 									</li>
-									<!-- 地図マップ -->
-									<li class="address_map">
-										<div id="address_map<?php echo $i; ?>" style='width: 800px; height: 300px;'></div>
-										<script type="text/javascript">
-										$(function() {
-											var query = '<?php echo $arrShopAccess[$access_id]['SHOP_ACCESS_ADDRESS']; ?>';
-											var lon = '';
-											var lat = '';
-											var geocoder;
-											var map;
-
-											var init_flg = true;
-											
-											function initialize() {
-												$("#info_access").show();
-												geocoder = new google.maps.Geocoder();
-												var myOptions = {
-													center: new google.maps.LatLng(lon, lat),
-													zoom: 18,
-													mapTypeId: google.maps.MapTypeId.ROADMAP  
-												}
-												map = new google.maps.Map(document.getElementById("address_map<?php echo $i; ?>"),myOptions);
-												google.maps.event.addDomListener(map, 'tilesloaded', codeAddress);
-// 												codeAddress();
-// 												google.maps.event.trigger(map, 'resize');
-// 												map.checkResize();
-											}
-											function codeAddress() {
-												var address = query;
-												if(init_flg){
-													geocoder.geocode({ 'address': address }, function (results, status) {
-														if (status == google.maps.GeocoderStatus.OK) {
-															map.setCenter(results[0].geometry.location);
-															var marker = new google.maps.Marker({
-																map: map,
-																position: results[0].geometry.location,
-																title:address,
-																animation: google.maps.Animation.DROP 
-															});
-															var infowindow = new google.maps.InfoWindow({
-																content: "<span style='font-size:11px'><b>住所：</b>" + address + "</span>",
-																pixelOffset:0, 
-																position: results[0].geometry.location
+									<?php if(!empty($access_address)): ?>
+										<!-- 地図マップ -->
+										<li class="address_map">
+											<div id="address_map<?php echo $i; ?>" style='width: 800px; height: 300px;'></div>
+											<script type="text/javascript">
+											$(function() {
+												var query = '<?php echo $arrShopAccess[$access_id]['SHOP_ACCESS_ADDRESS']; ?>';
+												var lon = '';
+												var lat = '';
+												var geocoder;
+												var map;
+	
+												var init_flg = true;
 												
-															});
-															google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); });
-														} else {
-															//alert("この住所が存在しておりません");
-														}
-													});
-												
-													$("#info_access").hide();
-													init_flg = false;
+												function initialize() {
+													$("#info_access").show();
+													geocoder = new google.maps.Geocoder();
+													var myOptions = {
+														center: new google.maps.LatLng(lon, lat),
+														zoom: 18,
+														mapTypeId: google.maps.MapTypeId.ROADMAP  
+													}
+													map = new google.maps.Map(document.getElementById("address_map<?php echo $i; ?>"),myOptions);
+													google.maps.event.addDomListener(map, 'tilesloaded', codeAddress);
+	// 												codeAddress();
+	// 												google.maps.event.trigger(map, 'resize');
+	// 												map.checkResize();
 												}
-											}
-											google.maps.event.addDomListener(window, 'load', initialize);
-											
-										});
-										</script>
-									</li>
+												function codeAddress() {
+													var address = query;
+													if(init_flg){
+														geocoder.geocode({ 'address': address }, function (results, status) {
+															if (status == google.maps.GeocoderStatus.OK) {
+																map.setCenter(results[0].geometry.location);
+																var marker = new google.maps.Marker({
+																	map: map,
+																	position: results[0].geometry.location,
+																	title:address,
+																	animation: google.maps.Animation.DROP 
+																});
+																var infowindow = new google.maps.InfoWindow({
+																	content: "<span style='font-size:11px'><b>住所：</b>" + address + "</span>",
+																	pixelOffset:0, 
+																	position: results[0].geometry.location
+													
+																});
+																google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); });
+															} else {
+																//alert("この住所が存在しておりません");
+															}
+														});
+													
+														$("#info_access").hide();
+														init_flg = false;
+													}
+												}
+												google.maps.event.addDomListener(window, 'load', initialize);
+												
+											});
+											</script>
+										</li>
+									<?php endif;?>
 								<?php endfor;?>
 							</ul>
 						</td>

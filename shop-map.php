@@ -473,57 +473,60 @@ $(document).ready(function() {
 							所在地
 						</th>
 						<td>
-							<p class="add_info"><?php echo nl2br($shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS")); ?></p>
-							<?php //TODO 公開時APIキーを取得して設定 ?>
-							<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARHX6DkSJkgcGW2ZtJiQquQnbqnskxoNI" type="text/javascript"></script>
-							<script type="text/javascript">
-								$(function() {
-									var query = '<?php echo $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS"); ?>';
-									var lon = '';
-									var lat = '';
-									var geocoder;
-									var map;
-									function initialize() {
-										geocoder = new google.maps.Geocoder();
-										var myOptions = {
-											center: new google.maps.LatLng(lon, lat),
-											zoom: 18,
-											mapTypeId: google.maps.MapTypeId.ROADMAP  
-										}
-										map = new google.maps.Map(document.getElementById("shop_map"),myOptions);
-										codeAddress();
-										google.maps.event.trigger(map, 'resize');
-										
-									}
-									function codeAddress() {
-										var address = query;
-										geocoder.geocode({ 'address': address }, function (results, status) {
-											if (status == google.maps.GeocoderStatus.OK) {
-												map.setCenter(results[0].geometry.location);
-												var marker = new google.maps.Marker({
-													map: map,
-													position: results[0].geometry.location,
-													title:address,
-													animation: google.maps.Animation.DROP 
-												});
-												var infowindow = new google.maps.InfoWindow({
-													content: "<span style='font-size:11px'><b>住所：</b>" + address + "</span>",
-													pixelOffset:0, 
-													position: results[0].geometry.location
-									
-												});
-												google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); });
-											} else {
-												//alert("この住所が存在しておりません");
+							<?php $shop_address = $shopTarget->getByKey($shopTarget->getKeyValue(), "SHOP_ADDRESS"); ?>
+							<?php if(!empty($shop_address)): ?>
+								<p class="add_info"><?php echo nl2br($shop_address); ?></p>
+								<?php //TODO 公開時APIキーを取得して設定 ?>
+								<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARHX6DkSJkgcGW2ZtJiQquQnbqnskxoNI" type="text/javascript"></script>
+								<script type="text/javascript">
+									$(function() {
+										var query = '<?php echo $shop_address; ?>';
+										var lon = '';
+										var lat = '';
+										var geocoder;
+										var map;
+										function initialize() {
+											geocoder = new google.maps.Geocoder();
+											var myOptions = {
+												center: new google.maps.LatLng(lon, lat),
+												zoom: 18,
+												mapTypeId: google.maps.MapTypeId.ROADMAP  
 											}
-										});
-									}
-									google.maps.event.addDomListener(window, 'load', initialize);
-								});
-							</script>
-							<div class="map" id='shop_map' style='width: 764px; height: 450px;'>
-								<!-- <iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0"  src="http://maps.google.co.jp/maps?q=沖縄県那覇市久米1-1-13&iwloc=J&output=embed"></iframe> -->
-							</div>
+											map = new google.maps.Map(document.getElementById("shop_map"),myOptions);
+											codeAddress();
+											google.maps.event.trigger(map, 'resize');
+											
+										}
+										function codeAddress() {
+											var address = query;
+											geocoder.geocode({ 'address': address }, function (results, status) {
+												if (status == google.maps.GeocoderStatus.OK) {
+													map.setCenter(results[0].geometry.location);
+													var marker = new google.maps.Marker({
+														map: map,
+														position: results[0].geometry.location,
+														title:address,
+														animation: google.maps.Animation.DROP 
+													});
+													var infowindow = new google.maps.InfoWindow({
+														content: "<span style='font-size:11px'><b>住所：</b>" + address + "</span>",
+														pixelOffset:0, 
+														position: results[0].geometry.location
+										
+													});
+													google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); });
+												} else {
+													//alert("この住所が存在しておりません");
+												}
+											});
+										}
+										google.maps.event.addDomListener(window, 'load', initialize);
+									});
+								</script>
+								<div class="map" id='shop_map' style='width: 764px; height: 450px;'>
+									<!-- <iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0"  src="http://maps.google.co.jp/maps?q=沖縄県那覇市久米1-1-13&iwloc=J&output=embed"></iframe> -->
+								</div>
+							<?php endif;?>
 						</td>
 					</tr>
 					<tr>
