@@ -1483,7 +1483,8 @@ class shopBooking extends collection {
 
 		$sql .= parent::expsVal($dataList["BOOKING_MEMO"], true, 1).", ";
 
-		$sql .= "1, ";
+// 		$sql .= "1, ";
+		$sql .= parent::expsVal($dataList["BOOKING_STATUS"]).", ";
 		$sql .= "now(), ";
 		$sql .= "now()) ";
 		//print_r($dataList);exit;

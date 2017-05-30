@@ -44,6 +44,7 @@ $company->select($collection->getByKey($collection->getKeyValue(), "COMPANY_ID")
 ///////////////////////
 
 $shopBooking = new shopBooking($dbMaster);
+$shopBooking->setPost();
 
 $is_request=true;
 
@@ -76,11 +77,11 @@ $inputs = new inputs();
 <!-- InstanceBeginEditable name="indextop" --><!-- InstanceEndEditable -->
 
 <!--content-->
-<div id="content_short" class="clearfix">
+<div id="content" class="clearfix">
 
 	<!--main-->
 	<!-- InstanceBeginEditable name="maincontents" -->
-	<main id="detail" class="reservation">
+	<main id="detail_n" class="reservation_n">
 
 		<ul id="panlist">
         	<li><a href="index.html">TOP</a></li>
@@ -91,18 +92,18 @@ $inputs = new inputs();
         	こちらのプランは予約リクエストの受付となります。予約リクエストの送信後、施設店舗より予約可否をご連絡いたします。<br/>
         	以下の必要事項を入力し、確認ページへお進みください。<br/><br/>
         	<?php
-			if ($hotelBooking->getErrorCount() > 0) {
+			if ($shopBooking->getErrorCount() > 0) {
 			?>
-						<?php print create_error_caption($hotelBooking->getError())?>
+				<?php print create_error_caption($shopBooking->getError());?>
 			<?php
 			}
 			?>
         	<form method="post" action="">
             	<?php
-					if ($collection->getByKey($collection->getKeyValue(), "regist") and $hotelBooking->getErrorCount() <= 0) {
+					if ($collection->getByKey($collection->getKeyValue(), "regist") and $shopBooking->getErrorCount() <= 0) {
 						require("includes/box/hotel/completeRequestResrv.php");
 					}
-					elseif ($collection->getByKey($collection->getKeyValue(), "confirm_x") and $hotelBooking->getErrorCount() <= 0) {
+					elseif ($collection->getByKey($collection->getKeyValue(), "confirm_x") and $shopBooking->getErrorCount() <= 0) {
 						require("includes/box/hotel/confirmRequestReserv.php");
 					}
 					else {
