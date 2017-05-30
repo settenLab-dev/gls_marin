@@ -1,5 +1,5 @@
 <?php
-var_dump($_POST);
+// var_dump($_POST);
 
 require_once('includes/applicationInc.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shop.php');
@@ -89,7 +89,7 @@ if (!cmCheckNull($page) or !cmCheckPtn($page, CHK_PTN_NUM) or $page <= 0) {
 }
 
 $limit = ($currentPage * $perpage).",".$perpage;
-var_dump($limit);
+// var_dump($limit);
 $collection->setByKey($collection->getKeyValue(), "limit", $limit);
 $collection->setByKey($collection->getKeyValue(), "limitptn", "plan");
 
