@@ -42,7 +42,7 @@
 						</div>
 						<div>
 							ようこそ！<?php print $sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_HANDLENAME")?>さん</span><br>
-							（<a href="/mypage.html">マイページへ</a>／<a href="" onClick="document.logout.submit();return false">ログアウト</a>）
+							（<a href="/mypage.html">マイページへ</a>／<a href="javascript:void(0);" onClick="document.logout.submit();return false;">ログアウト</a>）
 						</div>
 						<form action="<?php print $_SERVER['REQUEST_URI']?>" method="post" name="logout">
 							<input type="hidden" name="logout" value="ログアウト">

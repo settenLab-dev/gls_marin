@@ -45,103 +45,110 @@ $inputs = new inputs();
 	<!-- InstanceBeginEditable name="maincontents" -->
 	<main id="content">
 
-    <ul id="panlist">
-        <li><a href="index.html">TOP</a></li>
-        <li><span>会員ログイン</span></li>
-    </ul>
-
-	<section id="login_box">
-		<h1>会員ログインして予約へ</h1>
-		<div class="inner">
-        	<form action="<?php print $_SERVER['REQUEST_URI']?>" method="post">
-        		<?php
-						if ($memberInput->getErrorCount() > 0) {
-						?>
-								<?=create_error_caption($memberInput->getError())?>
-						<?php
+		<ul id="panlist">
+			<li><a href="index.html">TOP</a></li>
+			<li><span>会員ログイン</span></li>
+		</ul>
+	
+		<section id="login_box">
+			<h1>会員ログインして予約へ</h1>
+			<div class="inner">
+				<form action="<?php print $_SERVER['REQUEST_URI']?>" method="post">
+					<?php
+							if ($memberInput->getErrorCount() > 0) {
+							?>
+									<?=create_error_caption($memberInput->getError())?>
+							<?php
+							}
+					?>
+					<div class="input_field">
+						<ul class="box">
+							<li class="title">
+								<p>メールアドレス</p>
+							</li>
+							<li class="case">
+											<?=$inputs->text("MEMBER_LOGIN_ID",$memberInput->getByKey($memberInput->getKeyValue(),"MEMBER_LOGIN_ID"),"imeDisabled ", 30)?>
+											<?php print create_error_msg($memberInput->getErrorByKey("MEMBER_LOGIN_ID"))?>
+							</li>
+						</ul>
+						<ul class="box">
+							<li class="title">
+										<p>パスワード</p>
+							</li>
+							<li class="case">
+											<?=$inputs->password("MEMBER_LOGIN_PASSWORD",$memberInput->getByKey($memberInput->getKeyValue(),"MEMBER_LOGIN_PASSWORD"),"imeDisabled", 30)?>
+								<?php print create_error_msg($memberInput->getErrorByKey("MEMBER_LOGIN_PASSWORD"))?>
+							</li>
+						</ul>
+					</div>
+					
+					<div class="auto_check">
+						<p><?php print $inputs->checkbox("loginAuto","loginAuto","auto",$memberInput->getByKey($memberInput->getKeyValue(),"loginAuto")," 次回から自動でログイン")?></p>
+					</div>
+					
+					<div class="btn_login">
+						<p>
+							<?=$inputs->submit("","login","会員ログイン", "circle")?>
+							<?php print $inputs->hidden('ref_url', $_SESSION['ref_url']);?>
+						</p>
+					</div>
+	
+					<?php
+					if ($_POST) {
+						foreach ($_POST as $k=>$v) {
+							if ($k == "MEMBER_LOGIN_ID" or $k == "MEMBER_LOGIN_PASSWORD" or $k == "loginAuto" or $k == "login") continue;
+							print $inputs->hidden($k, $v);
 						}
-				?>
-			<div class="input_field">
-				<ul class="box">
-					<li class="title">
-						<p>メールアドレス</p>
-					</li>
-					<li class="case">
-                    				<?=$inputs->text("MEMBER_LOGIN_ID",$memberInput->getByKey($memberInput->getKeyValue(),"MEMBER_LOGIN_ID"),"imeDisabled ", 30)?>
-                    				<?php print create_error_msg($memberInput->getErrorByKey("MEMBER_LOGIN_ID"))?>
-					</li>
-				</ul>
-				<ul class="box">
-					<li class="title">
-                    			<p>パスワード</p>
-					</li>
-					<li class="case">
-                    				<?=$inputs->password("MEMBER_LOGIN_PASSWORD",$memberInput->getByKey($memberInput->getKeyValue(),"MEMBER_LOGIN_PASSWORD"),"imeDisabled", 30)?>
-						<?php print create_error_msg($memberInput->getErrorByKey("MEMBER_LOGIN_PASSWORD"))?>
-					</li>
-				</ul>
-			</div>
-			
-			<div class="auto_check">
-                    		<p><?php print $inputs->checkbox("loginAuto","loginAuto","auto",$memberInput->getByKey($memberInput->getKeyValue(),"loginAuto")," 次回から自動でログイン")?></p>
-			</div>
-			
-			<div class="btn_login">
-				<p>
-					<?=$inputs->submit("","login","会員ログイン", "circle")?>
-					<?php print $inputs->hidden('ref_url', $_SESSION['ref_url']);?>
-				</p>
-			</div>
-
-                <?php
-                if ($_POST) {
-					foreach ($_POST as $k=>$v) {
-						if ($k == "MEMBER_LOGIN_ID" or $k == "MEMBER_LOGIN_PASSWORD" or $k == "loginAuto" or $k == "login") continue;
-						print $inputs->hidden($k, $v);
 					}
-				}
-                ?>
-           	</form>
-           	
-			<div class="pass_link">
-				<a href="/reissue-password.html">
+					?>
+				</form>
+					
+				<div class="pass_link">
+					<a href="/reissue-password.html">
+						<p>
+							※パスワードを忘れた場合はこちら
+						</p>
+					</a>
+				</div>
+			</div>
+		</section>
+	
+		<section id="regist_box">
+			<h2>新規会員登録する</h2>
+			<div class="inner">
+				<a href="/regist.html">
 					<p>
-						※パスワードを忘れた場合はこちら
+						新規会員登録はこちら
 					</p>
 				</a>
 			</div>
-		</div>
-	</section>
+		</section>
+	
+		<section id="normal_box">
+			<h2>会員登録せずに予約</h2>
+			<div class="inner">
+				<a href="javascript:void(0);" onClick="document.nomember.submit();return false;">
+					<p>
+						会員登録なしで予約へ進む
+					</p>
+				</a>
+				<form action="<?php print $_SERVER['REQUEST_URI']?>" method="post" name="nomember">
+					<input type="hidden" name="nomember" value="true">
+					<?php
+						if ($_POST) {
+							foreach ($_POST as $k=>$v) {
+								if ($k == "MEMBER_LOGIN_ID" or $k == "MEMBER_LOGIN_PASSWORD" or $k == "loginAuto" or $k == "login") continue;
+								print $inputs->hidden($k, $v);
+							}
+						}
+					?>
+				</form>
+			</div>
+		</section>
 
-	<section id="regist_box">
-		<h2>新規会員登録する</h2>
-		<div class="inner">
-			<a href="/regist.html">
-				<p>
-					新規会員登録はこちら
-				</p>
-			</a>
-		</div>
-	</section>
-
-	<section id="normal_box">
-		<h2>会員登録せずに予約</h2>
-		<div class="inner">
-			<a href="">
-				<p>
-					会員登録なしで予約へ進む
-				</p>
-			</a>
-		</div>
-	</section>
-
-
-
-
-
-    </main>
+	</main>
 	<!-- InstanceEndEditable -->
-    <!--/main-->
+	<!--/main-->
 
 
 </div>

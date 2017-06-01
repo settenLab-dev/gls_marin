@@ -22,11 +22,11 @@ $dbMaster = new dbMaster();
 $sess = new sessionMember($dbMaster);
 $sess->start();
 require("includes/box/login/loginAction.php");
-// 非会員で予約できる為コメントアウト
-// if (!$sess->sessionCheck()) {
-// 	require_once('login_reserve.php');
-// 	exit;
-// }
+// 非会員で予約できるようにする
+if (empty($_POST['nomember']) && !$sess->sessionCheck()) {
+	require_once('login_reserve.php');
+	exit;
+}
 
 
 $collection = new collection($db);
