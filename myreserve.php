@@ -15,12 +15,12 @@ $dbMaster = new dbMaster();
 $sess = new sessionMember($dbMaster);
 $sess->start();
 
-/*
+
 require("includes/box/login/loginAction.php");
 if (!$sess->sessionCheck()) {
 	cmLocationChange("login.html");
 }
-*/
+
 
 $collection = new collection($dbMaster);
 $collection->setByKey($collection->getKeyValue(), "MEMBER_ID", $sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_ID"));
@@ -58,39 +58,39 @@ $inputs = new inputs();
 	<!-- InstanceBeginEditable name="maincontents" -->
 	<main id="content">
 
-        <!--日付・人数から検索-->
-        <section class="box">
+		<!--日付・人数から検索-->
+		<section class="box">
 			<div class="inner">
-        	<div id="hmenu_cn" class="radius10">
-    	    	<menu class="mypge-menu">
-	        		<li><a href="<?php print URL_PUBLIC?>mypage.html">マイページトップ</a></li>
-	        		<li><a href="<?php print URL_PUBLIC?>mybasic.html">会員基本情報確認・変更</a></li>
-        			<li><a href="<?php print URL_PUBLIC?>myhotel.html">予約の確認</a></li>
-     <!--   			<li><a href="<?php print URL_PUBLIC?>mycoupon.html">購入したクーポン</a></li>-->
-     <!--   			<li><a href="<?php print URL_PUBLIC?>mypoint.html">ポイント履歴</a></li>-->
-        			<li><a href="<?php print URL_PUBLIC?>mycancellation.html">退会</a></li>
-    	    	</menu>
-	        	<div class="bt-logout_cn">
-        			<form action="<?php print $_SERVER['REQUEST_URI']?>" method="post">
-        	         <p class="bt-td"><?=$inputs->submit("","logout","ログアウト", "circle")?></p>
-    	       		</form>
-	           	</div>
-           	</div>
-
-        	<h2 class="title">現在の予約情報</h2>
-
-        	<p>こんにちは！ <?php print $sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_NAME1")?>さん。</p>
-        	<p>以下より予約したプランの確認・キャンセルを行うことができます。</p>
-        	<br />
-
-        	<?php
-				require("includes/box/hotel/listBooking.php");
-			?>
+				<div id="hmenu_cn" class="radius10">
+					<menu class="mypge-menu">
+						<li><a href="<?php print URL_PUBLIC?>mypage.html">マイページトップ</a></li>
+						<li><a href="<?php print URL_PUBLIC?>mybasic.html">会員基本情報確認・変更</a></li>
+						<li><a href="<?php print URL_PUBLIC?>myreserve.html">予約の確認</a></li>
+					<!--<li><a href="<?php print URL_PUBLIC?>mycoupon.html">購入したクーポン</a></li>-->
+					<!--<li><a href="<?php print URL_PUBLIC?>mypoint.html">ポイント履歴</a></li>-->
+						<li><a href="<?php print URL_PUBLIC?>mycancellation.html">退会</a></li>
+					</menu>
+					<div class="bt-logout_cn">
+						<form action="<?php print $_SERVER['REQUEST_URI']?>" method="post">
+							<p class="bt-td"><?=$inputs->submit("","logout","ログアウト", "circle")?></p>
+						</form>
+					</div>
+				</div>
+	
+				<h2 class="title">現在の予約情報</h2>
+	
+				<p>こんにちは！ <?php print $sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_NAME1")?>さん。</p>
+				<p>以下より予約したプランの確認・キャンセルを行うことができます。</p>
+				<br />
+	
+				<?php
+					require("includes/box/hotel/listBooking.php");
+				?>
 			</div>
-        </section>
-    </main>
+		</section>
+	</main>
 	<!-- InstanceEndEditable -->
-    <!--/main-->
+	<!--/main-->
 
 </div>
 <!--/content-->

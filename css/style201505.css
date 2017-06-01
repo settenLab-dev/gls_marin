@@ -5034,7 +5034,7 @@ margin:0 auto 7px;width:950px;
 	margin-bottom: 20px;
 	background: url(/images/mypage/sq-mark.png) no-repeat 0 3px;
 }
-#mypoint #hmenu_cn {
+#mypoint #hmenu_cn, #content #hmenu_cn {
 /*	background: #2FCFF4;*/
 	background: #f4872f;
 	padding: 4px 10px;
