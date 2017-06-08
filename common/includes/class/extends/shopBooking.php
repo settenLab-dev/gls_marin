@@ -2085,11 +2085,11 @@ class shopBooking extends collection {
 	public function setPost() {
 		if ($_POST) {
 
-			$this->setByKey($this->getKeyValue(), "SHOP_PRICETYPE_KIND", 1);
-			$this->setByKey($this->getKeyValue(), "BOOKING_MONEYKIND1", 1);
-			$this->setByKey($this->getKeyValue(), "BOOKING_PAYMENT", 1);
-			$this->setByKey($this->getKeyValue(), "BOOKING_MONEYKIND7", 4);
-			$this->setByKey($this->getKeyValue(), "BOOKING_MONEYKIND8", 4);
+// 			$this->setByKey($this->getKeyValue(), "SHOP_PRICETYPE_KIND", 1);
+// 			$this->setByKey($this->getKeyValue(), "BOOKING_MONEYKIND1", 1);
+// 			$this->setByKey($this->getKeyValue(), "BOOKING_PAYMENT", 1);
+// 			$this->setByKey($this->getKeyValue(), "BOOKING_MONEYKIND7", 4);
+// 			$this->setByKey($this->getKeyValue(), "BOOKING_MONEYKIND8", 4);
 
 			foreach ($_POST as $k=>$v) {
 				$this->setByKey($this->getKeyValue(), $k, $v);
