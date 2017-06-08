@@ -4,8 +4,10 @@ require_once(PATH_SLAKER_COMMON.'includes/class/extends/company.php');
 
 $dbmaster = new dbMaster();
 
-$sess = new sessionCompany($dbmaster);
-$sess->start();
+if (empty($_POST["logout"])) {
+	$sess = new sessionCompany($dbmaster);
+	$sess->start();
+}
 
 $inputs = new inputs();
 
