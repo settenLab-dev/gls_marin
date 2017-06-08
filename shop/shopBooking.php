@@ -31,6 +31,7 @@ $shopBookset->setPost();
 $shopBookset->check();
 
 $collection = new collection($dbMaster);
+$collection->setPost();
 $collection->setByKey($collection->getKeyValue(), "COMPANY_ID", $sess->getSessionByKey($sess->getSessionLogninKey(), "COMPANY_ID"));
 
 $booking = new shopBooking($dbMaster);
@@ -217,23 +218,23 @@ $inputsOnly = new inputs(true);
 							<tr>
 								<td>利用日</td>
 								<td>
-					                        <?php print $inputs->text("BOOKING_USE_DATE", $collection->getByKey($collection->getKeyValue(), "BOOKING_USE_DATE") ,"imeDisabled wDateJp")?>
-					                        <script type="text/javascript">
-					                        	$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
-					                        	$("#BOOKING_USE_DATE").datepicker(
-					                        			{
-					                        				showOn: 'button',
-					                        				buttonImage: 'images/index/index-search-icon.png',
-					                        				buttonImageOnly: true,
-					                        				dateFormat: 'yy年mm月dd日',
-					                        				changeMonth: true,
-					                        				changeYear: true,
-					                        				yearRange: '<?php print date("Y")?>:<?php print date("Y",strtotime("+1 year"))?>',
-					                        				showMonthAfterYear: true,
-					                        				monthNamesShort: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-					                    	                dayNamesMin: ['日','月','火','水','木','金','土']
-					                    				});
-					                        </script>
+									<?php print $inputs->text("BOOKING_USE_DATE", $collection->getByKey($collection->getKeyValue(), "BOOKING_USE_DATE") ,"imeDisabled wDateJp")?>
+									<script type="text/javascript">
+										$.datepicker.setDefaults($.extend($.datepicker.regional['ja']));
+										$("#BOOKING_USE_DATE").datepicker(
+										{
+											showOn: 'button',
+											buttonImage: 'img/icons/index-search-icon.png',
+											buttonImageOnly: true,
+											dateFormat: 'yy-mm-dd',
+											changeMonth: true,
+											changeYear: true,
+											yearRange: '<?php print date("Y")?>:<?php print date("Y",strtotime("+1 year"))?>',
+											showMonthAfterYear: true,
+											monthNamesShort: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+											dayNamesMin: ['日','月','火','水','木','金','土']
+										});
+									</script>
 								</td>
 							</tr>
 

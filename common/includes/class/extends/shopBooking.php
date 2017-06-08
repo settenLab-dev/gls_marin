@@ -291,6 +291,56 @@ class shopBooking extends collection {
 			$sql .= "or sb.BOOKING_KANA1 like '$name' ";
 			$sql .= "or sb.BOOKING_KANA2 like '$name') ";
 		}
+		
+		// 予約者名
+		if ($collection->getByKey($collection->getKeyValue(), "BOOKING_NAME") != "") {
+			if ($where != "") {
+				$where .= "and ";
+			}
+			$where .= "(";
+			$where .= parent::expsData("sb.BOOKING_NAME1", "like", "%".$collection->getByKey($collection->getKeyValue(), "BOOKING_NAME")."%", true, 4)." ";
+			$where .= " or ";
+			$where .= parent::expsData("sb.BOOKING_NAME2", "like", "%".$collection->getByKey($collection->getKeyValue(), "BOOKING_NAME")."%", true, 4)." ";
+			$where .= ") ";
+		}
+		
+		// 予約者カナ
+		if ($collection->getByKey($collection->getKeyValue(), "BOOKING_NAME_KANA") != "") {
+			if ($where != "") {
+				$where .= "and ";
+			}
+			$where .= "(";
+			$where .= parent::expsData("sb.BOOKING_KANA1", "like", "%".$collection->getByKey($collection->getKeyValue(), "BOOKING_NAME_KANA")."%", true, 4)." ";
+			$where .= " or ";
+			$where .= parent::expsData("sb.BOOKING_KANA2", "like", "%".$collection->getByKey($collection->getKeyValue(), "BOOKING_NAME_KANA")."%", true, 4)." ";
+			$where .= ") ";
+		}
+		
+		// キーワード
+		if ($collection->getByKey($collection->getKeyValue(), "BOOKING_TITLE") != "") {
+			if ($where != "") {
+				$where .= "and ";
+			}
+			
+			$where .= "(";
+			$where .= parent::expsData("sb.BOOKING_NAME1", "like", "%".$collection->getByKey($collection->getKeyValue(), "BOOKING_TITLE")."%", true, 4)." ";
+			$where .= " or ";
+			$where .= parent::expsData("sb.BOOKING_NAME2", "like", "%".$collection->getByKey($collection->getKeyValue(), "BOOKING_TITLE")."%", true, 4)." ";
+			$where .= " or ";
+			$where .= parent::expsData("sb.BOOKING_KANA1", "like", "%".$collection->getByKey($collection->getKeyValue(), "BOOKING_TITLE")."%", true, 4)." ";
+			$where .= " or ";
+			$where .= parent::expsData("sb.BOOKING_KANA2", "like", "%".$collection->getByKey($collection->getKeyValue(), "BOOKING_TITLE")."%", true, 4)." ";
+			$where .= ") ";
+		}
+		
+		// 利用日
+		if ($collection->getByKey($collection->getKeyValue(), "BOOKING_USE_DATE") != "") {
+			if ($where != "") {
+				$where .= "and ";
+			}
+			$where .= "BOOKING_DATE = '". $collection->getByKey($collection->getKeyValue(), "BOOKING_USE_DATE")."' ";
+		}
+		
 		if ($where != "") {
 			$sql .= "where ".$where." ";
 		}
@@ -1505,7 +1555,7 @@ class shopBooking extends collection {
 		$sql .= parent::expsData("HOTELPAY_ID", "=", $dataList["HOTELPAY_ID"]).", ";
 		$sql .= parent::expsData("ROOM_ID", "=", $dataList["ROOM_ID"]).", ";
 
-		$sql .= parent::expsData("BOOKING_SHOP_STATUS", "=", $dataList["BOOKING_HOW"]).", ";
+		$sql .= parent::expsData("BOOKING_HOW", "=", $dataList["BOOKING_HOW"]).", ";
 		$sql .= parent::expsData("BOOKING_SHOP_STATUS", "=", $dataList["BOOKING_SHOP_STATUS"]).", ";
 		$sql .= parent::expsData("BOOKING_CODE", "=", $dataList["BOOKING_CODE"], true, 1).", ";
 		$sql .= parent::expsData("BOOKING_KEY_CODE", "=", $dataList["BOOKING_KEY_CODE"], true, 1).", ";

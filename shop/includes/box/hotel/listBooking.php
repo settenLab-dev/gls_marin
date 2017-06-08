@@ -22,9 +22,9 @@
 		<?php if ($booking->getCount() > 0) {?>
 			<?php foreach ($booking->getCollection() as $ad) {?>
 			<?php
-			$sql = "Select count(*) BOOKING_TIME from BOOKING where COMPANY_ID=$ad[COMPANY_ID] and BOOKING_DATE_START < (select BOOKING_DATE_START from BOOKING where BOOKING_ID = $ad[BOOKING_ID])";
-			$rest = mysql_query($sql);
-			$count =mysql_fetch_array($rest);
+// 			$sql = "Select count(*) BOOKING_TIME from BOOKING where COMPANY_ID=$ad[COMPANY_ID] and BOOKING_DATE_START < (select BOOKING_DATE_START from BOOKING where BOOKING_ID = $ad[BOOKING_ID])";
+// 			$rest = mysql_query($sql);
+// 			$count =mysql_fetch_array($rest);
 			$rclass = '';
 			if ($ad["BOOKING_STATUS"] != 9) {
 			if ($ad["BOOKING_STATUS"] == 3 || $ad["BOOKING_STATUS"] == 9) {
