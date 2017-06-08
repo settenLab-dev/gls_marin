@@ -57,7 +57,7 @@ $inputs = new inputs();
 <!-- InstanceEndEditable -->
 
 <!--content-->
-<div id="content_mini" class="clearfix">
+<div id="content" class="clearfix">
 
 	<!--main-->
 	<!-- InstanceBeginEditable name="maincontents" -->
@@ -70,7 +70,7 @@ $inputs = new inputs();
     	    	<menu class="mypge-menu">
 	        		<li><a href="<?php print URL_PUBLIC?>mypage.html">マイページトップ</a></li>
 	        		<li><a href="<?php print URL_PUBLIC?>mybasic.html">会員基本情報確認・変更</a></li>
-        			<li><a href="<?php print URL_PUBLIC?>myhotel.html">予約の確認</a></li>
+        			<li><a href="<?php print URL_PUBLIC?>myreserve.html">予約の確認</a></li>
         			<!--<li><a href="<?php print URL_PUBLIC?>mycoupon.html">購入したクーポン</a></li>-->
         			<!--<li><a href="<?php print URL_PUBLIC?>mypoint.html">ポイント履歴</a></li>-->
         			<li><a href="<?php print URL_PUBLIC?>mycancellation.html">退会</a></li>
