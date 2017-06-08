@@ -9,7 +9,7 @@
 	    	<p>予約番号:<span><?=$saveStat?></span></p>
 	    	<p>予約申し込み日時:<span><?=date('Y-m-d H:i:s')?></span></p>
 	    </div>
-    	<p><a href="myhotelbookingedit.html?id=<?=$saveStat?>"><img src="<?php print URL_PUBLIC?>images/form/btreservation-Confirmation2.png" width="259" height="54" alt="（マイページ）予約内容の確認へ" /></a></p>
+    	<p><a href="myreserveedit.html?id=<?=$saveStat?>"><img src="<?php print URL_PUBLIC?>images/form/btreservation-Confirmation2.png" width="259" height="54" alt="（マイページ）予約内容の確認へ" /></a></p>
     	<div class="logout r-txt">→<a href="<?php print URL_PUBLIC?>">TOPページへ</a></div>
 	</div>
 

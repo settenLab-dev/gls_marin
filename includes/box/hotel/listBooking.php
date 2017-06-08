@@ -69,7 +69,7 @@
 						<td <?php echo $rclass; ?>><?php echo $ad["BOOKING_DATE_START"]; ?></td>
 						<td <?php echo $rclass; ?> align="center">
 							<?php if ($ad["BOOKING_STATUS"] != 9){ ?>
-								<?php $edit_html_name = (strstr($hotel_name,'ツアー'))?'myactbookingedit':'myhotelbookingedit';?>
+								<?php $edit_html_name = (strstr($hotel_name,'ツアー'))?'myactbookingedit':'myreserveedit';?>
 								<a href="<?php echo $edit_html_name; ?>.html?id=<?php echo $ad["BOOKING_ID"]?>" class="popup" rel="windowCallUnload"><?php echo $inputs->button("","","予約の確認","circle")?></a>
 							<?php }else{ ?>
 								予約失敗

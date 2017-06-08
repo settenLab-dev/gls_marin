@@ -3,6 +3,7 @@ require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopBookingcont.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopPlan.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/mMail.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shop.php');
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopBookset.php');
 
 ///////////////////////
 //	fax
@@ -513,6 +514,8 @@ class shopBooking extends collection {
 		for ($i=1; $i<=7; $i++) {
 			$sql .= "BOOKING_CANCEL_P".$i."".", ";
 		}
+		$sql .= "BOOKING_MONEY_CANCEL, ";
+		$sql .= "BOOKING_DATE_CANCEL, ";
 		$sql .= "BOOKING_PAYMENT, BOOKING_PAYMENT_FLG, ";
 		$sql .= parent::decryptionList("BOOKING_SHOPPLAN_CONTENTS").", ";
 		$sql .= parent::decryptionList("BOOKING_MEMO").", ";
@@ -1587,18 +1590,24 @@ class shopBooking extends collection {
 // 		return true;
 
 	}
-
+	
+	/**
+	 * キャンセル
+	 * @return boolean
+	 */
 	public function cancel() {
-// 		print_r(parent::getCollection());exit; 
-// 		print_r(parent::getCollection());
-// 				parent::getByKey(parent::getKeyValue(), 'BOOKING_STATUS')==5?$this->mails(shopBooking::mailRequestID2shop,$this->selectCompanyPayId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID"))):$this->mails(shopBooking::mailCancelID2shop,$this->selectCompanyPayId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID")));
-// 				$this->mails(shopBooking::mailCancelID);
-		$dataList = parent::getCollectionByKey(parent::getKeyValue());
-//		print_r($dataList);exit; 
+		$this->db->begin();
 		
+		$dataList = parent::getCollectionByKey(parent::getKeyValue());
+
+		// キャンセル金額計算
+		$cancel_money = $this->calcBookingCancelMoney($dataList);
+		
+		// キャンセル更新
 		$sql .= "update ".shopBooking::tableName." set ";
 		$sql .= parent::expsData("BOOKING_STATUS", "=", 2).", ";
-		$sql .= parent::expsData("BOOKING_DATE_CANCEL", "=", "now()")." ";
+		$sql .= parent::expsData("BOOKING_DATE_CANCEL", "=", "now()").", ";
+		$sql .= parent::expsData("BOOKING_MONEY_CANCEL", "=", $cancel_money)." ";
 		$sql .= "where ";
 		$sql .=  parent::expsData(shopBooking::keyName, "=", parent::getKeyValue())." ";
 
@@ -1606,26 +1615,141 @@ class shopBooking extends collection {
 			return false;
 		}
 		
-		//在庫管理追加
-		for($i=0;$i<$dataList["night_number"];$i++){
-			$sql = "";
-			$sql .= "update HOTELPROVIDE set HOTELPROVIDE_BOOKEDNUM = HOTELPROVIDE_BOOKEDNUM - ".$dataList["BOOKING_NUM_NIGHT"];
-			$sql .= " where ROOM_ID=".$dataList["ROOM_ID"]." and COMPANY_ID = ".$dataList["COMPANY_ID"];
-			$sql .= " and HOTELPROVIDE_DATE = '".date('Y-m-d',strtotime($dataList["BOOKING_DATE"])+$i*60*60*24)."'";
-			if (!$this->saveExec($sql)) {
-				$this->db->rollback();
-				return false;
+		//在庫数変更
+		$person_num = 0;
+		// 1名ごと
+		if($dataList["SHOP_PRICETYPE_KIND"] == 1){
+			for($i = 1; $i <= 6; $i++){
+				if($dataList["BOOKING_PRICEPERSON". $i] > 0){
+					$person_num += $dataList["BOOKING_PRICEPERSON". $i];
+				}
 			}
+		// グループごと
+		} else {
+			$person_num = $dataList["BOOKING_PRICEPERSON7"];
+		}
+		$sql = "";
+		$sql .= "update HOTELPROVIDE set HOTELPROVIDE_BOOKEDNUM = HOTELPROVIDE_BOOKEDNUM - ".$person_num;
+		$sql .= " where ROOM_ID=".$dataList["ROOM_ID"]." and COMPANY_ID = ".$dataList["COMPANY_ID"];
+		$sql .= " and HOTELPROVIDE_DATE = '".$dataList["BOOKING_DATE"]."'";
+		
+		if (!$this->saveExec($sql)) {
+			$this->db->rollback();
+			return false;
 		}
 		
-		
-		//parent::getByKey(parent::getKeyValue(), 'BOOKING_STATUS')==5?$this->mails(shopBooking::mailRequestID2shop,$this->selectCompanyPayId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID"))):$this->mails(shopBooking::mailCancelID2shop,$this->selectCompanyPayId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID")));
+		// メール送信
 		$this->mails(shopBooking::mailCancelID,'',false);
 		
 		$this->mails(shopBooking::mailCancelID2shop,$this->selectCompanyPayId(parent::getByKey(parent::getKeyValue(), "COMPANY_ID")),true);
 
-//print_r(debug_backtrace());
 		return true;
+	}
+	
+	/**
+	 * キャンセル料金算出
+	 * @param unknown $company_id
+	 * @param unknown $shop_plan_id
+	 * @param unknown $all_money
+	 * @param unknown $shopBooking
+	 * @return number
+	 */
+	public function calcBookingCancelMoney($booking){
+		
+		$dbMaster = new dbMaster();
+		
+		$cancel_money = 0;
+		$arrCancelMoney = array();
+		$day_key = false;
+		
+		$all_money  = $booking['BOOKING_ALL_MONEY'];
+		$company_id = $booking['COMPANY_ID'];
+		$plan_id    = $booking['SHOPPLAN_ID'];
+		
+		// 現在が催行日から何日前か算出
+		$booking_date = $booking['BOOKING_DATE'];
+		
+		$unix_booking_date = strtotime($booking_date);
+		$now               = strtotime(date('Y-m-d'));
+		$date_interval     = round(($unix_booking_date - $now) / (60*60*24));
+		
+		// プラン情報取得
+		$shopPlan = new shopPlan($this->db);
+		$shopPlan->select($plan_id, "", $company_id);
+		$plan = $shopPlan->getCollectionByKey($shopPlan->getKeyValue());
+		
+		// ショップ情報取得
+		$shopBookset = new shopBookset($this->db);
+		$shopBookset->select($company_id);
+		$shop_bookset = $shopBookset->getCollectionByKey($shopBookset->getKeyValue());
+		
+		//// キャンセル料金計算
+
+		// 全パターンキャンセル料金を配列にセットする
+		for ($i = 1; $i <= 7; $i++) {
+			
+			$arrCancelMoney[$i] = 0;
+			
+			// 標準設定
+			if ($plan['SHOPPLAN_FLG_CANCEL'] == 1) {
+				// 基本キャンセル規定の設定あり かつ キャンセル規定設定がありに設定されている
+				if ($shop_bookset['BOOKSET_CANCEL_SET'] == 1 && $shop_bookset['BOOKSET_CANCEL_DATA'. $i] == 1) {
+					// パーセント
+					if ($shop_bookset['BOOKSET_CANCEL_DIVIDE'. $i] == 1) {
+						$arrCancelMoney[$i] = floor($all_money * ($shop_bookset['BOOKSET_CANCEL_PAY'. $i]/100));
+					// 固定
+					} else {
+						$arrCancelMoney[$i] = $shop_bookset['BOOKSET_CANCEL_PAY'. $i];
+					}
+					
+					// 1日前以上のキャンセルの場合、該当するキーを取得する
+					if($date_interval > 0 && $i >= 3){
+						if( $shop_bookset["BOOKSET_CANCEL_DATE_FROM". $i] <= $date_interval 
+							&& $date_interval <= $shop_bookset["BOOKSET_CANCEL_DATE_TO". $i]){
+							$day_key = $i;
+						}
+					}
+				}
+				// 個別設定
+			} else {
+				// プラン個別設定は6個までしか設定できないため7個目はスルーする
+				if($i == 7){
+					break;
+				}
+				
+				// パーセント
+				if ($plan['SHOPPLAN_CANCEL_FLG'. $i] == 1) {
+					$arrCancelMoney[$i] = floor($all_money * ($plan['SHOPPLAN_CANCEL_MONEY'. $i]/100));
+				// 固定
+				} else {
+					$arrCancelMoney[$i] = $plan['SHOPPLAN_CANCEL_MONEY'. $i];
+				}
+				
+				// 1日前以上のキャンセルの場合、該当するキーを取得する
+				if($date_interval > 0 && $i >= 3){
+					if( $shop_bookset["SHOPPLAN_CANCEL_FROM". $i] <= $date_interval
+						&& $date_interval <= $shop_bookset["SHOPPLAN_CANCEL_TO". $i]){
+						$day_key = $i;
+					}
+				}
+			}
+		}
+		
+		// 無断キャンセル
+		if ($date_interval < 0) {
+			$cancel_money = $arrCancelMoney[1];
+		// 当日キャンセル
+		} elseif ($date_interval == 0) {
+			$cancel_money = $arrCancelMoney[2];
+		// 1日前以上
+		} elseif ($date_interval >= 1) {
+			// 該当する規定が存在する場合のみ
+			if($day_key > 0){
+				$cancel_money = $arrCancelMoney[$day_key];
+			}
+		}
+		
+		return $cancel_money;
 	}
 	
 	public function noshow() {
@@ -2029,6 +2153,42 @@ class shopBooking extends collection {
 
 		}
 
+	}
+	
+	/**
+	 * 予約キャンセル入力チェック
+	 */
+	public function checkCancelConfirm() {
+		if (!$_POST) return;
+		
+		$arrHourData = cmShopHourSelect();
+		$arrMinData  = cmShopMinSelect();
+		
+		$booking_date    = parent::getByKey(parent::getKeyValue(), "BOOKING_DATE");
+		$plan_cancel_day = parent::getByKey(parent::getKeyValue(), "SHOPPLAN_CAN_DAY");
+		$cancel_data     = parent::getByKey(parent::getKeyValue(), "canceldata");
+		
+		$can_hour = $arrHourData[parent::getByKey(parent::getKeyValue(), "SHOPPLAN_CAN_HOUR")];
+		$can_min  = $arrMinData[parent::getByKey(parent::getKeyValue(), "SHOPPLAN_CAN_MIN")];
+		if($can_hour == 24){
+			$booking_date = date("Y-m-d", strtotime($booking_date) + (24 * 60 * 60 * 1));
+			$can_hour = "00";
+		}
+		$can_date = date("Y-m-d", strtotime($booking_date) - (24 * 60 * 60 * $plan_cancel_day));
+		$cancel_target_date_time = strtotime($can_date . " ". $can_hour . ":" .$can_min . ":00");
+		
+		$cancel_target_data = date("Y-m-d H:i:s", $cancel_target_date_time);
+		
+		// キャンセル締め切り日チェック
+		if (time() > $cancel_target_date_time) {
+			parent::setErrorFirst("予約キャンセルの締め切り日を超えました、キャンセルできませんでした");
+		}
+
+		// キャンセル対象プラン選択チェック
+		if (count($cancel_data) <= 0 && count(parent::getByKey(parent::getKeyValue(), "noshow")) <= 0) {
+			parent::setErrorFirst("キャンセルするプランを選択して下さい");
+		}
+	
 	}
 
 
