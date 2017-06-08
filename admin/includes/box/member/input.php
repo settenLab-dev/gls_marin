@@ -155,7 +155,6 @@
 						<?php print create_error_msg($member->getErrorByKey("MEMBER_ZIP"))?>
 						<?php print $inputs->text("MEMBER_ZIP", $member->getByKey($member->getKeyValue(), "MEMBER_ZIP") ,"imeDisabled circle wZip", "", 'onKeyUp="AjaxZip3.zip2addr(this,\'\',\'MEMBER_PREF\',\'MEMBER_CITY\',\'MEMBER_ADDRESS\');"')?>
 						<p>※(例)000-0000の様に、-(ハイフン)付きで入力して下さい。</p>
-						<p>自動で住所が入力されます。</p>
 					</td>
 				</tr>
 				<tr>

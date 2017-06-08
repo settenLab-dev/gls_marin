@@ -87,7 +87,6 @@
 						<?php print create_error_msg($company->getErrorByKey("COMPANY_ZIP"))?>
 						<?php print $inputs->text("COMPANY_ZIP", $company->getByKey($company->getKeyValue(), "COMPANY_ZIP") ,"imeDisabled circle wZip", "", 'onKeyUp="AjaxZip3.zip2addr(this,\'\',\'PREF_ID\',\'COMPANY_CITY\',\'COMPANY_ADDRESS\');"')?>
 						<p>※(例)000-0000の様に、-(ハイフン)付きで入力して下さい。</p>
-						<p>自動で住所が入力されます。</p>
 					</td>
 				</tr>
 				<tr>
@@ -163,7 +162,6 @@
 						<?php print create_error_msg($company->getErrorByKey("COMPANY_CLAIM_ZIP"))?>
 						<?php print $inputs->text("COMPANY_CLAIM_ZIP", $company->getByKey($company->getKeyValue(), "COMPANY_CLAIM_ZIP") ,"imeDisabled circle wZip", "", 'onKeyUp="AjaxZip3.zip2addr(this,\'\',\'COMPANY_CLAIM_PREF_ID\',\'COMPANY_CLAIM_CITY\',\'COMPANY_CLAIM_ADDRESS\');"')?>
 						<p>※(例)000-0000の様に、-(ハイフン)付きで入力して下さい。</p>
-						<p>自動で住所が入力されます。</p>
 					</td>
 				</tr>
 				<tr>

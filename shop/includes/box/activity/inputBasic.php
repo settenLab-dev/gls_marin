@@ -70,7 +70,6 @@
 						<?php print create_error_msg($activity->getErrorByKey("ACTIVITY_BASIC_ZIP"))?>
 						<?php print $inputs->text("ACTIVITY_BASIC_ZIP", $activity->getByKey($activity->getKeyValue(), "ACTIVITY_BASIC_ZIP") ,"imeDisabled circle wZip", "", 'onKeyUp="AjaxZip3.zip2addr(this,\'\',\'ACTIVITY_BASIC_PREF_ID\',\'ACTIVITY_BASIC_CITY\',\'ACTIVITY_BASIC_ADDRESS\');"')?>
 						<p>※(例)000-0000の様に、-(ハイフン)付きで入力して下さい。</p>
-						<p>自動で住所が入力されます。</p>
 					</td>
 				</tr>
 				<tr>
