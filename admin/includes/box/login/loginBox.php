@@ -4,8 +4,10 @@ require_once(PATH_SLAKER_COMMON.'includes/class/extends/admin.php');
 
 $dbmaster = new dbMaster();
 
-$sess = new session($db);
-$sess->start();
+if (empty($_POST["logout"])) {
+	$sess = new session($db);
+	$sess->start();
+}
 
 $inputs = new inputs();
 
