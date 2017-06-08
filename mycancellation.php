@@ -8,12 +8,12 @@ $dbMaster = new dbMaster();
 $sess = new sessionMember($dbMaster);
 $sess->start();
 
-/*
+
 require("includes/box/login/loginAction.php");
 if (!$sess->sessionCheck()) {
 	cmLocationChange("login.html");
 }
-*/
+
 
 $memberRegist = new member($dbMaster);
 
