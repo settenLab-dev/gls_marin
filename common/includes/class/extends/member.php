@@ -35,26 +35,24 @@ class member extends collection {
 			$where .= parent::expsData("".member::keyName, "=", $collection->getByKey($collection->getKeyValue(), "MEMBER_ID"))." ";
 		}
 
-		if ($collection->getByKey($collection->getKeyValue(), "MEMBER_NAME1") != "") {
+		if ($collection->getByKey($collection->getKeyValue(), "MEMBER_NAME") != "") {
 			if ($where != "") {
 				$where .= "and ";
 			}
-			$where .= parent::expsData("MEMBER_NAME1", "like", "%".$collection->getByKey($collection->getKeyValue(), "MEMBER_NAME1")."%", true, 4)." ";
-		}
-		if ($collection->getByKey($collection->getKeyValue(), "MEMBER_NAME2") != "") {
-			if ($where != "") {
-				$where .= "and ";
-			}
-			$where .= parent::expsData("MEMBER_NAME2", "like", "%".$collection->getByKey($collection->getKeyValue(), "MEMBER_NAME2")."%", true, 4)." ";
+			$where .= "(";
+			$where .= parent::expsData("MEMBER_NAME1", "like", "%".$collection->getByKey($collection->getKeyValue(), "MEMBER_NAME")."%", true, 4)." ";
+			$where .= " or ";
+			$where .= parent::expsData("MEMBER_NAME2", "like", "%".$collection->getByKey($collection->getKeyValue(), "MEMBER_NAME")."%", true, 4)." ";
+			$where .= ") ";
 		}
 		if ($collection->getByKey($collection->getKeyValue(), "MEMBER_NAME_KANA") != "") {
 			if ($where != "") {
 				$where .= "and ";
 			}
 			$where .= "(";
-			$where .= parent::expsData("MEMBER_NAME_KANA1", "like", "%".$collection->getByKey($collection->getKeyValue(), "MEMBER_NAME_KANA1")."%", true, 4)." ";
+			$where .= parent::expsData("MEMBER_NAME_KANA1", "like", "%".$collection->getByKey($collection->getKeyValue(), "MEMBER_NAME_KANA")."%", true, 4)." ";
 			$where .= " or ";
-			$where .= parent::expsData("MEMBER_NAME_KANA2", "like", "%".$collection->getByKey($collection->getKeyValue(), "MEMBER_NAME_KANA2")."%", true, 4)." ";
+			$where .= parent::expsData("MEMBER_NAME_KANA2", "like", "%".$collection->getByKey($collection->getKeyValue(), "MEMBER_NAME_KANA")."%", true, 4)." ";
 			$where .= ") ";
 		}
 		if ($collection->getByKey($collection->getKeyValue(), "MEMBER_LOGIN_ID") != "") {
