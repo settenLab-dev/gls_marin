@@ -121,7 +121,7 @@ else {
 						<tr>
 							<td <?=$rclass?>><?=$ad["COMPANY_ID"]?></td>
 							<td <?=$rclass?>><?=$ad["COMPANY_NAME"]." ".$ad["COMPANY_SHOP_NAME"]?></td>
-							<td <?=$rclass?>><?=$ad["COMPANY_LOGIN_ID"]?></td>
+							<td <?=$rclass?>><?=$ad["COMPANY_MAIL"]?></td>
 							<td <?=$rclass?>><?=$ad["COMPANY_TEL1"]?></td>
 							<td <?=$rclass?>><?=$ad["COMPANY_CONTRACT_NAME"]?></td>
 							<td <?=$rclass?>><?=$ad["COMPANY_CONTRACT_DATE_END"]?></td>
