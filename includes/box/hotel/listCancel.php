@@ -252,7 +252,12 @@
 							<p>集合場所</p>
 						</th>
 						<td align="left">
-							<p><?php echo $ad["BOOKING_MEET_PLACE"]; ?></p>
+							<p>
+								<?php
+									echo $shop_access_name;
+									// echo $ad["BOOKING_MEET_PLACE"];
+								?>
+							</p>
 						</td>
 					</tr>
 					<tr>

@@ -6,6 +6,8 @@ require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopBooking.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelPay.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopBookingcont.php');
 
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/ShopAccess.php');
+
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shop.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopPlan.php');
 
@@ -44,9 +46,14 @@ if ($shopBooking->getByKey($shopBooking->getKeyValue(), "bookingConfirm")) {
 $shop = new shop($dbMaster);
 $shopBookset = new shopBookset($dbMaster);
 
+$shopAccess = new ShopAccess($dbMaster);
 
 if ($shopBooking->getCount() > 0) {
-
+	
+	// 集合場所名をセット
+	$shopAccess->select($shopBooking->getByKey($shopBooking->getKeyValue(), "BOOKING_MEET_PLACE"));
+	$shop_access_name = $shopAccess->getByKey($shopAccess->getKeyValue(), "SHOP_ACCESS_NAME");
+	
 	if($sess->getSessionByKey($sess->getSessionLogninKey(), "COMPANY_ID")){
 		$collection->setByKey($collection->getKeyValue(), "COMPANY_ID", $sess->getSessionByKey($sess->getSessionLogninKey(), "COMPANY_ID"));
 	}
