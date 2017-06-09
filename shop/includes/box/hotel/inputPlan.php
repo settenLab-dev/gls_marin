@@ -42,7 +42,7 @@
 			<p><span class="colorRed">※一度登録すると変更できません</span></p>
 			<?php print create_error_msg($shopPlan->getErrorByKey("SHOPPLAN_FLG"))?>
 			<input type="radio" id="SHOPPLAN_FLG1" name="SHOPPLAN_FLG" value="1" checked  /><label for="SHOPPLAN_FLG1" > 通常プラン</label>
-			<?php  print $inputs->radio("SHOPPLAN_FLG2", "SHOPPLAN_FLG", 2, $shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_FLG") ," チケット")?>
+			<?php // print $inputs->radio("SHOPPLAN_FLG2", "SHOPPLAN_FLG", 2, $shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_FLG") ," チケット")?>
 
 			<?php }?>
 		</td>
