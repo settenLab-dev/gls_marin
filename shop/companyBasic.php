@@ -85,7 +85,7 @@ else {
 			<div id="colLeft">
 				<div class="manageMenu circle">
 
-					<h2>契約情報</h2>
+					<h2>店舗情報</h2>
 					<?php
 					if ($company->getByKey($company->getKeyValue(), "COMPANY_STATUS") != 2) {
 					?>

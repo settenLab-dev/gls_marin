@@ -213,6 +213,7 @@
 			<?php print $inputs->text("COMPANY_CHARGE", $company->getByKey($company->getKeyValue(), "COMPANY_CHARGE") ,"imeActive circle",50)?>
 		</td>
 	</tr>
+	<!-- 
 	<tr>
 		<th valign="top">
 			<p>契約プラン <span class="colorRed">※</span></p>
@@ -267,6 +268,7 @@
 			</table>
 		</td>
 	</tr>
+	 -->
 </table>
 <br />
 <ul class="buttons">

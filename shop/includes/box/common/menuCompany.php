@@ -6,9 +6,9 @@
 		--><li><a href="companyBasic.html">店舗情報</a></li><!--
 		<?php }?>
 		<?php if (cmCheckPtn($_SERVER['PHP_SELF'],'/companyContract.*\.php$/')) {?>
-		--><li class="current"><a href="companyContract.html">契約状態</a></li><!--
+		--><!-- <li class="current"><a href="companyContract.html">契約状態</a></li> --><!--
 		<?php }else{?>
-		--><li><a href="companyContract.html">契約状態</a></li><!--
+		--><!-- <li><a href="companyContract.html">契約状態</a></li> --><!--
 		<?php }?>
 		<?php /*
 		<?php if (cmCheckPtn($_SERVER['PHP_SELF'],'/companyIdchenge.*\.php$/')) {?>
