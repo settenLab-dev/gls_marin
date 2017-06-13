@@ -15,7 +15,7 @@ if ($memberInput->getByKey($memberInput->getKeyValue(), "login")) {
 			$member = new member($dbMaster);
 			$member->selectLogin($memberInput);
 
-print_r($member->getCount());
+// print_r($member->getCount());
 			if ($member->getCount() > 0) {
 				//	session set
 				$_SESSION = array();

@@ -21,13 +21,19 @@ $dbMaster = new dbMaster();
 
 $sess = new sessionMember($dbMaster);
 $sess->start();
+
 require("includes/box/login/loginAction.php");
 // 非会員で予約できるようにする
 if (empty($_POST['nomember']) && !$sess->sessionCheck()) {
+	// プランIDを保持していない場合はトップページへ
+	if (empty($_POST['SHOPPLAN_ID'])){
+		cmLocationChange("index.html");
+		exit;
+	}
+	
 	require_once('login_reserve.php');
 	exit;
 }
-
 
 $collection = new collection($db);
 $collection->setPost();

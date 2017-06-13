@@ -290,7 +290,7 @@ $(document).ready(function() {
 
 <body id="top" style="background:none;">
 
-<?php print_r($ua_flg."★"); ?>
+<?php // print_r($ua_flg."★"); ?>
 
 <!--header-->
 

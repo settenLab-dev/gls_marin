@@ -441,7 +441,7 @@
 					$tmp .=  $inputs->hidden("MEMBER_ID", $sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_ID"));
 					$tmp .=  $inputs->hidden("BOOKING_MEMBER_FLG", "1");
 				}else{
-						$tmp .=  $inputs->hidden("BOOKING_MEMBER_FLG", "2");
+					$tmp .=  $inputs->hidden("BOOKING_MEMBER_FLG", "2");
 				}
 				/*
 				$tmp .=  $inputs->hidden("BOOKING_NAME1", $collection->getByKey($collection->getKeyValue(), "BOOKING_NAME1"));
@@ -458,6 +458,8 @@
 				$tmp .=  $inputs->hidden("zaiko_num", $collection->getByKey($collection->getKeyValue(), "zaiko_num"));
 				$tmp .=  $inputs->hidden("target_date", $collection->getByKey($collection->getKeyValue(), "target_date"));
 				$tmp .=  $inputs->hidden("BOOKING_DATE", $collection->getByKey($collection->getKeyValue(), "target_date"));
+				
+				$tmp .=  $inputs->hidden("nomember", $collection->getByKey($collection->getKeyValue(), "nomember"));
 	
 				print $tmp;
 			?>

@@ -378,10 +378,10 @@
 				$tmp .=  $inputs->hidden("SHOPPLAN_MEET_TIMEMIN", $collection->getByKey($collection->getKeyValue(), "SHOPPLAN_MEET_TIMEMIN"));
 	
 				if($collection->getByKey($collection->getKeyValue(), "MEMBER_ID") != ""){
-						$tmp .=  $inputs->hidden("MEMBER_ID", $collection->getByKey($collection->getKeyValue(), "MEMBER_ID"));
-						$tmp .=  $inputs->hidden("BOOKING_MEMBER_FLG", "1");
+					$tmp .=  $inputs->hidden("MEMBER_ID", $collection->getByKey($collection->getKeyValue(), "MEMBER_ID"));
+					$tmp .=  $inputs->hidden("BOOKING_MEMBER_FLG", "1");
 				}else{
-						$tmp .=  $inputs->hidden("BOOKING_MEMBER_FLG", "2");
+					$tmp .=  $inputs->hidden("BOOKING_MEMBER_FLG", "2");
 				}
 				
 				$tmp .=  $inputs->hidden("BOOKING_STATUS", "1");
@@ -389,5 +389,8 @@
 				$tmp .=  $inputs->hidden("zaiko_num", $collection->getByKey($collection->getKeyValue(), "zaiko_num"));
 				$tmp .=  $inputs->hidden("target_date", $collection->getByKey($collection->getKeyValue(), "target_date"));
 				$tmp .=  $inputs->hidden("BOOKING_DATE", $collection->getByKey($collection->getKeyValue(), "target_date"));
+				
+				$tmp .=  $inputs->hidden("nomember", $collection->getByKey($collection->getKeyValue(), "nomember"));
+				
 				print $tmp;
 				?>
