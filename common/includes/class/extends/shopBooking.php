@@ -4,6 +4,7 @@ require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopPlan.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/mMail.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shop.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopBookset.php');
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelProvide.php');
 
 ///////////////////////
 //	fax
@@ -437,21 +438,43 @@ class shopBooking extends collection {
 
 	public function select($id="", $shopPlanId="", $payId="", $roomId="", $comapnyId="" ) {
 		$sql  = "select ";
-		$sql .= "BOOKING_ID, hb.COMPANY_ID, hb.SHOPPLAN_ID, HOTELPAY_ID, hb.ROOM_ID, BOOKING_DATE, BOOKING_DATE_CANCEL_END, BOOKING_NUM_ROOM, MEMBER_ID, BOOKING_NUM_NIGHT, ";
-		$sql .= parent::decryptionList("BOOKING_CHECKIN, BOOKING_DATE_CANCEL_END_TIME").", ";
-		$sql .= "BOOKING_LINK,BOOKING_BOOKING_CODE, ";
+		$sql .= "BOOKING_ID, COMPANY_ID, SHOPPLAN_ID, SHOP_PRICETYPE_ID, SHOP_PRICETYPE_KIND, HOTELPAY_ID, ROOM_ID, BOOKING_HOW, BOOKING_SHOP_STATUS, ";
+		$sql .= parent::decryptionList("BOOKING_CODE, BOOKING_KEY_CODE").", ";
+		$sql .= "BOOKING_DATE, ";
+		$sql .= parent::decryptionList("BOOKING_MEET_TIME").", ";
+		$sql .= "BOOKING_MEET_PLACE, ";
+		
+		for ($i=1; $i<=8; $i++) {
+			$sql .= "BOOKING_MONEYKIND".$i."".", ";
+			$sql .= "BOOKING_PRICEPERSON".$i."".", ";
+			$sql .= "BOOKING_MONEY".$i."".", ";
+		}
+		for ($i=1; $i<=8; $i++) {
+			$sql .= parent::decryptionList("BOOKING_PRICETYPE".$i."").", ";
+		}
+		$sql .= "BOOKING_ALL_MONEY, BOOKING_DATE_CANCEL_END, ";
+		$sql .= parent::decryptionList("BOOKING_DATE_CANCEL_END_TIME").", ";
+		$sql .= "BOOKING_MEMBER_FLG, MEMBER_ID, ";
+		
 		for ($i=1; $i<=2; $i++) {
 			$sql .= parent::decryptionList("BOOKING_NAME".$i."").", ";
 			$sql .= parent::decryptionList("BOOKING_KANA".$i."").", ";
 		}
-		$sql .= parent::decryptionList("BOOKING_ZIP").", ";
 		$sql .= "BOOKING_PREF_ID, ";
-		$sql .= parent::decryptionList("BOOKING_CITY, BOOKING_ADDRESS, BOOKING_BUILD, BOOKING_TEL").", ";
-		$sql .= "BOOKING_AGE, ";
-		$sql .= parent::decryptionList("BOOKING_MAILADDRESS, BOOKING_ANSWER, BOOKING_DEMAND").", ";
-		$sql .= "BOOKING_STATUS, BOOKING_SERVICE, BOOKING_MONEY, BOOKING_HOW, BOOKING_POINT_USE, BOOKING_MONRY_CANCEL, ";
+		$sql .= parent::decryptionList("BOOKING_ZIP,BOOKING_CITY, BOOKING_ADDRESS, BOOKING_BUILD, BOOKING_TEL").", ";
+		$sql .= parent::decryptionList("BOOKING_MAILADDRESS, BOOKING_BIRTH, BOOKING_ANSWER, BOOKING_DEMAND").", ";
+		$sql .= "BOOKING_AGE, BOOKING_REQUEST, ";
+		$sql .= parent::decryptionList("BOOKING_REQUEST_ANSWER").", ";
+		$sql .= "BOOKING_CHANGE_DATE, BOOKING_CANCEL_DATE, ";
+		
+		for ($i=1; $i<=7; $i++) {
+			$sql .= "BOOKING_CANCEL_P".$i."".", ";
+		}
+		$sql .= "BOOKING_PAYMENT, BOOKING_PAYMENT_FLG, ";
+		$sql .= parent::decryptionList("BOOKING_SHOPPLAN_CONTENTS").", ";
 		$sql .= parent::decryptionList("BOOKING_MEMO").", ";
-		$sql .= "BOOKING_DATE_START, BOOKING_DATE_BOOK, BOOKING_DATE_CANCEL, BOOKING_DATE_DELETE  ";
+		$sql .= "BOOKING_STATUS, BOOKING_DATE_START, BOOKING_DATE_BOOK, BOOKING_DATE_CANCEL, BOOKING_DATE_DELETE ";
+		
 		$sql .= "from ".shopBooking::tableName." ";
 
 		$where = "";
@@ -496,7 +519,7 @@ class shopBooking extends collection {
 		}
 
 		$sql .= "order by BOOKING_DATE  ";
-
+		
 		parent::setCollection($sql, shopBooking::keyName);
 	}
 
@@ -1359,8 +1382,27 @@ class shopBooking extends collection {
 		//print_r($dataList);exit;
 
 		$sql = "";
+		
+		// 合計料金の算出
+		$all_money = 0;
+		if ($dataList['SHOP_PRICETYPE_KIND'] == 1) {
+			
+			for($i = 1; $i <= 6; $i++){
+				$all_money += ($dataList['BOOKING_PRICEPERSON'.$i] * $dataList['BOOKING_MONEY'.$i]);
+			}
+			
+		} elseif($dataList['SHOP_PRICETYPE_KIND'] == 2) {
+			$all_money += ($dataList['BOOKING_PRICEPERSON7'] * $dataList['BOOKING_MONEY7']);
+			$all_money += ($dataList['BOOKING_PRICEPERSON8'] * $dataList['BOOKING_MONEY8']);
+		}
+		$dataList['BOOKING_ALL_MONEY'] = $all_money;
+		
+		// 更新前予約情報の取得
+		$beforeBooking = new shopBooking($this->db);
+		$beforeBooking->select($dataList["BOOKING_ID"]);
+		$arrBeforeData = $beforeBooking->getCollectionByKey($beforeBooking->getKeyValue());
 
-
+		// 新規作成・更新SQL作成
 		if (parent::saveDivide(parent::getKeyValue())) {
 			$dataList['BOOKING_SHOPPLAN_CONTENTS']=$this->getPlanContentById($dataList['SHOPPLAN_ID']);
 			$dataList['BOOKING_CODE']=$this->createBookingCode($dataList['COMPANY_ID']);
@@ -1375,17 +1417,36 @@ class shopBooking extends collection {
 			$update_flg = true;
 			//echo $sql;exit;
 		}
- 		
+		
 		//echo $sql;
+		
+		// 保存処理実行
 		if (!$this->saveExec($sql)) {
 			$this->db->rollback();
 			return false;
+		} else {
+			$this->db->commit();
+			
+			// 更新ステータスがキャンセルの場合
+			if($dataList['BOOKING_STATUS'] == 2){
+				// キャンセル以外のステータスからキャンセルに変更された場合のみ
+				if(!empty($arrBeforeData) && $arrBeforeData['BOOKING_STATUS'] != 2){
+					$this->cancel($arrBeforeData);
+				}
+			} elseif ($dataList['BOOKING_STATUS'] == 1){
+				$sign = '-';
+				
+				// キャンセルのステータスから予約に変更された場合
+				if(!empty($arrBeforeData) && $arrBeforeData['BOOKING_STATUS'] == 2){
+					$arrBeforeData = null;
+					$sign = '+';
+				}
+				
+				// 在庫数更新
+				$this->stockUpdate($dataList , $arrBeforeData, $sign);
+			}
 		}
-
-		$this->db->commit();
 		return true;
-
-
 	}
 
 
@@ -1645,7 +1706,7 @@ class shopBooking extends collection {
 	 * キャンセル
 	 * @return boolean
 	 */
-	public function cancel() {
+	public function cancel($beforeData = null) {
 		$this->db->begin();
 		
 		$dataList = parent::getCollectionByKey(parent::getKeyValue());
@@ -1662,29 +1723,14 @@ class shopBooking extends collection {
 		$sql .=  parent::expsData(shopBooking::keyName, "=", parent::getKeyValue())." ";
 
 		if (!parent::saveExec($sql)) {
+			$this->db->rollback();
 			return false;
 		}
 		
-		//在庫数変更
-		$person_num = 0;
-		// 1名ごと
-		if($dataList["SHOP_PRICETYPE_KIND"] == 1){
-			for($i = 1; $i <= 6; $i++){
-				if($dataList["BOOKING_PRICEPERSON". $i] > 0){
-					$person_num += $dataList["BOOKING_PRICEPERSON". $i];
-				}
-			}
-		// グループごと
-		} else {
-			$person_num = $dataList["BOOKING_PRICEPERSON7"];
-		}
-		$sql = "";
-		$sql .= "update HOTELPROVIDE set HOTELPROVIDE_BOOKEDNUM = HOTELPROVIDE_BOOKEDNUM - ".$person_num;
-		$sql .= " where ROOM_ID=".$dataList["ROOM_ID"]." and COMPANY_ID = ".$dataList["COMPANY_ID"];
-		$sql .= " and HOTELPROVIDE_DATE = '".$dataList["BOOKING_DATE"]."'";
+		$this->db->commit();
 		
-		if (!$this->saveExec($sql)) {
-			$this->db->rollback();
+		// 在庫数更新処理
+		if (!$this->stockUpdate($dataList)) {
 			return false;
 		}
 		
@@ -1695,6 +1741,89 @@ class shopBooking extends collection {
 
 		return true;
 	}
+	
+	
+	/**
+	 * 在庫数更新
+	 * @param unknown $dataList
+	 * @param string $beforeData
+	 * @param string $sign
+	 * @return boolean
+	 */
+	public function stockUpdate($dataList , $beforeData = null, $sign = "-"){
+		
+		if(!empty($dataList)){
+			$this->db->begin();
+			
+			$company_id   = $dataList["COMPANY_ID"];
+			$room_id      = $dataList["ROOM_ID"];
+			$booking_date = $dataList["BOOKING_DATE"];
+			
+			// 在庫情報取得
+			$hotelProvide = new hotelProvide($this->db);
+			$hotelProvide->select("", $company_id,$room_id,$booking_date);
+			$provide_data = $hotelProvide->getCollectionByKey($hotelProvide->getKeyValue());
+			
+			/*
+			* 販売ステータスが「販売」の場合のみ在庫数を更新
+			* 売り止めの場合は在庫数を更新しない
+			*/
+			if($provide_data['HOTELPROVIDE_FLG_STOP'] == 1){
+				// 在庫数変更処理
+				$person_num        = 0;
+				$before_person_num = 0;
+					
+				// 1名ごと
+				if($dataList["SHOP_PRICETYPE_KIND"] == 1){
+					for($i = 1; $i <= 6; $i++){
+						if($dataList["BOOKING_PRICEPERSON". $i] > 0){
+							$person_num += $dataList["BOOKING_PRICEPERSON". $i];
+						}
+							
+						if (!empty($beforeData) && $beforeData["BOOKING_PRICEPERSON". $i] > 0) {
+							$before_person_num += $beforeData["BOOKING_PRICEPERSON". $i];
+						}
+					}
+				// グループごと
+				} else {
+					$person_num = $dataList["BOOKING_PRICEPERSON7"];
+			
+					if (!empty($beforeData) ) {
+						$before_person_num = $beforeData['BOOKING_PRICEPERSON7'];
+					}
+				}
+					
+				$change_person_num = $person_num;
+					
+				if (!empty($beforeData)) {
+					// 人数、組数が変更されている場合(管理画面からの更新時)
+					if($person_num != $before_person_num){
+						$change_person_num = $person_num - $before_person_num;
+						$change_person_num = -$change_person_num;
+					} else {
+						$change_person_num = 0;
+					}
+				}
+					
+				$sql = "";
+				$sql .= "update HOTELPROVIDE set HOTELPROVIDE_BOOKEDNUM = HOTELPROVIDE_BOOKEDNUM ".$sign." ".$change_person_num;
+				$sql .= " where ROOM_ID=".$room_id." and COMPANY_ID = ".$company_id;
+				$sql .= " and HOTELPROVIDE_DATE = '".$booking_date."'";
+					
+				if (!$this->saveExec($sql)) {
+					$this->db->rollback();
+					return false;
+				}
+			}
+			
+			$this->db->commit();
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
 	
 	/**
 	 * キャンセル料金算出
@@ -2237,6 +2366,11 @@ class shopBooking extends collection {
 		// キャンセル対象プラン選択チェック
 		if (count($cancel_data) <= 0 && count(parent::getByKey(parent::getKeyValue(), "noshow")) <= 0) {
 			parent::setErrorFirst("キャンセルするプランを選択して下さい");
+		}
+		
+		// ステータスチェック
+		if (parent::getByKey(parent::getKeyValue(), "BOOKING_STATUS") == 2) {
+			parent::setErrorFirst("キャンセル済みです");
 		}
 	
 	}

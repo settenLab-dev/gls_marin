@@ -71,7 +71,7 @@ $inputs = new inputs();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
 	<?php require("includes/box/common/meta.php"); ?>
-	<title>部屋数調整｜<?=SITE_SLAKER_NAME?></title>
+	<title>在庫数調整｜<?=SITE_SLAKER_NAME?></title>
 	<meta name="description" content="" />
 	<script type="text/javascript">
 	<?php if (($hotelProvide->getByKey($hotelProvide->getKeyValue(), "regist") or $hotelProvide->getByKey($hotelProvide->getKeyValue(), "delete")) and $hotelProvide->getErrorCount() <= 0) {?>
@@ -96,7 +96,7 @@ $inputs = new inputs();
 </head>
 <body id="">
 	<div id="containerPop">
-		<h2>部屋数調整</h2>
+		<h2>在庫数調整</h2>
 		<div id="contentsPop" class="circle">
 			<form action="<?=$_SERVER['REQUEST_URI']?>" method="post"  enctype="multipart/form-data">
 				<?php
