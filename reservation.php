@@ -23,6 +23,15 @@ $sess = new sessionMember($dbMaster);
 $sess->start();
 
 require("includes/box/login/loginAction.php");
+
+// 非会員がログインしている状態の場合はログアウト処理
+if($sess->getSessionByKey($sess->getSessionLogninKey(), 'MEMBER_STATUS') == 4){
+	//cookieをタイムアウト設定
+	$sess->setCookieData($memberInput->getByKey($memberInput->getKeyValue(),"MEMBER_LOGIN_ID"), $memberInput->getByKey($memberInput->getKeyValue(),"MEMBER_LOGIN_PASSWORD"), time() - 3600);
+
+	$sess->destroy();
+}
+
 // 非会員で予約できるようにする
 if (empty($_POST['nomember']) && !$sess->sessionCheck()) {
 	// プランIDを保持していない場合はトップページへ
@@ -32,6 +41,12 @@ if (empty($_POST['nomember']) && !$sess->sessionCheck()) {
 	}
 	
 	require_once('login_reserve.php');
+	exit;
+}
+
+// プランIDを保持していない場合はトップページへ
+if (empty($_POST['SHOPPLAN_ID'])){
+	cmLocationChange("index.html");
 	exit;
 }
 

@@ -135,10 +135,12 @@ $inputs = new inputs();
 				<ul class="menu-list">
 					<li><a href="<?php print URL_PUBLIC?>mypage.html">マイページトップ</a></li>
 					<li><a href="<?php print URL_PUBLIC?>myreserve.html">予約の確認</a></li>
-					<!-- <li><a href="<?php print URL_PUBLIC?>myticket.html">購入したチケット</a></li> -->
-					<li><a href="<?php print URL_PUBLIC?>mybasic.html">会員基本情報確認・変更</a></li>
-					<!-- <li><a href="<?php print URL_PUBLIC?>mybasic.html">体験レポートの投稿</a></li> -->
-					<li><a href="<?php print URL_PUBLIC?>mycancellation.html">退会</a></li>
+					<?php if($sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_STATUS") != 4): ?>
+						<!-- <li><a href="<?php print URL_PUBLIC?>myticket.html">購入したチケット</a></li> -->
+						<li><a href="<?php print URL_PUBLIC?>mybasic.html">会員基本情報確認・変更</a></li>
+						<!-- <li><a href="<?php print URL_PUBLIC?>mybasic.html">体験レポートの投稿</a></li> -->
+						<li><a href="<?php print URL_PUBLIC?>mycancellation.html">退会</a></li>
+					<?php endif; ?>
 					<li>
 						<form action="<?php print $_SERVER['REQUEST_URI']?>" method="post">
 							<p class="bt-td"><?=$inputs->submit("","logout","ログアウト", "circle")?></p>

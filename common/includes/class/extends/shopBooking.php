@@ -1101,6 +1101,86 @@ class shopBooking extends collection {
 
 		// サイトから予約した時かつ初回はメールを送信する。
 		if (($dataList['BOOKING_HOW'] == 0) && ($update_flg == false)){
+			
+			// 非会員の予約の場合はログインIDとパスワードを発行しメールに記載する
+			$add_login_info = false;
+			if($dataList["BOOKING_MEMBER_FLG"] == 2){
+				// 会員登録処理
+				$dbMaster = new dbMaster();
+				$memberRegist = new member($dbMaster);
+				
+				// パスワード生成
+				$login_pass = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 8);
+				
+				// ログインID・パスワード文作成
+				$login_str .= "ログインID: ".$dataList["BOOKING_MAILADDRESS"]."\n";
+				$login_str .= "パスワード: ".$login_pass."\n";
+				
+				$memberRegist->db->begin();
+				
+				$sql  = "insert into ".member::tableName." (";
+				$sql .= "MEMBER_ID, ";
+				$sql .= "MEMBER_LOGIN_ID, ";
+				$sql .= "MEMBER_LOGIN_PASSWORD, ";
+				$sql .= "MEMBER_NAME1, ";
+				$sql .= "MEMBER_NAME2, ";
+				$sql .= "MEMBER_NAME_KANA1, ";
+				$sql .= "MEMBER_NAME_KANA2, ";
+				$sql .= "MEMBER_PREF, ";
+				$sql .= "MEMBER_CITY, ";
+				$sql .= "MEMBER_ADDRESS, ";
+				$sql .= "MEMBER_BUILD, ";
+				$sql .= "MEMBER_TEL1, ";
+				$sql .= "MEMBER_STATUS, ";
+				$sql .= "MEMBER_DATE_REGIST, ";
+				$sql .= "MEMBER_DATE_UPDATE) values (";
+				
+				$sql .= "null, ";
+				$sql .= parent::expsVal($dataList["BOOKING_MAILADDRESS"], true, 1).", ";
+				$sql .= parent::expsVal($login_pass, true, 1).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_NAME1"], true, 1).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_NAME2"], true, 1).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_KANA1"], true, 1).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_KANA2"], true, 1).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_PREF_ID"]).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_CITY"], true, 1).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_ADDRESS"], true, 1).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_BUILD"], true, 1).", ";
+				$sql .= parent::expsVal($dataList["BOOKING_TEL"], true, 1).", ";
+				$sql .= "4, ";
+				$sql .= "now(), ";
+				$sql .= "now()) ";
+				
+				if (!$memberRegist->saveExec($sql)) {
+					$memberRegist->db->rollback();
+					parent::setErrorFirst("登録処理中にエラーが発生しました。");
+					parent::setErrorFirst("大変お手数ですが管理者にお問い合わせ下さい。");
+					$this->db->rollback();
+					return false;
+				} else {
+					$memberRegist->db->commit();
+					
+					// member_id を予約に紐付ける
+					$idData = new collection($this->db);
+					$idData->lastInsert(member::tableName);
+					$id = $idData->getByKey($idData->getKeyValue(), "id");
+					$member_id = $id;
+					
+					$booking_id = $this->getBookingId();
+					
+					$sql = "update ".shopBooking::tableName." set ";
+					$sql .= parent::expsData("MEMBER_ID", "=", $member_id)." ";
+					$sql .= "where ";
+					$sql .=  parent::expsData(shopBooking::keyName, "=", $booking_id)." ";
+					
+					if (!$this->saveExec($sql)) {
+						$this->db->rollback();
+						return false;
+					}
+					
+					$add_login_info = true;
+				}
+			}
 
 			$mMail = new mMail($this->db);
 			//ユーザー宛て予約メール
@@ -1162,6 +1242,11 @@ class shopBooking extends collection {
 			$body = cmReplace($body, "[!PLAN_CONTENTS!]", parent::getByKey(parent::getKeyValue(), "plan_contents"));
 			$body = cmReplace($body, "[!CANCEL!]", parent::getByKey(parent::getKeyValue(), "cancel"));
 			$body = cmReplace($body, "[!PAYMENT!]", parent::getByKey(parent::getKeyValue(), "payment"));
+			
+			// ログイン情報追記
+			if($add_login_info){
+				$body = cmReplace($body, "[!LOGIN_INFO!]", $login_str);
+			}
 
 			if (parent::getByKey(parent::getKeyValue(), "BOOKING_PAYMENT") == 1) {
 				$body = cmReplace($body, "[!PAYMENT_HOW!]", '現地で現金決済');

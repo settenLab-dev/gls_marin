@@ -201,6 +201,9 @@
     	public function getDbPass() {
     		return "MEMBER_LOGIN_PASSWORD";
     	}
+    	public function getDbStatus() {
+    		return "MEMBER_STATUS";
+    	}
 
     	public function getCookieIdKey() {
     		return SITE_COOKIE_PUBLIC_ID;
@@ -233,6 +236,7 @@
     			$collection = new collection($this->db);
     			$collection->setByKey($collection->getKeyValue(), $this->getDbId(), $_SESSION[$this->getSessionLogninKey()][$this->getDbId()]);
     			$collection->setByKey($collection->getKeyValue(), $this->getDbPass(), $_SESSION[$this->getSessionLogninKey()][$this->getDbPass()]);
+    			$collection->setByKey($collection->getKeyValue(), $this->getDbStatus(), $_SESSION[$this->getSessionLogninKey()][$this->getDbStatus()]);
     			$adminCheck = new member($this->db);
     			$adminCheck->selectLogin($collection);
     			if ($adminCheck->getCount() == 1) {

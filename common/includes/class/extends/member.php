@@ -707,7 +707,12 @@ class member extends collection {
 		$sql .= parent::decryptionList("MEMBER_ZIP, MEMBER_CITY, MEMBER_ADDRESS, MEMBER_BUILD, MEMBER_TEL1, MEMBER_TEL2")." ";
 		$sql .= "from ".member::tableName." ";
 		$sql .= "where ";
-		$sql .= parent::expsData("MEMBER_STATUS", "in", "(2)")." ";
+		// 通常ログイン時のみ非会員のログインを許可する
+		if ($data->getByKey($data->getKeyValue(), "nomemberLogin") === 'true' || $data->getByKey($data->getKeyValue(), "MEMBER_STATUS") == 4) {
+			$sql .= parent::expsData("MEMBER_STATUS", "in", "(2,4)")." ";
+		} else {
+			$sql .= parent::expsData("MEMBER_STATUS", "in", "(2)")." ";
+		}
 		$sql .= "and ".parent::expsData("MEMBER_LOGIN_ID", "=", $data->getByKey($data->getKeyValue(), "MEMBER_LOGIN_ID"), true, 1)." ";
 		$sql .= "and ".parent::expsData("MEMBER_LOGIN_PASSWORD", "=", $data->getByKey($data->getKeyValue(), "MEMBER_LOGIN_PASSWORD"), true, 1)." ";
 //print_r($sql);

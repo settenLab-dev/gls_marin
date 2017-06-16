@@ -90,6 +90,7 @@ $inputs = new inputs();
 				<p>
 					<?=$inputs->submit("","login","会員ログイン", "circle")?>
 					<?php print $inputs->hidden('ref_url', $_SESSION['ref_url']);?>
+					<?php echo $inputs->hidden('nomemberLogin', 'true');?>
 				</p>
 			</div>
 

@@ -437,7 +437,8 @@
 				$tmp .=  $inputs->hidden("SHOPPLAN_MEET_TIMEHOUR", $collection->getByKey($collection->getKeyValue(), "SHOPPLAN_MEET_TIMEHOUR"));
 				$tmp .=  $inputs->hidden("SHOPPLAN_MEET_TIMEMIN", $collection->getByKey($collection->getKeyValue(), "SHOPPLAN_MEET_TIMEMIN"));
 	
-				if($sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_ID") != ""){
+				if($sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_ID") != ""
+					&& $sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_STATUS") != 4){
 					$tmp .=  $inputs->hidden("MEMBER_ID", $sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_ID"));
 					$tmp .=  $inputs->hidden("BOOKING_MEMBER_FLG", "1");
 				}else{

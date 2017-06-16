@@ -64,11 +64,15 @@ $inputs = new inputs();
 				<div id="hmenu_cn" class="radius10">
 					<menu class="mypge-menu">
 						<li><a href="<?php print URL_PUBLIC?>mypage.html">マイページトップ</a></li>
-						<li><a href="<?php print URL_PUBLIC?>mybasic.html">会員基本情報確認・変更</a></li>
+						<?php if($sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_STATUS") != 4): ?>
+							<li><a href="<?php print URL_PUBLIC?>mybasic.html">会員基本情報確認・変更</a></li>
+						<?php endif; ?>
 						<li><a href="<?php print URL_PUBLIC?>myreserve.html">予約の確認</a></li>
-					<!--<li><a href="<?php print URL_PUBLIC?>mycoupon.html">購入したクーポン</a></li>-->
-					<!--<li><a href="<?php print URL_PUBLIC?>mypoint.html">ポイント履歴</a></li>-->
-						<li><a href="<?php print URL_PUBLIC?>mycancellation.html">退会</a></li>
+						<?php if($sess->getSessionByKey($sess->getSessionLogninKey(), "MEMBER_STATUS") != 4): ?>
+						<!--<li><a href="<?php print URL_PUBLIC?>mycoupon.html">購入したクーポン</a></li>-->
+						<!--<li><a href="<?php print URL_PUBLIC?>mypoint.html">ポイント履歴</a></li>-->
+							<li><a href="<?php print URL_PUBLIC?>mycancellation.html">退会</a></li>
+						<?php endif; ?>
 					</menu>
 					<div class="bt-logout_cn">
 						<form action="<?php print $_SERVER['REQUEST_URI']?>" method="post">
