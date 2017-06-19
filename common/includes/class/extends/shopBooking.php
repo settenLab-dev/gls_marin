@@ -2073,6 +2073,10 @@ class shopBooking extends collection {
 		return $bookedNum;
 	}
 	
+	/**
+	 * 入力・選択項目チェック
+	 * @param unknown $bookingcontArray
+	 */
 	public function checkAll($bookingcontArray) {
 		// 主催会社
 		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "COMPANY_ID"))) {
@@ -2169,6 +2173,11 @@ class shopBooking extends collection {
 			if (parent::getByKey(parent::getKeyValue(), "SHOPPLAN_QUESTION_REC") == 1 ){
 				parent::setError("BOOKING_ANSWER", "必須項目です");
 			}
+		}
+		
+		// 集合場所
+		if (!cmCheckNull(parent::getByKey(parent::getKeyValue(), "BOOKING_MEET_PLACE")) ) {
+			parent::setError("BOOKING_MEET_PLACE", "必須項目です");
 		}
 		
 		// お支払い方法 選択させる場合はコメントアウト解除

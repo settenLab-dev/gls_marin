@@ -260,6 +260,38 @@
 					<?php }?>
 				</section>
 			<?php }?>
+			
+			<section>
+				<h2>◆集合場所</h2>
+				<table class="style5 space">
+					<tbody>
+						<tr>
+							<th>集合場所</th>
+							<td>
+								<div>
+									<?php echo create_error_msg($shopBooking->getErrorByKey("BOOKING_MEET_PLACE")); ?>
+									<select name="BOOKING_MEET_PLACE" id="BOOKING_MEET_PLACE" class="" style='width: auto;'>
+										<option value=''>未選択</option>
+										<?php 
+											$booking_meet_place  = $shopBooking->getByKey($shopBooking->getKeyValue(), "BOOKING_MEET_PLACE");
+											for($i = 1; $i <= 3; $i++){
+												${"shop_access_id".$i}  = $shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_MEET_PLACE".$i);
+												$access_id = ${"shop_access_id".$i};
+												if(!empty($access_id)){
+										?>
+											<option value="<?php echo $access_id;?>" <?php echo ($booking_meet_place==$access_id)?'selected="selected"':''; ?>><?php echo $arrShopAccess[$access_id]['SHOP_ACCESS_NAME'];?></option>
+										<?php 
+													echo $arrShopAccess[$access_id]['SHOP_ACCESS_NAME']."<br>";
+												}
+											}
+										?>
+									</select>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 
 			<section>
 				<h2>◆お支払方法</h2>
@@ -302,7 +334,7 @@
 										<option value=''>未選択</option>
 										<?php foreach ($arrPayment as $k => $v):?>
 											<?php if ($shopPlan->getByKey($shopPlan->getKeyValue(), "SHOPPLAN_PAYMENT".$k)==1):?>
-												<option value="<?php echo $k;?>" <?php echo ($booking_payment==$k)?'selected="selected"':''?>><?php echo $v;?></option>
+												<option value="<?php echo $k;?>" <?php echo ($booking_payment==$k)?'selected="selected"':''; ?>><?php echo $v;?></option>
 											<?php endif;?>
 										<?php endforeach;?>
 									</select>

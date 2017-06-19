@@ -8,6 +8,8 @@ require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelPay.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelProvide.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/hotelRoom.php');
 
+require_once(PATH_SLAKER_COMMON.'includes/class/extends/ShopAccess.php');
+
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopBooking.php');
 require_once(PATH_SLAKER_COMMON.'includes/class/extends/shopBookingcont.php');
 
@@ -71,18 +73,23 @@ $shopBooking->setPost();
 
 $is_request=false;
 
+// 各種値設定・エラーチェック
 require_once('includes/box/hotel/reservpb.php');
 
 //print_r($_POST);
 //print_r($collection);
 
-
-
-
-
-
-
 $inputs = new inputs();
+
+// <<<<< add settenLab
+$ShopAccess = new ShopAccess($dbMaster);
+$ShopAccess->select("", "1", $collection->getByKey($collection->getKeyValue(), "COMPANY_ID"));
+
+$arrShopAccess = array();
+foreach($ShopAccess->getCollection() as $shop_access){
+	$arrShopAccess[$shop_access['SHOP_ACCESS_ID']] = $shop_access;
+}
+// >>>>> add settenLab
 ?>
 <?php require("includes/box/common/doctype.php"); ?>
 <html><!-- InstanceBegin template="/Templates/temp.dwt" codeOutsideHTMLIsLocked="false" -->

@@ -204,6 +204,26 @@
 					<?php }?>
 				</section>
 			<?php }?>
+			
+			<section>
+				<h2>◆集合場所</h2>
+				<table class="style5 space">
+					<tbody>
+						<tr>
+							<th>集合場所</th>
+							<td>
+								<div>
+									<?php
+										$booking_meet_place  = $shopBooking->getByKey($shopBooking->getKeyValue(), "BOOKING_MEET_PLACE");
+										echo $inputs->hidden("BOOKING_MEET_PLACE", $booking_meet_place);
+										echo $arrShopAccess[$booking_meet_place]['SHOP_ACCESS_NAME'];
+									?>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 
 			<section>
 				<h2>◆お支払方法</h2>
