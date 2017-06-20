@@ -380,22 +380,30 @@ if ($collection->getByKey($collection->getKeyValue(), "confirm_x") or $collectio
 	if ($shopBooking->getCount() <= 0) {
 
 		// 		print_r($shopBookingcontArray);
+		
+		// 確認画面
+		if ($collection->getByKey($collection->getKeyValue(), "confirm_x") || $collection->getByKey($collection->getKeyValue(), "change")) {
+			// 2重送信防止用セッションセット
+			$unique_txt = sha1(uniqid(rand(), true));
+			$_SESSION['transaction_reserve'] = $unique_txt;
+		}
 
 		// 保存処理
-		if ($collection->getByKey($collection->getKeyValue(), "regist")) {
+		if ($collection->getByKey($collection->getKeyValue(), "regist") ) {
 
-			$saveStat = $shopBooking->save($shopBookingcontArray,$is_request);
-			if (!$saveStat) {
-				$shopBooking->setErrorFirst("予約情報の保存に失敗しました。");
-			}
-			else {
-//				if($collection->getByKey($collection->getKeyValue(), "BOOKING_STATUS") == "5"){
-//					cmLocationChange("reservation-requestcomplete.html");
-//				}
-//				else {
-//					cmLocationChange("reservationcomplete.html");
-//				}
-				
+			// 2重送信防止用セッションを保持している場合のみ保存処理
+			if (!empty($_SESSION['transaction_reserve'])) {
+				$saveStat = $shopBooking->save($shopBookingcontArray,$is_request);
+				if (!$saveStat) {
+					$shopBooking->setErrorFirst("予約情報の保存に失敗しました。");
+				}
+				else {
+					// 2重送信防止用セッション破棄
+					unset($_SESSION['transaction_reserve']);
+				}
+			} else {
+				// セッションを保持していない場合はトップページへ
+				cmLocationChange("index.html");
 			}
 
 		}
