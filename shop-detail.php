@@ -653,7 +653,7 @@ $(document).ready(function() {
 									$cnt++;
 							?>
 								<li>
-									<a href="/gall-detail.html?pic=<?php echo $pic_data['HOTELPIC_ID']; ?>">
+									<a href="<?php echo URL_SLAKER_COMMON."/images/".$pic_data["HOTELPIC_DATA"]; ?>" >
 										<div class="contena">
 											<?php if ($pic_data["HOTELPIC_DATA"] != "") {?>
 												<img src="<?php echo URL_SLAKER_COMMON."/images/".$pic_data["HOTELPIC_DATA"]; ?>" alt="<?php echo "ショップ写真".($key + 1); ?>">
